@@ -88,7 +88,7 @@
       <div class="card">
         <div class="card-header">
           <h2 class="card-title">Profile Information</h2>
-          <p class="card-sub">ඔබගේ account details update කරන්න</p>
+          <p class="card-sub">Your account details update</p>
         </div>
 
         <div class="avatar-section">
@@ -182,14 +182,14 @@
       <div class="card">
         <div class="card-header">
           <h2 class="card-title">Preferences</h2>
-          <p class="card-sub">Notification සහ system preferences</p>
+          <p class="card-sub">Notification and system preferences</p>
         </div>
 
         <div class="pref-list">
           <div class="pref-row">
             <div>
               <p class="pref-title">Email Notifications</p>
-              <p class="pref-desc">Stock request updates email කින් receive කරන්න</p>
+              <p class="pref-desc">Stock request updates email  receive </p>
             </div>
             <label class="toggle">
               <input type="checkbox" checked />
@@ -223,12 +223,12 @@
       <div class="card card-danger">
         <div class="card-header">
           <h2 class="card-title danger-title">Danger Zone</h2>
-          <p class="card-sub">Irreversible actions — ප්‍රවේශමෙන් කරන්න</p>
+          <p class="card-sub">Irreversible actions </p>
         </div>
         <div class="danger-row">
           <div>
             <p class="danger-action-title">Log Out</p>
-            <p class="danger-action-desc">Current session terminate කරනවා</p>
+            <p class="danger-action-desc">Current session terminate</p>
           </div>
           <button class="btn-danger" onclick="showLogout()">
             <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M6 2H3a1 1 0 00-1 1v10a1 1 0 001 1h3M10 11l3-3-3-3M13 8H6"/></svg>
