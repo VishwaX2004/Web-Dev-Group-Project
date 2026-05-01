@@ -143,7 +143,7 @@
       <div class="card">
         <div class="card-header">
           <h2 class="card-title">Change Password</h2>
-          <p class="card-sub">Account security update කරන්න</p>
+          <p class="card-sub">Account security update </p>
         </div>
 
         <div class="form-row">
@@ -199,7 +199,7 @@
           <div class="pref-row">
             <div>
               <p class="pref-title">Low Stock Alerts</p>
-              <p class="pref-desc">Stock level low වුනාම alert send කරන්න</p>
+              <p class="pref-desc">Stock level low  alert send </p>
             </div>
             <label class="toggle">
               <input type="checkbox" checked />
