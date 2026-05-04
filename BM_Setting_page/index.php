@@ -258,7 +258,7 @@
         <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#e74c3c" stroke-width="2"><path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4M16 17l5-5-5-5M21 12H9"/></svg>
       </div>
       <h3 class="modal-title">Log out වෙනවාද?</h3>
-      <p class="modal-msg">ඔබ current session එකෙන් log out වේ. නැවත login කිරීමට credentials ඕනේ වේ.</p>
+      <p class="modal-msg">current session එකෙන් log out වේ. නැවත login කිරීමට credentials ඕනේ වේ.</p>
       <div class="modal-actions">
         <button class="btn-outline" onclick="hideLogout()">Cancel</button>
         <button class="btn-danger" onclick="doLogout()">Yes, Log Out</button>
