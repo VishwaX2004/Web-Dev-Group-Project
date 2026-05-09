@@ -4,13 +4,14 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Retail Management System | Login</title>
+    <link rel="stylesheet" href="assets/css/login_page.css">
 </head>
 <body>
 
     <div class="main-wrapper">
         <main class="form-side">
             <div class="brand-icon">
-                <img src="home_image.png" alt="Home" style="width: 30px; height: 30px;">
+                <img src="assets/images/home_image.png" alt="Home" style="width: 30px; height: 30px;">
             </div>
             
             <div class="header-content">
@@ -43,7 +44,7 @@
 
         <section class="info-side">
             <div class="floating-icon">
-                <img src="shopping_cart.png" alt="Icon" style="width: 32px; filter: brightness(0) invert(1);">
+                <img src="assets/images/shopping_cart.png" alt="Icon" style="width: 32px; filter: brightness(0) invert(1);">
             </div>
             <h2>Smart Retail Management</h2>
             <p>Optimize inventory, track live sales, and empower your staff with our all-in-one platform.</p>
@@ -68,5 +69,6 @@
             </div>
         </section>
     </div>
+    <script src="assets/js/login_page.js"></script>
 </body>
 </html>
