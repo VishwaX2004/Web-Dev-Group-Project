@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Settings — BranchPro</title>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet"/>
-  <link rel="stylesheet" href="settings.css"/>
+  <link rel="stylesheet" href="../../assets/css/BM_setting.css"/>
 </head>
 <body>
 
