@@ -29,5 +29,14 @@
       </button>
     </div>
 </header>
+
+<div class="page-body">
+    <div class="page-header">
+      <div>
+        <h1 class="page-title">Damaged Items Management</h1>
+        <p class="page-sub">Track, assess and resolve damaged inventory items</p>
+      </div>
+    </div>
+    
 </body>
 </html>
