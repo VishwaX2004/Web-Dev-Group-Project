@@ -42,7 +42,20 @@
     <div class="toolbar">
       <div class="search-wrap">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-        <input class="search-input" type="text" id="searchInput" placeholder="Search by item name or ID…" oninput="filterTable()">
+        <input class="search-input" type="text" id="searchInput" placeholder="Search by item name or ID…" oninput="">
 </div>
+
+    <select class="filter-select" id="severityFilter" onchange="">
+        <option value="">All Severities</option>
+        <option value="Critical">Critical</option>
+        <option value="Moderate">Moderate</option>
+        <option value="Minor">Minor</option>
+      </select>
+
+    <select class="filter-select" id="statusFilter" onchange="">
+        <option value="">All Statues</option>
+        <option value="pending">Pending</option>
+        <option value="in_progress">In Progress</option>
+        <option value="resolved">Resolved</option>
 </body>
 </html>
