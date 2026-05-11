@@ -1,0 +1,344 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+
+:root {
+    --primary: #2563EB;
+    --primary-dark: #1D4ED8;
+    --dark: #0F172A;
+    --secondary: #64748B;
+    --bg: #F1F5F9;
+    --white: #ffffff;
+    --success: #16A34A;
+}
+
+/* RESET */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Inter', sans-serif;
+}
+
+body {
+    background: var(--bg);
+    color: var(--dark);
+    display: flex;
+}
+
+/* ============================================================
+   MAIN CONTENT
+   ============================================================ */
+
+.main {
+    margin-left: 280px;
+    width: calc(100% - 280px);
+    padding: 40px;
+}
+
+/* ============================================================
+   HEADER AREA
+   ============================================================ */
+
+.page-header {
+    background: linear-gradient(135deg, #0F172A 0%, #1E293B 100%);
+    border-radius: 24px;
+    padding: 30px;
+
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    margin-bottom: 30px;
+
+    color: white;
+
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.08);
+}
+
+.header-info h1 {
+    font-size: 28px;
+    font-weight: 800;
+}
+
+.header-info p {
+    color: #94A3B8;
+    font-size: 14px;
+    margin-top: 5px;
+}
+
+/* ============================================================
+   BUTTONS
+   ============================================================ */
+
+.btn-group {
+    display: flex;
+    gap: 12px;
+}
+
+.btn {
+    border: none;
+    padding: 13px 22px;
+    border-radius: 12px;
+
+    font-weight: 600;
+    cursor: pointer;
+
+    display: flex;
+    align-items: center;
+    gap: 8px;
+
+    transition: 0.25s;
+    font-size: 14px;
+}
+
+.btn-primary {
+    background: var(--primary);
+    color: white;
+
+    box-shadow: 0 4px 14px rgba(37, 99, 235, 0.25);
+}
+
+.btn-outline {
+    background: rgba(255, 255, 255, 0.08);
+    color: white;
+    border: 1px solid rgba(255, 255, 255, 0.15);
+}
+
+.btn:hover {
+    transform: translateY(-2px);
+    opacity: 0.95;
+}
+
+/* ============================================================
+   GRID SYSTEM
+   ============================================================ */
+
+.sales-grid {
+    display: grid;
+    grid-template-columns: 1fr 380px;
+    gap: 25px;
+}
+
+/* ============================================================
+   CARD
+   ============================================================ */
+
+.card {
+    background: var(--white);
+    border-radius: 24px;
+    padding: 30px;
+
+    box-shadow:
+        0 10px 15px -3px rgba(0,0,0,0.04),
+        0 4px 6px -2px rgba(0,0,0,0.02);
+
+    border: 1px solid rgba(226,232,240,0.7);
+}
+
+.section-title {
+    font-size: 20px;
+    font-weight: 700;
+    margin-bottom: 24px;
+
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+/* ============================================================
+   FORM
+   ============================================================ */
+
+.form-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 15px;
+    margin-bottom: 15px;
+}
+
+.input-group {
+    margin-bottom: 18px;
+}
+
+.input-group label {
+    display: block;
+
+    font-size: 13px;
+    font-weight: 600;
+
+    color: var(--secondary);
+
+    margin-bottom: 8px;
+}
+
+.input-group input,
+.input-group select {
+    width: 100%;
+    height: 50px;
+
+    background: #F8FAFC;
+
+    border: 1px solid #E2E8F0;
+    border-radius: 14px;
+
+    padding: 0 16px;
+
+    outline: none;
+
+    transition: 0.3s;
+}
+
+.input-group input:focus,
+.input-group select:focus {
+    border-color: var(--primary);
+    background: #fff;
+
+    box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.1);
+}
+
+/* ============================================================
+   TABLE
+   ============================================================ */
+
+.cart-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+
+.cart-table th {
+    text-align: left;
+
+    padding: 14px 12px;
+
+    background: #F8FAFC;
+
+    font-size: 12px;
+    color: var(--secondary);
+
+    text-transform: uppercase;
+}
+
+.cart-table td {
+    padding: 16px 12px;
+    border-bottom: 1px solid #F1F5F9;
+
+    font-size: 14px;
+}
+
+.qty-input {
+    width: 60px;
+    padding: 8px;
+
+    border: 1px solid #E2E8F0;
+    border-radius: 8px;
+
+    text-align: center;
+}
+
+/* ============================================================
+   SUMMARY BOX
+   ============================================================ */
+
+.summary-box {
+    background: var(--dark);
+    color: white;
+
+    padding: 30px;
+
+    border-radius: 24px;
+}
+
+.summary-item {
+    display: flex;
+    justify-content: space-between;
+
+    margin-bottom: 15px;
+
+    color: #94A3B8;
+}
+
+.summary-total {
+    border-top: 1px solid rgba(255,255,255,0.1);
+
+    padding-top: 18px;
+    margin-top: 18px;
+
+    font-size: 22px;
+    font-weight: 800;
+
+    color: white;
+}
+
+.payment-card {
+    margin-top: 20px;
+}
+
+/* ============================================================
+   COMPLETE BUTTON
+   ============================================================ */
+
+.complete-btn {
+    width: 100%;
+
+    background: var(--success);
+    color: white;
+
+    border: none;
+
+    padding: 18px;
+
+    border-radius: 16px;
+
+    font-weight: 700;
+    font-size: 16px;
+
+    cursor: pointer;
+
+    margin-top: 20px;
+
+    box-shadow: 0 4px 14px rgba(22, 163, 74, 0.3);
+
+    transition: 0.3s;
+}
+
+.complete-btn:hover {
+    transform: translateY(-2px);
+    filter: brightness(1.05);
+}
+
+/* ============================================================
+   RESPONSIVE
+   ============================================================ */
+
+@media (max-width: 1200px) {
+
+    .sales-grid {
+        grid-template-columns: 1fr;
+    }
+
+}
+
+@media (max-width: 1024px) {
+
+    .main {
+        margin-left: 80px;
+        width: calc(100% - 80px);
+        padding: 20px;
+    }
+
+    .page-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 20px;
+    }
+
+    .btn-group {
+        width: 100%;
+        flex-wrap: wrap;
+    }
+
+    .form-row {
+        grid-template-columns: 1fr;
+    }
+
+}
