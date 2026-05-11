@@ -6,66 +6,15 @@
   <title>Settings — BranchPro</title>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet"/>
   <link rel="stylesheet" href="../../assets/css/BM_setting.css"/>
+  <link rel="stylesheet" href="../../assets/css/BM_sidebar.css">
 </head>
 <body>
 
-  <!-- SIDEBAR -->
-  <aside class="sidebar">
-    <div class="sidebar-brand">
-      <div class="brand-logo">BM</div>
-      <div class="brand-info">
-        <span class="brand-name">BranchPro</span>
-        <span class="brand-sub">System Module v2.4</span>
-      </div>
+<div class="container">
+        <?php include 'BM_sidebar.php'; ?>
     </div>
 
-    <nav class="sidebar-nav">
-      <p class="nav-label">MAIN MENU</p>
-      <a href="#" class="nav-item">
-        <svg class="nav-icon" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="2" y="2" width="7" height="7" rx="1.5"/><rect x="11" y="2" width="7" height="7" rx="1.5"/><rect x="2" y="11" width="7" height="7" rx="1.5"/><rect x="11" y="11" width="7" height="7" rx="1.5"/></svg>
-        Dashboard
-      </a>
-      <a href="#" class="nav-item">
-        <svg class="nav-icon" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="2" y="4" width="16" height="12" rx="1.5"/><path d="M2 8h16"/></svg>
-        Inventory Management
-      </a>
-      <a href="#" class="nav-item">
-        <svg class="nav-icon" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="7" cy="16" r="1.5"/><circle cx="14" cy="16" r="1.5"/><path d="M1 2h2l2.5 9h8l2-6H5.5"/></svg>
-        Stock Requests
-        <span class="badge">3</span>
-      </a>
-      <a href="#" class="nav-item">
-        <svg class="nav-icon" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M4 10h12M10 4l6 6-6 6"/></svg>
-        Inter-Branch Transfer
-      </a>
-      <a href="#" class="nav-item">
-        <svg class="nav-icon" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="10" cy="10" r="8"/><path d="M10 6v4l3 3"/></svg>
-        Damaged Items
-        <span class="badge badge-red">5</span>
-      </a>
-      <a href="#" class="nav-item">
-        <svg class="nav-icon" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M4 4h12v12H4zM8 4v12M4 8h12"/></svg>
-        Purchase Orders
-      </a>
-    </nav>
-
-    <nav class="sidebar-nav">
-      <p class="nav-label">SETTINGS</p>
-      <a href="#" class="nav-item active">
-        <svg class="nav-icon" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="10" cy="10" r="2.5"/><path d="M10 2v1.5M10 16.5V18M2 10h1.5M16.5 10H18M4.2 4.2l1.1 1.1M14.7 14.7l1.1 1.1M4.2 15.8l1.1-1.1M14.7 5.3l1.1-1.1"/></svg>
-        Settings
-      </a>
-    </nav>
-
-    <div class="sidebar-user">
-      <div class="user-avatar">KP</div>
-      <div class="user-info">
-        <span class="user-name">Kumara Perera</span>
-        <span class="user-role">Branch Manager</span>
-      </div>
-    </div>
-  </aside>
-
+  
   <!-- MAIN CONTENT -->
   <main class="main">
 
