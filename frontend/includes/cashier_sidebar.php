@@ -20,7 +20,7 @@ $current_page = basename($_SERVER['PHP_SELF']);
             <span>Dashboard</span>
         </a>
 
-        <a href="sales_orders.php" class="<?php echo ($current_page == 'sales_orders.php') ? 'active' : ''; ?>">
+        <a href="sales_order.php" class="<?php echo ($current_page == 'sales_order.php') ? 'active' : ''; ?>">
             <i class="fa-solid fa-file-invoice"></i>
             <span>Sales Orders</span>
         </a>
@@ -48,7 +48,7 @@ $current_page = basename($_SERVER['PHP_SELF']);
             <?php echo isset($display_name) ? strtoupper(substr($display_name, 0, 1)) : 'U'; ?>
         </div>
         <div class="user-info">
-            <span class="user-name"><?php echo isset($display_name) ? $display_name : 'Cashier'; ?></span><br>
+            <span class="user-name"><?php echo isset($display_name) ? $display_name : 'Cashier'; ?></span>
             <span class="user-branch">
                 <i class="fa-solid fa-location-dot" style="font-size: 9px;"></i> 
                 <?php echo isset($display_branch) ? $display_branch : 'Branch Name'; ?>

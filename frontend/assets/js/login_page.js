@@ -36,3 +36,4 @@ if (window.innerWidth > 850) {
         infoSide.style.backgroundPosition = `calc(50% + ${moveX}px) calc(50% + ${moveY}px)`;
     });
 }
+
