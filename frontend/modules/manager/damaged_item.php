@@ -42,20 +42,35 @@
     <div class="toolbar">
       <div class="search-wrap">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-        <input class="search-input" type="text" id="searchInput" placeholder="Search by item name or ID…" oninput="">
+        <input class="search-input" type="text" id="searchInput" placeholder="Search by item name or ID…" oninput="filterTable()">
 </div>
 
-    <select class="filter-select" id="severityFilter" onchange="">
+    <select class="filter-select" id="severityFilter" onchange="filterTable()">
         <option value="">All Severities</option>
         <option value="Critical">Critical</option>
         <option value="Moderate">Moderate</option>
         <option value="Minor">Minor</option>
       </select>
 
-    <select class="filter-select" id="statusFilter" onchange="">
+    <select class="filter-select" id="statusFilter" onchange="filterTable()">
         <option value="">All Statues</option>
         <option value="pending">Pending</option>
         <option value="in_progress">In Progress</option>
         <option value="resolved">Resolved</option>
+
+
+<script>
+function filterTable() {
+  const q = document.getElementById('searchInput').value.toLowerCase();
+  const sev = document.getElementById('severityFilter').value;
+  const sta = document.getElementById('statusFilter').value;
+  filtered = items.filter(i =>
+    (i.name.toLowerCase().includes(q) || i.itemId.toLowerCase().includes(q)) &&
+    (sev ? i.severity === sev : true) &&
+    (sta ? i.status === sta : true)
+  );
+}
+</script>
+
 </body>
 </html>
