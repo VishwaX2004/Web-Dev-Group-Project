@@ -37,6 +37,12 @@
         <p class="page-sub">Track, assess and resolve damaged inventory items</p>
       </div>
     </div>
-    
+<div class="stats-row" id="statsRow"></div>
+
+    <div class="toolbar">
+      <div class="search-wrap">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+        <input class="search-input" type="text" id="searchInput" placeholder="Search by item name or ID…" oninput="filterTable()">
+</div>
 </body>
 </html>
