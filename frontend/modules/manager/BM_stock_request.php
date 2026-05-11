@@ -116,7 +116,7 @@
         <div class="modal">
             <div class="modal-header">
                 <h3>➕ New Stock Request</h3>
-                <button class="modal-close" onclick="closeModal()">✕</button>
+                <button class="modal-close" onclick="closeModal()">❌</button>
             </div>
             <div class="form-row">
                 <div class="form-group">
