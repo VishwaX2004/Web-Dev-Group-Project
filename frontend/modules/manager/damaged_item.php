@@ -5,12 +5,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Damage Item Management</title>
 
-    <style>
-
-
-    </style>
+      <link rel="stylesheet" href="../assets/css/BM_damage_item.css">
 </head>
 <body>
+  <div class="layout-wrapper">
+  <?php include 'BM_sidebar.php'; ?>
     <div class="main">
   <header class="topbar">
     <div class="breadcrumb">
@@ -149,19 +148,8 @@
   <span id="toastMsg"></span>
 </div>
 
+<script src="../../assets/js/damaged_item.js"></script>
 
-<script>
-function filterTable() {
-  const q = document.getElementById('searchInput').value.toLowerCase();
-  const sev = document.getElementById('severityFilter').value;
-  const sta = document.getElementById('statusFilter').value;
-  filtered = items.filter(i =>
-    (i.name.toLowerCase().includes(q) || i.itemId.toLowerCase().includes(q)) &&
-    (sev ? i.severity === sev : true) &&
-    (sta ? i.status === sta : true)
-  );
-}
-</script>
 
 </body>
 </html>
