@@ -6,21 +6,15 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     
     <title>Admin Dashboard</title>
-    <link rel="stylesheet" href="admin_dashboard.css">
+    <link rel="stylesheet" href="../../assets/css/admin_dash.css">
 </head>
 <body>
 
-    <div class="sidebar">
-        <h2>  Admin Panel</h2>
-        <ul>
-            <li> <a href="#users">  User Management</a> </li>
-            <li> <a href="#branches">  Branch Management</a> </li>
-            <li> <a href="#products">  Product Management</a> </li>
-            <li> <a href="#inventory">  Inventory Overview</a> </li>
-            <li> <a href="#suppliers">  Supplier Management</a> </li>
-            <li> <a href="#reports">  Reports & Analytics</a> </li>
-        </ul>
-    </div>
+<div>
+
+<?php include 'admin_sidebar.php'; ?>
+
+</div>
 
     <div class="main-content">
         <div class="header">
@@ -47,7 +41,7 @@
             <div class="card" id="products">
                 <h3> Product Management</h3>
                 <p>Define product categories and prise list</p>
-                <a href="#" class="btn">Manage Products →</a>
+                <a href="../admin/product_management.php" class="btn">Manage Products →</a>
             </div>
 
             <div class="card" id="inventory">
