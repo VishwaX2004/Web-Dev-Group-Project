@@ -41,7 +41,7 @@
                     <a href="#" class="nav-link">
                         <i class="fa-solid fa-circle-exclamation"></i> Damaged Items <span class="badge red">5</span>
                     </a>
-                    <a href="#" class="nav-link"><i class="fa-solid fa-clipboard-list"></i> Purchase Orders</a>
+                   
                 </nav>
             </div>
 
