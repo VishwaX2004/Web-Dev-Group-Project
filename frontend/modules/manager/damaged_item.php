@@ -108,8 +108,7 @@
           <select class="form-select" id="fCategory">
             <option>Makeup</option>
             <option>Skin Care</option>
-            <option>Skin Hair</option>
-            <option>Fragrance</option>
+            <option>Hair Care</option>
           </select>
         </div>
         <div class="form-group">
