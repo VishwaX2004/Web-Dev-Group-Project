@@ -1,3 +1,12 @@
+
+
+<?php
+
+    $current_page=basename($_SERVER['PHP_SELF']);
+    ?>
+
+
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -19,9 +28,13 @@
             <div class="menu-section">
                 <p class="menu-title">MAIN MENU</p>
                 <nav>
-                    <a href="#" class="nav-link"><i class="fa-solid fa-chart-simple"></i> Dashboard</a>
-                    <a href="#" class="nav-link"><i class="fa-solid fa-box-archive"></i> Inventory Management</a>
-                    <a href="#" class="nav-link active">
+                    <a href="BM_Dashbord.php" class="nav-link <?php echo ($current_page=='BM_Dashbord.php')? 'active' :'';?>">
+                        <i class="fa-solid fa-chart-simple"></i> Dashboard</a>
+
+                    <a href="#" class="nav-link" class="nav-link ">
+                        <i class="fa-solid fa-box-archive"></i> Inventory Management</a>
+
+                    <a href="BM_stock_request.php" class="nav-link <?php echo ($current_page=='BM_stock_request.php')? 'active' :''?>">
                         <i class="fa-solid fa-cart-shopping"></i> Stock Requests <span class="badge red">3</span>
                     </a>
                     <a href="#" class="nav-link"><i class="fa-solid fa-arrow-right-arrow-left"></i> Inter-Branch Transfer</a>
@@ -32,10 +45,10 @@
                 </nav>
             </div>
 
-            <div class="menu-section settings-section">
+            <div class="menu-section settings-section"> 
                 <p class="menu-title">SETTINGS</p>
                 <nav>
-                    <a href="#" class="nav-link"><i class="fa-solid fa-gear"></i> Settings</a>
+                    <a href="BM_setting.php" class="nav-link <?php echo ($current_page=="BM_setting.php")? 'active' :'' ?>"><i class="fa-solid fa-gear"></i> Settings</a>
                 </nav>
             </div>
 
@@ -49,3 +62,6 @@
         </aside>
 </body>
 </html>
+
+
+

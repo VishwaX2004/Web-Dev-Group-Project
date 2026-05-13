@@ -151,3 +151,30 @@
 .main {
     margin-left: 280px; 
 }
+
+
+
+/* අලුතෙන් ඇඩ් කරගන්න ඕනේ ටික */
+
+/* Active link එක උඩට Mouse එක ගියත් පාට වෙනස් නොවී තියාගන්න */
+.nav-link.active:hover {
+    background: #4169e1; 
+    color: white;
+    opacity: 0.9;
+}
+
+/* සාමාන්‍ය link එකක් උඩට Mouse එක ගියහම වෙනස් වන ආකාරය */
+.nav-link:not(.active):hover {
+    background: #f1f5f9;
+    color: #4169e1;
+    transform: translateX(5px); /* දකුණට පොඩ්ඩක් මාරු වෙන effect එක */
+}
+
+/* Icons වලට පොඩි animation එකක් */
+.nav-link i {
+    transition: transform 0.2s;
+}
+
+.nav-link:hover i {
+    transform: scale(1.1);
+}
