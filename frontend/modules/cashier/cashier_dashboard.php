@@ -26,11 +26,11 @@ $data = mysqli_fetch_assoc($result);
 
 $display_name = $data['full_name'] ?? 'Cashier';
 $display_branch = $data['branch_name'] ?? 'Main Branch';
-$branch_id = $data['branch_id']; // Current branch ID for filtering
+$branch_id = $data['branch_id'];
 
 // --- CALCULATIONS FOR DASHBOARD CARDS ---
 
-// 1. Daily Sales Total (Current Branch & Today)
+// 1. Daily Sales Total
 $today = date('Y-m-d');
 $sales_query = "SELECT SUM(price) as total_daily_sales FROM sales_order 
                 WHERE branch_id = '$branch_id' 
@@ -39,35 +39,43 @@ $sales_res = mysqli_query($conn, $sales_query);
 $sales_data = mysqli_fetch_assoc($sales_res);
 $daily_sales = $sales_data['total_daily_sales'] ?? 0;
 
-// 2. Stock Levels Total (Sum of quantity for current branch from inventory)
+// 2. Stock Levels Total
 $stock_query = "SELECT SUM(quantity) as total_stock FROM inventory 
                 WHERE branch_id = '$branch_id'";
 $stock_res = mysqli_query($conn, $stock_query);
 $stock_data = mysqli_fetch_assoc($stock_res);
 $total_stock = $stock_data['total_stock'] ?? 0;
 
-// 3. Recent Order (Last order details for current branch)
-$recent_query = "SELECT sale_id, price FROM sales_order 
-                 WHERE branch_id = '$branch_id' 
-                 ORDER BY sale_date_time DESC LIMIT 1";
-$recent_res = mysqli_query($conn, $recent_query);
-$recent_data = mysqli_fetch_assoc($recent_res);
-$last_order_id = $recent_data['sale_id'] ?? 'N/A';
-$last_order_price = $recent_data['price'] ?? 0;
+// 3. Recent Order Card
+$recent_card_query = "SELECT sale_id, price FROM sales_order 
+                     WHERE branch_id = '$branch_id' 
+                     ORDER BY sale_date_time DESC LIMIT 1";
+$recent_card_res = mysqli_query($conn, $recent_card_query);
+$recent_card_data = mysqli_fetch_assoc($recent_card_res);
+$last_order_id = $recent_card_data['sale_id'] ?? 'N/A';
+$last_order_price = $recent_card_data['price'] ?? 0;
 
+// 4. Fetch Recent Transactions for Table (Last 5)
+$table_query = "SELECT sale_id, product_id, quantity, sale_date_time, price 
+                FROM sales_order 
+                WHERE branch_id = '$branch_id' 
+                ORDER BY sale_date_time DESC LIMIT 5";
+$table_result = mysqli_query($conn, $table_query);
 ?>
 
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SmartPOS - Cashier Dashboard</title>
-    
+
     <link rel="stylesheet" href="../../assets/css/cashier_dashboard.css">
     <link rel="stylesheet" href="../../assets/css/cashier_sidebar.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
+
 <body>
 
     <?php include("../../includes/cashier_sidebar.php"); ?>
@@ -79,7 +87,7 @@ $last_order_price = $recent_data['price'] ?? 0;
                 <p>Welcome back, <strong><?php echo $display_name; ?></strong>!</p>
             </div>
 
-            <div class="topbar-right"> 
+            <div class="topbar-right">
                 <div class="profile-header-card">
                     <div class="profile-avatar">
                         <i class="fa-solid fa-user-tie"></i>
@@ -93,7 +101,6 @@ $last_order_price = $recent_data['price'] ?? 0;
         </div>
 
         <div class="cards">
-            
             <div class="card card-blue">
                 <div class="card-top">
                     <span class="card-label">Daily Sales</span>
@@ -120,27 +127,60 @@ $last_order_price = $recent_data['price'] ?? 0;
                 <h2 class="card-value">Rs. <?php echo number_format($last_order_price, 2); ?></h2>
                 <p class="card-status status-neutral">Order ID: #<?php echo $last_order_id; ?></p>
             </div>
-
         </div>
 
-        <div class="grid">
-            <div class="sales-box">
-                <div class="section-header">
-                    <h3>Recent Transactions</h3>
-                    <button class="view-all-btn">View All</button>
-                </div>
-                <div class="placeholder-chart">
-                    <i class="fa-solid fa-chart-simple" style="font-size: 40px; margin-bottom: 10px; opacity: 0.2;"></i>
-                    <p>Analytics Chart Placeholder</p>
-                </div>
+        <div class="table-container">
+            <div class="section-header">
+                <h3>Recent Transactions</h3>
+                <button class="view-all-btn" onclick="location.href='sales_history.php'">View All</button>
             </div>
-            
-            <div class="action-box">
-                <h3 style="margin-bottom: 24px;">Quick Actions</h3>
-                <button class="action-btn primary" href=""><i class="fa-solid fa-plus"></i> New Sale</button>
+
+            <div class="table-wrapper">
+                <table class="recent-sales-table">
+                    <thead>
+                        <tr>
+                            <th>Order ID</th>
+                            <th>Product ID</th>
+                            <th>Quantity</th>
+                            <th>Date & Time</th>
+                            <th>Price (Rs.)</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <?php if (mysqli_num_rows($table_result) > 0): ?>
+                            <?php while ($row = mysqli_fetch_assoc($table_result)): ?>
+                                <tr>
+                                    <td><strong>#
+                                            <?php echo $row['sale_id']; ?>
+                                        </strong></td>
+                                    <td>
+                                        <?php echo $row['product_id']; ?>
+                                    </td>
+                                    <td>
+                                        <?php echo $row['quantity']; ?>
+                                    </td>
+                                    <td>
+                                        <?php echo date('M d, Y - h:i A', strtotime($row['sale_date_time'])); ?>
+                                    </td>
+                                    <td class="price-cell">
+                                        <?php echo number_format($row['price'], 2); ?>
+                                    </td>
+                                    <td><span class="badge badge-success">Completed</span></td>
+                                </tr>
+                            <?php endwhile; ?>
+                        <?php else: ?>
+                            <tr>
+                                <td colspan="6" style="text-align:center; padding: 20px; color: var(--text-muted);">No
+                                    recent transactions found.</td>
+                            </tr>
+                        <?php endif; ?>
+                    </tbody>
+                </table>
             </div>
         </div>
     </div>
 
 </body>
+
 </html>
