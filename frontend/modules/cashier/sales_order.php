@@ -10,10 +10,10 @@ if (!isset($_SESSION['auth']) || $_SESSION['role'] != 'cashier') {
 
 $user_id = $_SESSION['user_id'];
 
-// USER DETAILS
+// USER DETAILS & BRANCH INFO
 $safe_user_id = mysqli_real_escape_string($conn, $user_id);
 $query = "
-    SELECT u.full_name, b.branch_name 
+    SELECT u.full_name, u.branch_id, b.branch_name 
     FROM users u 
     JOIN branch b ON u.branch_id = b.branch_id 
     WHERE u.user_id = '$safe_user_id' 
@@ -24,13 +24,14 @@ $user_data = mysqli_fetch_assoc($result);
 
 $display_name = $user_data['full_name'] ?? 'Cashier';
 $display_branch = $user_data['branch_name'] ?? 'Main Branch';
+$branch_id = $user_data['branch_id']; // Cashier ge branch ID eka
 
-// PRODUCTS WITH INVENTORY
+// PRODUCTS WITH INVENTORY (Only for this cashier's branch)
 $product_query = "
     SELECT p.product_id, p.product_name, p.price, i.quantity 
     FROM product p 
     INNER JOIN inventory i ON p.product_id = i.product_id 
-    WHERE i.quantity > 0
+    WHERE i.quantity > 0 AND i.branch_id = '$branch_id'
 ";
 $product_result = mysqli_query($conn, $product_query);
 ?>
@@ -52,8 +53,8 @@ $product_result = mysqli_query($conn, $product_query);
     <div class="main">
         <div class="page-header">
             <div class="header-info">
-                <h1>Sales Order</h1>
-                <p>Create and manage transactions</p>
+                <h1>Sales Order - <?php echo $display_branch; ?></h1>
+                <p>Cashier: <?php echo $display_name; ?></p>
             </div>
         </div>
 
@@ -133,6 +134,7 @@ $product_result = mysqli_query($conn, $product_query);
             </div>
         </div>
     </div>
+    <input type="hidden" id="branch-id-val" value="<?php echo $branch_id; ?>">
     <script src="../../assets/js/cashier_sales_order.js"></script>
 </body>
 </html>

@@ -21,7 +21,7 @@ function addToCart() {
     }
 
     if (qty > stock) {
-        alert("Not enough stock available");
+        alert("Not enough stock available in this branch");
         return;
     }
 
@@ -67,12 +67,8 @@ function renderCart() {
         `;
     });
 
-
-
-
     document.getElementById("subtotal").innerText = "Rs. " + subtotal.toFixed(2);
     document.getElementById("grand-total").innerText = "Rs. " + subtotal.toFixed(2);
-
     calcBalance();
 }
 
@@ -86,7 +82,6 @@ function calcBalance() {
     const grandTotal = parseFloat(grandTotalText) || 0;
     const amountPaid = parseFloat(document.getElementById("amount-paid").value) || 0;
     const balance = amountPaid - grandTotal;
-
     document.getElementById("balance").value = "Rs. " + balance.toFixed(2);
 }
 
@@ -99,6 +94,7 @@ function completeOrder() {
     const amountPaid = parseFloat(document.getElementById("amount-paid").value);
     const grandTotalText = document.getElementById("grand-total").innerText.replace("Rs. ", "").replace(",", "");
     const grandTotal = parseFloat(grandTotalText);
+    const branch_id = document.getElementById("branch-id-val").value;
 
     if (isNaN(amountPaid) || amountPaid < grandTotal) {
         alert("Insufficient or invalid payment amount");
@@ -111,7 +107,8 @@ function completeOrder() {
         body: JSON.stringify({
             cart: cart,
             total_amount: grandTotal,
-            amount_paid: amountPaid
+            amount_paid: amountPaid,
+            branch_id: branch_id
         })
     })
     .then(response => response.json())
@@ -125,6 +122,6 @@ function completeOrder() {
     })
     .catch(error => {
         console.error("Error:", error);
-        alert("Transaction Failed. Check console for details.");
+        alert("Transaction Failed");
     });
 }
