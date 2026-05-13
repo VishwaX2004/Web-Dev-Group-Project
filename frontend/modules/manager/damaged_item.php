@@ -3,6 +3,27 @@ session_start();
 
 include("../../backend/config/db_connection.php");
 
+if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['save_damage'])) {
+    $damage_id = mysqli_real_escape_string($conn, $_POST['damage_id']);
+    $branch_id = mysqli_real_escape_string($conn, $_POST['branch_id']);
+    $product_id = mysqli_real_escape_string($conn, $_POST['product_id']);
+    $quantity = mysqli_real_escape_string($conn, $_POST['quantity']);
+    $reason = mysqli_real_escape_string($conn, $_POST['reason']);
+    $reported_date = mysqli_real_escape_string($conn, $_POST['reported_date']);
+
+    $query = "INSERT INTO damaged_item (damage_id, branch_id, product_id, quantity, reason, reported_date) 
+              VALUES ('$damage_id', '$branch_id', '$product_id', '$quantity', '$reason', '$reported_date')";
+
+    if (mysqli_query($conn, $query)) {
+        $_SESSION['success_msg'] = "Damage record saved successfully!";
+  
+        header("Location: damaged_item.php");
+        exit();
+    } else {
+        $error_msg = "Error: " . mysqli_error($conn);
+    }
+}
+
 ?>
 
 <!DOCTYPE html>
