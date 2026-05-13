@@ -28,42 +28,6 @@
             <p>WELCOME TO THE ADMIN PANEL</p>
         </div>
 
-        <div class="MINI_CARDS_GRID">
-            <div class="mini_card">
-                <div class="stat_info">
-                    <h4>Total Sales Today</h4>
-                    <h2>LKR 12,450</h2>
-                    <span class="trend up">+12.5%</span>
-                </div>
-            </div>
-
-            <div class="mini_card">
-                <div class="stat_info">
-                    <h4>Total Revenue</h4>
-                    <h2>LKR 245,890</h2>
-                    <span class="trend up">+8.2%</span>
-                </div>
-            
-            </div>
-
-            <div class="mini_card">
-                <div class="stat_info">
-                    <h4>Low Stock Items</h4>
-                    <h2>23</h2>
-                    <span class="trend down" style="color: #f97316;">5 Critical</span >
-                </div>
-            
-            </div>
-
-            <div class="mini_card">
-                <div class="stat_info">
-                    <h4>Active Branches</h4>
-                    <h2>8</h2>
-                    <span class="trend up">100%</span>
-                </div>
-    
-            </div>
-        </div>
         
         <h2 class="title">System Modules</h2>
 
