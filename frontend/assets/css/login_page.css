@@ -4,9 +4,9 @@
     --primary: #2563eb;
     --primary-dark: #1d4ed8;
     --bg-dark: #020617;
-    --bg-gradient: radial-gradient(at 0% 0%, #020617 0, transparent 50%),
-        radial-gradient(at 100% 0%, #1e3a8a 0, transparent 50%),
-        radial-gradient(at 50% 100%, #000000 0, transparent 50%);
+    --bg-gradient: radial-gradient(at 0% 0%, #020617 0, transparent 50%), 
+                   radial-gradient(at 100% 0%, #1e3a8a 0, transparent 50%), 
+                   radial-gradient(at 50% 100%, #000000 0, transparent 50%);
 }
 
 * {
@@ -16,8 +16,7 @@
     font-family: 'Plus Jakarta Sans', sans-serif;
 }
 
-html,
-body {
+html, body {
     height: 100%;
     width: 100%;
     overflow: hidden;
@@ -41,7 +40,7 @@ body {
     border-radius: 28px;
     overflow: hidden;
     box-shadow: 0 40px 100px -20px rgba(0, 0, 0, 0.7);
-    min-height: 600px;
+    min-height: 600px; 
     max-height: 90vh;
     transition: all 0.3s ease;
 }
@@ -52,7 +51,7 @@ body {
     display: flex;
     flex-direction: column;
     justify-content: center;
-    align-items: center;
+    align-items: center; 
 }
 
 .brand-icon {
@@ -69,7 +68,7 @@ body {
 }
 
 .header-content {
-    text-align: center;
+    text-align: center; 
 }
 
 .header-content h1 {
@@ -93,7 +92,7 @@ body {
 .input-group {
     margin-bottom: 20px;
     position: relative;
-    text-align: left;
+    text-align: left; 
 }
 
 .input-group label {
@@ -106,7 +105,7 @@ body {
 
 .input-group input {
     width: 100%;
-    padding: 14px 45px 14px 18px;
+    padding: 14px 45px 14px 18px; 
     border: 1.5px solid #e2e8f0;
     border-radius: 14px;
     font-size: 15px;
@@ -124,7 +123,7 @@ body {
 .toggle-password {
     position: absolute;
     right: 18px;
-    top: 42px;
+    top: 42px; 
     cursor: pointer;
     color: #64748b;
     display: flex;
@@ -253,14 +252,11 @@ body {
 }
 
 @media (max-width: 850px) {
-
-    html,
-    body {
+    html, body {
         height: auto;
         min-height: 100%;
         overflow: auto;
     }
-
     .main-wrapper {
         flex-direction: column;
         max-width: 480px;
@@ -268,26 +264,10 @@ body {
         min-height: auto;
         max-height: none;
     }
-
-  
     .info-side {
-        flex: 1.1;
-        background: linear-gradient(135deg, rgba(30, 58, 138, 0.85), rgba(15, 23, 42, 0.9)), url('../images/login_bg.png');
-        background-size: 110%;
-        background-position: center;
-        background-repeat: no-repeat;
-        padding: 50px;
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
-        color: white;
-        text-align: center;
-        position: relative;
-        transition: background-position 0.1s ease-out;
-        overflow: hidden;
+        padding: 40px 30px;
+        order: -1; 
     }
-
     .form-side {
         padding: 40px 30px;
     }
