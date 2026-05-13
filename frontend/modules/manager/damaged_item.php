@@ -59,6 +59,32 @@
         <option value="resolved">Resolved</option>
 
 
+<div class="table-card">  //table details
+      <div class="table-scroll-area">
+        <table>
+          <thead>
+            <tr>
+              <th>Item ID</th>
+              <th>Item Details</th>
+              <th>Date Reported</th>
+              <th>Severity</th>
+              <th>Status</th>
+              <th>Est. Loss (LKR)</th>
+              <th>Reported By</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody id="tableBody"></tbody>
+        </table>
+      </div>
+      <div class="table-info-footer">
+        <span id="paginationInfo"></span>
+      </div>
+    </div>
+  </div>
+</div>
+
+
 <script>
 function filterTable() {
   const q = document.getElementById('searchInput').value.toLowerCase();
