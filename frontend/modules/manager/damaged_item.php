@@ -82,7 +82,75 @@
       </div>
     </div>
   </div>
-</div>
+
+  <div class="modal-overlay" id="formModal">
+  <div class="modal">
+    <div class="modal-header">
+      <span class="modal-title" id="modalTitle">Report Damaged Item</span>
+      <button class="icon-btn" onclick="closeModal('formModal')" style="border:none;">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+      </button>
+    </div>
+    <div class="modal-body">
+      <div class="form-row">
+        <div class="form-group">
+          <label class="form-label">Item ID *</label>
+          <input class="form-input" id="fItemId" type="text" placeholder="e.g. COS-0042">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Item Name *</label>
+          <input class="form-input" id="fItemName" type="text" placeholder="e.g. Cosmetics Set">
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label class="form-label">Category</label>
+          <select class="form-select" id="fCategory">
+            <option>Makeup</option>
+            <option>Skin Care</option>
+            <option>Skin Hair</option>
+            <option>Fragrance</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Date Reported *</label>
+          <input class="form-input" id="fDate" type="date">
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label class="form-label">Severity *</label>
+          <select class="form-select" id="fSeverity">
+            <option>Critical</option>
+            <option>Moderate</option>
+            <option>Minor</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Status</label>
+          <select class="form-select" id="fStatus">
+            <option>Pending Review</option>
+            <option>Under Review</option>
+            <option>Disposed</option>
+            <option>Returned to Supplier</option>
+          </select>
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label class="form-label">Estimated Loss (LKR) *</label>
+          <input class="form-input" id="fLoss" type="number" placeholder="LKR 0.00">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Reported By</label>
+          <input class="form-input" id="fReportedBy" type="text" placeholder="Staff name">
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Damage Description</label>
+        <textarea class="form-textarea" id="fDescription" placeholder="Describe the damage in detail…"></textarea>
+      </div>
+    </div>
 
 
 <script>
