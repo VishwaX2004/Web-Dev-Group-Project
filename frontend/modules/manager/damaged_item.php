@@ -57,21 +57,23 @@
         <option value="pending">Pending</option>
         <option value="in_progress">In Progress</option>
         <option value="resolved">Resolved</option>
+        <option value="Returned to Supplier">Returned to Supplier</option>
+      </select>
+    </div>
 
+<!-- table details -->
 
-<div class="table-card">  //table details
+<div class="table-card">
       <div class="table-scroll-area">
         <table>
           <thead>
             <tr>
-              <th>Item ID</th>
-              <th>Item Details</th>
-              <th>Date Reported</th>
-              <th>Severity</th>
-              <th>Status</th>
-              <th>Est. Loss (LKR)</th>
-              <th>Reported By</th>
-              <th>Actions</th>
+              <th>Damage ID</th>
+              <th>Branch_ID</th>
+              <th>Product ID</th>
+              <th>Quantity</th>
+              <th>Reason</th>
+              <th>Reported Date</th>
             </tr>
           </thead>
           <tbody id="tableBody"></tbody>
@@ -82,6 +84,7 @@
       </div>
     </div>
   </div>
+</div>
 
   <div class="modal-overlay" id="formModal">
   <div class="modal">
@@ -94,67 +97,56 @@
     <div class="modal-body">
       <div class="form-row">
         <div class="form-group">
-          <label class="form-label">Item ID *</label>
-          <input class="form-input" id="fItemId" type="text" placeholder="e.g. COS-0042">
+          <label class="form-label">Damage ID *</label>
+          <input class="form-input" id="fItemId" type="text" placeholder="e.g. DMG-0042">
         </div>
         <div class="form-group">
-          <label class="form-label">Item Name *</label>
-          <input class="form-input" id="fItemName" type="text" placeholder="e.g. Cosmetics Set">
+          <label class="form-label">Branch ID *</label>
+          <input class="form-input" id="fbrancId" type="text" placeholder="e.g. BR-001">
         </div>
+        <div class="form-group">
+          <label class="form-label">Product ID *</label>
+          <input class="form-input" id="fProductId" type="text" placeholder="e.g. PR0D-1234">
       </div>
-      <div class="form-row">
         <div class="form-group">
-          <label class="form-label">Category</label>
-          <select class="form-select" id="fCategory">
-            <option>Makeup</option>
-            <option>Skin Care</option>
-            <option>Hair Care</option>
-          </select>
-        </div>
-        <div class="form-group">
-          <label class="form-label">Date Reported *</label>
-          <input class="form-input" id="fDate" type="date">
-        </div>
-      </div>
-      <div class="form-row">
-        <div class="form-group">
-          <label class="form-label">Severity *</label>
-          <select class="form-select" id="fSeverity">
-            <option>Critical</option>
-            <option>Moderate</option>
-            <option>Minor</option>
-          </select>
-        </div>
-        <div class="form-group">
-          <label class="form-label">Status</label>
-          <select class="form-select" id="fStatus">
-            <option>Pending Review</option>
-            <option>Under Review</option>
-            <option>Disposed</option>
-            <option>Returned to Supplier</option>
-          </select>
-        </div>
-      </div>
-      <div class="form-row">
-        <div class="form-group">
-          <label class="form-label">Estimated Loss (LKR) *</label>
-          <input class="form-input" id="fLoss" type="number" placeholder="LKR 0.00">
-        </div>
-        <div class="form-group">
-          <label class="form-label">Reported By</label>
-          <input class="form-input" id="fReportedBy" type="text" placeholder="Staff name">
+          <label class="form-label">Quantity *</label>
+          <input class="form-input" id="fQuantity" type="number" placeholder="e.g. 5">
         </div>
       </div>
       <div class="form-group">
-        <label class="form-label">Damage Description</label>
+        <label class="form-label">Reason for Damage *</label>
         <textarea class="form-textarea" id="fDescription" placeholder="Describe the damage in detail…"></textarea>
       </div>
+       <div class="form-group">
+          <label class="form-label">Date Reported *</label>
+          <input class="form-input" id="fDate" type="date">
+        </div>
     </div>
-    <div class="modal-footer"> //modal form footer buttons
+    <div class="modal-footer"> <!-- modal form footer buttons -->
       <button class="btn btn-ghost" onclick="closeModal('formModal')">Cancel</button>
       <button class="btn btn-primary" onclick="saveItem()">Save Record</button>
     </div>
   </div>
+</div>
+
+<div class="modal-overlay" id="viewModal">
+  <div class="modal">
+    <div class="modal-header">
+      <span class="modal-title">Item Details</span>
+      <button class="icon-btn" onclick="closeModal('viewModal')" style="border:none;">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+      </button>
+    </div>
+    <div class="modal-body" id="viewBody"></div>
+    <div class="modal-footer">
+      <button class="btn btn-ghost" onclick="closeModal('viewModal')">Close</button>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast">
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+  <span id="toastMsg"></span>
 </div>
 
 
