@@ -15,9 +15,8 @@ if (!isset($_SESSION['auth']) || $_SESSION['role'] != 'cashier') {
 
 $user_id = $_SESSION['user_id'];
 
-// 2. DATA FETCHING: Get User and Branch details using JOIN
-// Note: Using table 'branch' as per your structure
-$query = "SELECT u.full_name, b.branch_name 
+// 2. DATA FETCHING: Get User and Branch details
+$query = "SELECT u.full_name, b.branch_name, u.branch_id 
           FROM users u 
           JOIN branch b ON u.branch_id = b.branch_id 
           WHERE u.user_id = '$user_id' LIMIT 1";
@@ -27,6 +26,35 @@ $data = mysqli_fetch_assoc($result);
 
 $display_name = $data['full_name'] ?? 'Cashier';
 $display_branch = $data['branch_name'] ?? 'Main Branch';
+$branch_id = $data['branch_id']; // Current branch ID for filtering
+
+// --- CALCULATIONS FOR DASHBOARD CARDS ---
+
+// 1. Daily Sales Total (Current Branch & Today)
+$today = date('Y-m-d');
+$sales_query = "SELECT SUM(price) as total_daily_sales FROM sales_order 
+                WHERE branch_id = '$branch_id' 
+                AND DATE(sale_date_time) = '$today'";
+$sales_res = mysqli_query($conn, $sales_query);
+$sales_data = mysqli_fetch_assoc($sales_res);
+$daily_sales = $sales_data['total_daily_sales'] ?? 0;
+
+// 2. Stock Levels Total (Sum of quantity for current branch from inventory)
+$stock_query = "SELECT SUM(quantity) as total_stock FROM inventory 
+                WHERE branch_id = '$branch_id'";
+$stock_res = mysqli_query($conn, $stock_query);
+$stock_data = mysqli_fetch_assoc($stock_res);
+$total_stock = $stock_data['total_stock'] ?? 0;
+
+// 3. Recent Order (Last order details for current branch)
+$recent_query = "SELECT sale_id, price FROM sales_order 
+                 WHERE branch_id = '$branch_id' 
+                 ORDER BY sale_date_time DESC LIMIT 1";
+$recent_res = mysqli_query($conn, $recent_query);
+$recent_data = mysqli_fetch_assoc($recent_res);
+$last_order_id = $recent_data['sale_id'] ?? 'N/A';
+$last_order_price = $recent_data['price'] ?? 0;
+
 ?>
 
 <!DOCTYPE html>
@@ -37,9 +65,7 @@ $display_branch = $data['branch_name'] ?? 'Main Branch';
     <title>SmartPOS - Cashier Dashboard</title>
     
     <link rel="stylesheet" href="../../assets/css/cashier_dashboard.css">
-
     <link rel="stylesheet" href="../../assets/css/cashier_sidebar.css">
-    
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
@@ -73,8 +99,8 @@ $display_branch = $data['branch_name'] ?? 'Main Branch';
                     <span class="card-label">Daily Sales</span>
                     <div class="card-icon"><i class="fa-solid fa-chart-line"></i></div>
                 </div>
-                <h2 class="card-value">Rs. 45,250.00</h2>
-                <p class="card-status status-up"><i class="fa-solid fa-arrow-up"></i> +12% from yesterday</p>
+                <h2 class="card-value">Rs. <?php echo number_format($daily_sales, 2); ?></h2>
+                <p class="card-status status-up"><i class="fa-solid fa-arrow-up"></i> Today's Total</p>
             </div>
 
             <div class="card card-orange">
@@ -82,8 +108,8 @@ $display_branch = $data['branch_name'] ?? 'Main Branch';
                     <span class="card-label">Stock Levels</span>
                     <div class="card-icon"><i class="fa-solid fa-boxes-stacked"></i></div>
                 </div>
-                <h2 class="card-value">1,240 <small>Items</small></h2>
-                <p class="card-status status-neutral">Across all categories</p>
+                <h2 class="card-value"><?php echo number_format($total_stock); ?> <small>Items</small></h2>
+                <p class="card-status status-neutral">Current branch stock</p>
             </div>
 
             <div class="card card-green">
@@ -91,8 +117,8 @@ $display_branch = $data['branch_name'] ?? 'Main Branch';
                     <span class="card-label">Recent Order</span>
                     <div class="card-icon"><i class="fa-solid fa-receipt"></i></div>
                 </div>
-                <h2 class="card-value">Rs. 1,850.00</h2>
-                <p class="card-status status-neutral">Order ID: #ORD-9921</p>
+                <h2 class="card-value">Rs. <?php echo number_format($last_order_price, 2); ?></h2>
+                <p class="card-status status-neutral">Order ID: #<?php echo $last_order_id; ?></p>
             </div>
 
         </div>
@@ -111,9 +137,7 @@ $display_branch = $data['branch_name'] ?? 'Main Branch';
             
             <div class="action-box">
                 <h3 style="margin-bottom: 24px;">Quick Actions</h3>
-                <button class="action-btn primary"><i class="fa-solid fa-plus"></i> New Sale</button>
-                <button class="action-btn light"><i class="fa-solid fa-barcode"></i> Scan Item</button>
-                <button class="action-btn light"><i class="fa-solid fa-print"></i> Last Receipt</button>
+                <button class="action-btn primary" href=""><i class="fa-solid fa-plus"></i> New Sale</button>
             </div>
         </div>
     </div>
