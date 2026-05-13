@@ -151,6 +151,12 @@
         <textarea class="form-textarea" id="fDescription" placeholder="Describe the damage in detail…"></textarea>
       </div>
     </div>
+    <div class="modal-footer"> //modal form footer buttons
+      <button class="btn btn-ghost" onclick="closeModal('formModal')">Cancel</button>
+      <button class="btn btn-primary" onclick="saveItem()">Save Record</button>
+    </div>
+  </div>
+</div>
 
 
 <script>
