@@ -1,9 +1,12 @@
 
 // Sample data based on db_full.sql
-let transferData = [
-    { id: 'TRF-101', source: 'Colombo Main', destination: 'Kandy Central', product: 'Matte Lipstick - Ruby', quantity: 15, status: 'Completed', date: 'Today, 10:30 AM' },
-    { id: 'TRF-102', source: 'Kandy Central', destination: 'Colombo Main', product: 'Argon Oil Shampoo', quantity: 10, status: 'Shipped', date: 'Yesterday, 14:15 PM' }
-];
+// Use data from PHP if available, otherwise use sample data
+if (typeof transferData === 'undefined') {
+    var transferData = [
+        { id: 'TRF-101', source: 'Colombo Main', destination: 'Kandy Central', product: 'Matte Lipstick - Ruby', quantity: 15, status: 'Completed', date: 'Today, 10:30 AM' },
+        { id: 'TRF-102', source: 'Kandy Central', destination: 'Colombo Main', product: 'Argon Oil Shampoo', quantity: 10, status: 'Shipped', date: 'Yesterday, 14:15 PM' }
+    ];
+}
 
 function renderTransfers(data = transferData) {
     const tbody = document.getElementById('transfer-table-body');
@@ -13,7 +16,7 @@ function renderTransfers(data = transferData) {
     data.forEach(item => {
         const tr = document.createElement('tr');
         tr.className = 'hover:bg-secondary/30 transition-colors';
-        
+
         let statusClass = 'bg-warning-light text-warning-text border-warning/20';
         let statusDotClass = 'bg-warning';
         if (item.status === 'Completed' || item.status === 'Received') {
@@ -60,8 +63,8 @@ document.addEventListener('DOMContentLoaded', () => {
     if (searchInput) {
         searchInput.addEventListener('input', (e) => {
             const term = e.target.value.toLowerCase();
-            const filtered = transferData.filter(item => 
-                item.id.toLowerCase().includes(term) || 
+            const filtered = transferData.filter(item =>
+                item.id.toLowerCase().includes(term) ||
                 item.product.toLowerCase().includes(term) ||
                 item.source.toLowerCase().includes(term) ||
                 item.destination.toLowerCase().includes(term)
@@ -95,7 +98,7 @@ document.addEventListener('DOMContentLoaded', () => {
             transferData.unshift(newTransfer);
             renderTransfers();
             alert('Transfer request submitted successfully!');
-            
+
             // Reset fields
             document.getElementById('dest-branch-select').innerHTML = 'Select Destination...';
             document.getElementById('product-select').innerHTML = 'Search or select product...';

@@ -1,10 +1,13 @@
 
 // Sample data based on db_full.sql
-let inventoryData = [
-    { id: 'INV-701', productId: 'PROD-001', productName: 'Hydrating Face Serum', category: 'Skincare', quantity: 45, status: 'In Stock' },
-    { id: 'INV-702', productId: 'PROD-002', productName: 'Matte Lipstick - Ruby', category: 'Makeup', quantity: 5, status: 'Low Stock' },
-    { id: 'INV-703', productId: 'PROD-003', productName: 'Argon Oil Shampoo', category: 'Haircare', quantity: 0, status: 'Out of Stock' }
-];
+// Use data from PHP if available, otherwise use sample data
+if (typeof inventoryData === 'undefined') {
+    var inventoryData = [
+        { id: 'INV-701', productId: 'PROD-001', productName: 'Hydrating Face Serum', category: 'Skincare', quantity: 45, status: 'In Stock' },
+        { id: 'INV-702', productId: 'PROD-002', productName: 'Matte Lipstick - Ruby', category: 'Makeup', quantity: 5, status: 'Low Stock' },
+        { id: 'INV-703', productId: 'PROD-003', productName: 'Argon Oil Shampoo', category: 'Haircare', quantity: 0, status: 'Out of Stock' }
+    ];
+}
 
 function renderInventory(data = inventoryData) {
     const tbody = document.getElementById('inventory-table-body');
@@ -14,7 +17,7 @@ function renderInventory(data = inventoryData) {
     data.forEach(item => {
         const tr = document.createElement('tr');
         tr.className = 'hover:bg-secondary/30 transition-colors group';
-        
+
         let statusClass = 'bg-success-light text-success-text border-success/20';
         let statusDotClass = 'bg-success';
         if (item.status === 'Low Stock') {
@@ -78,7 +81,7 @@ function updateStats() {
 function adjustStock(id) {
     const item = inventoryData.find(i => i.id === id);
     if (!item) return;
-    
+
     const newQty = prompt(`Adjust quantity for ${item.productName}:`, item.quantity);
     if (newQty !== null) {
         item.quantity = parseInt(newQty);
@@ -102,8 +105,8 @@ document.addEventListener('DOMContentLoaded', () => {
     if (searchInput) {
         searchInput.addEventListener('input', (e) => {
             const term = e.target.value.toLowerCase();
-            const filtered = inventoryData.filter(item => 
-                item.productName.toLowerCase().includes(term) || 
+            const filtered = inventoryData.filter(item =>
+                item.productName.toLowerCase().includes(term) ||
                 item.productId.toLowerCase().includes(term) ||
                 item.category.toLowerCase().includes(term)
             );

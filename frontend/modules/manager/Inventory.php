@@ -1,3 +1,20 @@
+<?php
+session_start();
+include("../../../backend/config/db_connection.php");
+
+// Fetch inventory data
+$branch_id = $_SESSION['branch_id'] ?? 'BR-001'; // Default for demo if session not set
+$query = "SELECT i.inventory_id as id, i.product_id as productId, p.product_name as productName, c.category_name as category, i.quantity, i.status 
+          FROM inventory i 
+          JOIN product p ON i.product_id = p.Product_id 
+          JOIN category c ON p.category_name = c.Category_id
+          WHERE i.branch_id = '$branch_id'";
+$result = mysqli_query($conn, $query);
+$inventory_list = [];
+while ($row = mysqli_fetch_assoc($result)) {
+    $inventory_list[] = $row;
+}
+?>
 <div class="export-wrapper">
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -7,7 +24,7 @@
   />
   <html>
     <head>
-      <link rel="stylesheet" href="styles.css">
+      <link rel="stylesheet" href="../../assets/css/styles.css">
     </head>
     <body>
       <div class="flex h-screen w-full bg-background font-body overflow-hidden">
@@ -456,6 +473,10 @@
       </div>
     </body>
     <script src="https://code.iconify.design/iconify-icon/3.0.0/iconify-icon.min.js"></script>
-    <script src="inventory.js"></script>
+    <script>
+        // Pass PHP data to JavaScript
+        const inventoryData = <?php echo json_encode($inventory_list); ?>;
+    </script>
+    <script src="../../assets/js/inventory.js"></script>
   </html>
 </div>
