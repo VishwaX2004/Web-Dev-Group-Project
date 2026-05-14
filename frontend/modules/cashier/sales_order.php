@@ -120,6 +120,7 @@ session_start();
                     </button>
 
                     <table class="cart-table">
+
                         <thead>
                             <tr>
                                 <th>Product</th>
@@ -128,8 +129,11 @@ session_start();
                                 <th>Total</th>
                                 <th></th>
                             </tr>
+
                         </thead>
+                        
                         <tbody id="cart-body"></tbody>
+
                     </table>
 
                 </div>
@@ -143,13 +147,17 @@ session_start();
                     <div class="section-title" style="color:white;">Order Summary</div>
 
                     <div class="summary-item">
+
                         <span>Subtotal</span>
                         <span id="subtotal">Rs. 0.00</span>
+
                     </div>
 
                     <div class="summary-total">
+
                         <span>Grand Total</span>
                         <span id="grand-total">Rs. 0.00</span>
+
                     </div>
 
                 </div>

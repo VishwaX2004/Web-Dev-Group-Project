@@ -7,12 +7,12 @@ document.addEventListener('DOMContentLoaded', function () {
     const eyeIcon = document.querySelector('#eyeIcon');
 
     togglePassword.addEventListener('click', function () {
-        
+
         // change the input type to show/hide the password
         const type = password.getAttribute('type') === 'password' ? 'text' : 'password';
-        
+
         password.setAttribute('type', type);
-        
+
         // change the eye icon accordingly
         if (type === 'password') {
 

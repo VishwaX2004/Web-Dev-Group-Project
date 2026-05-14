@@ -4,13 +4,19 @@ $current_page = basename($_SERVER['PHP_SELF']);
 ?>
 
 <div class="sidebar">
+
     <div class="logo">
+
         <div class="logo-icon">
+
             <i class="fa-solid fa-bolt"></i>
         </div>
+
         <div class="logo-text">
-            <h2>SmartPOS</h2>
+
+            <h2>Smart POS</h2>
             <p>RETAIL SYSTEM</p>
+
         </div>
     </div>
 
@@ -39,20 +45,31 @@ $current_page = basename($_SERVER['PHP_SELF']);
 
         <a href="../../../backend/api/logout.php" class="logout-btn">
             <i class="fa-solid fa-right-from-bracket"></i>
-            <span>Sign Out</span>
+            <span>Log Out</span>
         </a>
     </div>
 
     <div class="sidebar-user-card">
+
         <div class="user-avatar">
+
             <?php echo isset($display_name) ? strtoupper(substr($display_name, 0, 1)) : 'U'; ?>
+
         </div>
+
         <div class="user-info">
+
             <span class="user-name"><?php echo isset($display_name) ? $display_name : 'Cashier'; ?></span>
+
             <span class="user-branch">
+
                 <i class="fa-solid fa-location-dot" style="font-size: 9px;"></i> 
                 <?php echo isset($display_branch) ? $display_branch : 'Branch Name'; ?>
+
             </span>
+
         </div>
+
     </div>
+
 </div>

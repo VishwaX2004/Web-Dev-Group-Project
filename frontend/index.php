@@ -8,15 +8,12 @@ session_start();
 
 <head>
     <meta charset="UTF-8">
-
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
     <title>Retail Management System | Login</title>
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
-
     <link rel="stylesheet" href="assets/css/login_page.css">
-   
+    
 </head>
 
 <body>
@@ -26,44 +23,32 @@ session_start();
         <main class="form-side">
 
             <div class="brand-icon">
-
                 <img src="assets/images/home_image.png"
                     alt="Home"
                     style="width: 30px; height: 30px;">
-
             </div>
 
             <div class="header-content">
-
                 <h1>Welcome Back</h1>
-
                 <p>Manage your retail empire effortlessly.</p>
-
             </div>
 
             <?php
-
             if (isset($_SESSION['error'])) {
-
                 echo '
-
                 <div style="
-
                     background:#ffdede;
                     color:#d10000;
                     padding:10px;
                     border-radius:6px;
                     margin-bottom:15px;
                     font-size:14px;
-
                 ">
                     ' . htmlspecialchars($_SESSION['error']) . '
                 </div>
-
                 ';
                 unset($_SESSION['error']);
             }
-
             ?>
 
             <form id="loginForm"
@@ -71,9 +56,7 @@ session_start();
                 method="POST">
 
                 <div class="input-group">
-
                     <label>Username</label>
-
                     <input
                         type="text"
                         name="username"
@@ -82,26 +65,18 @@ session_start();
                 </div>
 
                 <div class="input-group">
-
                     <label>Password</label>
-
                     <div class="password-wrapper">
-
                         <input
                             type="password"
                             name="password"
                             id="password-field"
                             placeholder="••••••••"
                             required>
-
                         <span id="togglePassword">
-
                             <i class="fa-solid fa-eye" id="eyeIcon"></i>
-
                         </span>
-
                     </div>
-
                 </div>
 
                 <button
@@ -114,10 +89,8 @@ session_start();
             </form>
 
             <p class="signup-text">
-
                 New to the system?
                 <a href="#">Create an account</a>
-
             </p>
 
         </main>
@@ -125,7 +98,6 @@ session_start();
         <section class="info-side">
 
             <div class="floating-icon">
-
                 <img
                     src="assets/images/shopping_cart.png"
                     alt="Icon"
@@ -140,7 +112,6 @@ session_start();
             </p>
 
             <div class="stats-grid">
-
                 <div class="stat-box">
                     <h4>400+</h4>
                     <span>Active Stores</span>
@@ -159,9 +130,7 @@ session_start();
                 <div class="stat-box">
                     <h4>5K+</h4>
                     <span>Total Products</span>
-
                 </div>
-
             </div>
 
         </section>
@@ -169,7 +138,6 @@ session_start();
     </div>
 
     <script src="assets/js/login_page.js"></script>
-    
 </body>
 
 </html>
