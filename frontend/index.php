@@ -1,5 +1,5 @@
 <?php
-// Start session
+// start the session
 session_start();
 ?>
 
@@ -7,14 +7,39 @@ session_start();
 <html lang="en">
 
 <head>
-
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
     <title>Retail Management System | Login</title>
 
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
     <link rel="stylesheet" href="assets/css/login_page.css">
+    
+    <style>
+        /* Password field එක ඇතුළේ icon එක තියාගන්න අවශ්‍ය අමතර style ටිකක් */
+        .password-wrapper {
+            position: relative;
+            display: flex;
+            align-items: center;
+            width: 100%;
+        }
+        
+        #password-field {
+            width: 100%;
+            padding-right: 45px; /* Icon එකට ඉඩ තැබීමට */
+        }
 
+        #togglePassword {
+            position: absolute;
+            right: 15px;
+            cursor: pointer;
+            color: #666;
+            z-index: 10;
+        }
+
+        #togglePassword:hover {
+            color: #333;
+        }
+    </style>
 </head>
 
 <body>
@@ -34,7 +59,6 @@ session_start();
                 <p>Manage your retail empire effortlessly.</p>
             </div>
 
-            <!-- ERROR MESSAGE -->
             <?php
             if (isset($_SESSION['error'])) {
                 echo '
@@ -46,50 +70,46 @@ session_start();
                     margin-bottom:15px;
                     font-size:14px;
                 ">
-                    '.$_SESSION['error'].'
+                    ' . htmlspecialchars($_SESSION['error']) . '
                 </div>
                 ';
-
                 unset($_SESSION['error']);
             }
             ?>
 
-            <!-- LOGIN FORM -->
             <form id="loginForm"
                 action="../backend/api/login_auth.php"
                 method="POST">
 
                 <div class="input-group">
-
                     <label>Username</label>
-
                     <input
                         type="text"
                         name="username"
                         placeholder="Enter your username"
                         required>
-
                 </div>
 
                 <div class="input-group">
-
                     <label>Password</label>
-
-                    <input
-                        type="password"
-                        name="password"
-                        placeholder="••••••••"
-                        required>
-
+                    <div class="password-wrapper">
+                        <input
+                            type="password"
+                            name="password"
+                            id="password-field"
+                            placeholder="••••••••"
+                            required>
+                        <span id="togglePassword">
+                            <i class="fa-solid fa-eye" id="eyeIcon"></i>
+                        </span>
+                    </div>
                 </div>
 
                 <button
                     type="submit"
                     name="login_btn"
                     class="btn-signin">
-
                     Sign In
-
                 </button>
 
             </form>
@@ -101,16 +121,13 @@ session_start();
 
         </main>
 
-        <!-- RIGHT SIDE -->
         <section class="info-side">
 
             <div class="floating-icon">
-
                 <img
                     src="assets/images/shopping_cart.png"
                     alt="Icon"
                     style="width: 32px; filter: brightness(0) invert(1);">
-
             </div>
 
             <h2>Smart Retail Management</h2>
@@ -121,7 +138,6 @@ session_start();
             </p>
 
             <div class="stats-grid">
-
                 <div class="stat-box">
                     <h4>400+</h4>
                     <span>Active Stores</span>
@@ -141,7 +157,6 @@ session_start();
                     <h4>5K+</h4>
                     <span>Total Products</span>
                 </div>
-
             </div>
 
         </section>
@@ -149,7 +164,6 @@ session_start();
     </div>
 
     <script src="assets/js/login_page.js"></script>
-
 </body>
 
 </html>

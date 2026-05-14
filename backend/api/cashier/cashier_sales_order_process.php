@@ -1,6 +1,9 @@
 <?php
+
 session_start();
+
 include("../../config/db_connection.php");
+
 header("Content-Type: application/json");
 
 // 1. SECURITY CHECK: Verify if the user is authenticated
@@ -26,15 +29,15 @@ mysqli_begin_transaction($conn);
 
 try {
     // Generate a short timestamp (e.g., Hour and Minute like 1220)
-    $short_time = date("Hi"); 
-    
+    $short_time = date("Hi");
+
     // Main Order ID for the success response (e.g., ORDER-1220)
     $main_order_display_id = "ORDER-" . $short_time;
 
     foreach ($cart as $index => $item) {
         $product_id = mysqli_real_escape_string($conn, $item['product_id']);
-        $qty = (int)$item['qty'];
-        $item_total = (float)$item['total'];
+        $qty = (int) $item['qty'];
+        $item_total = (float) $item['total'];
 
         // Generate short sale_id (e.g., SALE-1220-0, SALE-1220-1)
         $current_sale_id = "SALE-" . $short_time . "-" . $index;
@@ -57,15 +60,15 @@ try {
             SET quantity = quantity - $qty 
             WHERE product_id = '$product_id' AND branch_id = '$branch_id'
         ";
-        
+
         if (!mysqli_query($conn, $stock_update)) {
             throw new Exception("Inventory Update Failed: " . mysqli_error($conn));
         }
-        
+
         // CHECK STOCK: Ensure quantity does not drop below zero
         $check_stock = mysqli_query($conn, "SELECT quantity FROM inventory WHERE product_id = '$product_id' AND branch_id = '$branch_id'");
         $stock_data = mysqli_fetch_assoc($check_stock);
-        
+
         if ($stock_data['quantity'] < 0) {
             throw new Exception("Insufficient stock for product: " . $product_id);
         }
@@ -73,9 +76,9 @@ try {
 
     // COMMIT: Save all changes to the database
     mysqli_commit($conn);
-    
+
     echo json_encode([
-        "status" => "success", 
+        "status" => "success",
         "message" => "Transaction Completed Successfully",
         "sale_id" => $main_order_display_id
     ]);
