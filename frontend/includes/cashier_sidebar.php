@@ -21,24 +21,33 @@ $current_page = basename($_SERVER['PHP_SELF']);
     </div>
 
     <div class="menu">
+
         <a href="cashier_dashboard.php" class="<?php echo ($current_page == 'cashier_dashboard.php') ? 'active' : ''; ?>">
+
             <i class="fa-solid fa-house"></i>
             <span>Dashboard</span>
+
         </a>
 
         <a href="sales_order.php" class="<?php echo ($current_page == 'sales_order.php') ? 'active' : ''; ?>">
+
             <i class="fa-solid fa-file-invoice"></i>
             <span>Sales Orders</span>
+
         </a>
 
         <a href="returns.php" class="<?php echo ($current_page == 'returns.php') ? 'active' : ''; ?>">
+
             <i class="fa-solid fa-box-open"></i>
             <span>Return Processing</span>
+
         </a>
 
         <a href="inventory.php" class="<?php echo ($current_page == 'inventory.php') ? 'active' : ''; ?>">
+
             <i class="fa-solid fa-boxes-stacked"></i>
             <span>View Inventory</span>
+
         </a>
         
         <div class="sidebar-divider"></div>
@@ -47,6 +56,7 @@ $current_page = basename($_SERVER['PHP_SELF']);
             <i class="fa-solid fa-right-from-bracket"></i>
             <span>Log Out</span>
         </a>
+        
     </div>
 
     <div class="sidebar-user-card">

@@ -23,14 +23,17 @@ session_start();
         <main class="form-side">
 
             <div class="brand-icon">
+
                 <img src="assets/images/home_image.png"
                     alt="Home"
                     style="width: 30px; height: 30px;">
             </div>
 
             <div class="header-content">
+
                 <h1>Welcome Back</h1>
                 <p>Manage your retail empire effortlessly.</p>
+
             </div>
 
             <?php
@@ -56,17 +59,22 @@ session_start();
                 method="POST">
 
                 <div class="input-group">
+
                     <label>Username</label>
                     <input
                         type="text"
                         name="username"
                         placeholder="Enter your username"
                         required>
+
                 </div>
 
                 <div class="input-group">
+
                     <label>Password</label>
+
                     <div class="password-wrapper">
+
                         <input
                             type="password"
                             name="password"
@@ -76,7 +84,9 @@ session_start();
                         <span id="togglePassword">
                             <i class="fa-solid fa-eye" id="eyeIcon"></i>
                         </span>
+
                     </div>
+
                 </div>
 
                 <button
@@ -87,11 +97,6 @@ session_start();
                 </button>
 
             </form>
-
-            <p class="signup-text">
-                New to the system?
-                <a href="#">Create an account</a>
-            </p>
 
         </main>
 
@@ -104,7 +109,7 @@ session_start();
                     style="width: 32px; filter: brightness(0) invert(1);">
             </div>
 
-            <h2>Smart Retail Management</h2>
+            <h2>Smart POS Retail Management System</h2>
 
             <p>
                 Optimize inventory, track live sales,
@@ -131,6 +136,7 @@ session_start();
                     <h4>5K+</h4>
                     <span>Total Products</span>
                 </div>
+                
             </div>
 
         </section>
