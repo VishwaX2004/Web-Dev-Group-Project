@@ -8,6 +8,7 @@
  <body>
 
  <div class="sidebar">
+    <div class="top-section">
         <h2>  Admin Panel</h2>
         <ul>
             <li> <a href="#users">  User Management</a> </li>
@@ -18,6 +19,10 @@
             <li> <a href="#reports">  Reports & Analytics</a> </li>
         </ul>
     </div>
+        <div class="logout-section">
+            <a href="../../../backend/api/logout.php" class="logout-btn">LOGOUT</a>
+        </div>
+</div>
     
  </body>
  </html>
