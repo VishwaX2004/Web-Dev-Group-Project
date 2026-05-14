@@ -49,7 +49,7 @@ $result = mysqli_query($conn, $sql);
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
 
     <!-- Page Stylesheet -->
-    <link rel="stylesheet" href="admin_inventory_overview.css" />
+    <link rel="stylesheet" href="../../assets/css/admin_inventory_overview.css" />
 </head>
 <body>
 
@@ -250,7 +250,7 @@ if ($result && mysqli_num_rows($result) > 0) {
 </div><!-- /main-content -->
 
 <!-- Page Script -->
-<script src="admin_inventory_overview.js"></script>
+<script src="../../assets/js/admin_inventory_overview.js"></script>
 </body>
 </html>
 <?php mysqli_close($conn); ?>
