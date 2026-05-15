@@ -102,22 +102,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
         <input class="search-input" type="text" id="searchInput" placeholder="Search by item name or ID…" oninput="filterTable()">
 </div>
-
-    <select class="filter-select" id="severityFilter" onchange="filterTable()">
-        <option value="">All Severities</option>
-        <option value="Critical">Critical</option>
-        <option value="Moderate">Moderate</option>
-        <option value="Minor">Minor</option>
-      </select>
-
-    <select class="filter-select" id="statusFilter" onchange="filterTable()">
-        <option value="">All Statues</option>
-        <option value="pending">Pending</option>
-        <option value="in_progress">In Progress</option>
-        <option value="resolved">Resolved</option>
-        <option value="Returned to Supplier">Returned to Supplier</option>
-      </select>
-    </div>
+  </div>
 
 <!-- table details -->
 
@@ -155,7 +140,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
           
           echo "<td>
                   <div class='action-btns'>
-                    <button class='icon-btn' onclick='editItem(\"".$row['damage_id']."\", \"".$row['branch_id']."\", \"".$row['product_id']."\", \"".$row['quantity']."\", \"".$safe_reason."\", \"".$row['reported_date']."\")'>
+                    <button class='icon-btn edit-btn' onclick='editItem(\"".$row['damage_id']."\", \"".$row['branch_id']."\", \"".$row['product_id']."\", \"".$row['quantity']."\", \"".$safe_reason."\", \"".$row['reported_date']."\")'>
                       <svg viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\"><path d=\"M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7\"/><path d=\"M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z\"/></svg>
                     </button>
                     <button class='icon-btn delete-btn' onclick='deleteItem(\"".$row['damage_id']."\")'>
