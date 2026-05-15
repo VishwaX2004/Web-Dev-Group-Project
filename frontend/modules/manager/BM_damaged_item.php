@@ -1,7 +1,7 @@
 <?php
 session_start();
 
-include("../../backend/config/db_connection.php");
+include("../../../backend/config/db_connection.php");
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
@@ -19,7 +19,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
         if (mysqli_query($conn, $query)) {
             $_SESSION['success_msg'] = "Damage record saved successfully!";
-            header("Location: damaged_item.php");
+            header("Location: BM_damaged_item.php");
             exit();
         }
     }
@@ -37,7 +37,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
         if (mysqli_query($conn, $query)) {
             $_SESSION['success_msg'] = "Damage record updated successfully!";
-            header("Location: damaged_item.php");
+            header("Location: BM_damaged_item.php");
             exit();
         }
     }
@@ -49,7 +49,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
         if (mysqli_query($conn, $query)) {
             $_SESSION['success_msg'] = "Damage record deleted successfully!";
-            header("Location: damaged_item.php");
+           header("Location: BM_damaged_item.php");
             exit();
         }
     }
@@ -64,11 +64,17 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Damage Item Management</title>
 
-      <link rel="stylesheet" href="BM_damage_item.css">
+      <link rel="stylesheet" href="../../assets/css/BM_damage_item.css">
 </head>
 <body>
   <div class="layout-wrapper">
-  <?php include ('../assets/css/BM_sidebar.php'); ?>
+
+
+
+  
+  <?php  include('BM_sidebar.php'); ?>
+
+
     <div class="main">
   <header class="topbar">
     <div class="breadcrumb">
@@ -166,7 +172,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
 <div class="modal-overlay" id="formModal">
   <div class="modal">
-    <form method="POST" action="damaged_item.php">
+    <form method="POST" action="BM_damaged_item.php">
       
       <div class="modal-header">
         <span class="modal-title" id="modalTitle">Report Damaged Item</span>
@@ -234,7 +240,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
   <span id="toastMsg"></span>
 </div>
 
-<form id="deleteForm" method="POST" action="damaged_item.php" style="display:none;">
+<form id="deleteForm" method="POST" action="BM_damaged_item.php" style="display:none;">
     <input type="hidden" name="action_type" value="delete">
     <input type="hidden" name="delete_id" id="deleteId">
 </form>

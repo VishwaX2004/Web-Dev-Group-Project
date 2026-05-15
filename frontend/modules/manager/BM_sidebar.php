@@ -64,8 +64,12 @@ $current_page = basename($_SERVER['PHP_SELF']);
                 <a href="BM_stock_request.php" class="nav-link <?php echo ($current_page=='BM_stock_request.php')? 'active' :''?>">
                     <i class="fa-solid fa-cart-shopping"></i> Stock Requests 
                 </a>
+
                 <a href="#" class="nav-link"><i class="fa-solid fa-arrow-right-arrow-left"></i> Inter-Branch Transfer</a>
-                <a href="#" class="nav-link"><i class="fa-solid fa-circle-exclamation"></i> Damaged Items</a>
+
+
+                <a href=" BM_damaged_item.php" class="nav-link <?php echo ($current_page=="BM_damaged_item.php")? 'active' :'' ?>"><i class="fa-solid fa-circle-exclamation"></i> Damaged Items</a>
+               
             </nav>
         </div>
 
