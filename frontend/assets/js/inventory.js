@@ -1,8 +1,8 @@
 
 // Sample data based on db_full.sql
-// Use data from PHP if available, otherwise use sample data
+// Sample data fallback (only if not already provided by PHP)
 if (typeof inventoryData === 'undefined') {
-    var inventoryData = [
+    window.inventoryData = [
         { id: 'INV-701', productId: 'PROD-001', productName: 'Hydrating Face Serum', category: 'Skincare', quantity: 45, status: 'In Stock' },
         { id: 'INV-702', productId: 'PROD-002', productName: 'Matte Lipstick - Ruby', category: 'Makeup', quantity: 5, status: 'Low Stock' },
         { id: 'INV-703', productId: 'PROD-003', productName: 'Argon Oil Shampoo', category: 'Haircare', quantity: 0, status: 'Out of Stock' }
@@ -94,13 +94,32 @@ function adjustStock(id) {
 
 function deleteItem(id) {
     if (confirm('Are you sure you want to delete this item?')) {
-        inventoryData = inventoryData.filter(item => item.id !== id);
-        renderInventory();
+        const formData = new FormData();
+        formData.append('inventory_id', id);
+
+        fetch('BM_delete_inventory_action.php', {
+            method: 'POST',
+            body: formData
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                alert(data.message);
+                location.reload(); // Refresh to show updated database data
+            } else {
+                alert('Error: ' + data.message);
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            alert('An error occurred while deleting the record.');
+        });
     }
 }
 
 // Search functionality
 document.addEventListener('DOMContentLoaded', () => {
+    console.log('Inventory JS Loaded');
     const searchInput = document.getElementById('inventory-search');
     if (searchInput) {
         searchInput.addEventListener('input', (e) => {
@@ -115,25 +134,47 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     const addStockBtn = document.getElementById('add-stock-btn');
-    if (addStockBtn) {
-        addStockBtn.addEventListener('click', () => {
-            const name = prompt('Enter Product Name:');
-            const id = 'PROD-' + Math.floor(Math.random() * 1000);
-            const qty = parseInt(prompt('Enter Initial Quantity:'));
-            const category = prompt('Enter Category (Skincare/Makeup/Haircare):');
+    const modal = document.getElementById('add-stock-modal');
+    const closeBtn = document.getElementById('close-modal-btn');
+    const cancelBtn = document.getElementById('cancel-modal-btn');
+    const form = document.getElementById('add-stock-form');
 
-            if (name && qty >= 0 && category) {
-                const status = qty === 0 ? 'Out of Stock' : (qty < 10 ? 'Low Stock' : 'In Stock');
-                inventoryData.push({
-                    id: 'INV-' + Math.floor(Math.random() * 1000),
-                    productId: id,
-                    productName: name,
-                    category: category,
-                    quantity: qty,
-                    status: status
-                });
-                renderInventory();
-            }
+    if (addStockBtn && modal) {
+        addStockBtn.addEventListener('click', () => {
+            console.log('Add Stock Button Clicked');
+            modal.classList.remove('hidden');
+        });
+
+        const hideModal = () => {
+            modal.classList.add('hidden');
+            form.reset();
+        };
+
+        closeBtn.addEventListener('click', hideModal);
+        cancelBtn.addEventListener('click', hideModal);
+
+        form.addEventListener('submit', (e) => {
+            e.preventDefault();
+            const formData = new FormData(form);
+
+            fetch('BM_add_inventory_action.php', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    alert(data.message);
+                    hideModal();
+                    location.reload(); // Refresh to show new data from DB
+                } else {
+                    alert('Error: ' + data.message);
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('An error occurred while adding stock.');
+            });
         });
     }
 
