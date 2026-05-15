@@ -1,6 +1,3 @@
-/**
- * Styling for Cashier Sales Order Interface
- */
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
 
 :root {
@@ -16,104 +13,217 @@
 }
 
 * {
-    margin: 0; padding: 0; box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
     font-family: 'Inter', sans-serif;
 }
 
-body { background: var(--bg); color: var(--dark); display: flex; min-height: 100vh; }
+body {
+    background: var(--bg);
+    color: var(--dark);
+    display: flex;
+    min-height: 100vh;
+}
 
-.main { margin-left: 280px; width: calc(100% - 280px); padding: 40px; }
+.main {
+    margin-left: 280px;
+    width: calc(100% - 280px);
+    padding: 40px;
+}
 
 .page-header {
     background: linear-gradient(135deg, #0F172A 0%, #1E293B 100%);
-    border-radius: 24px; padding: 30px;
-    display: flex; justify-content: space-between; align-items: center;
-    margin-bottom: 30px; color: white;
+    border-radius: 24px;
+    padding: 30px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 30px;
+    color: white;
     box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
 }
 
-.sales-grid { display: grid; grid-template-columns: 1fr 380px; gap: 25px; align-items: start; }
-
-.card {
-    background: var(--white); border-radius: 24px; padding: 25px;
-    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
-    border: 1px solid var(--border); margin-bottom: 25px;
+.sales-grid {
+    display: grid;
+    grid-template-columns: 1fr 380px;
+    gap: 25px;
+    align-items: start;
 }
 
-.section-title { font-size: 18px; font-weight: 700; margin-bottom: 20px; display: flex; align-items: center; gap: 12px; }
+.card {
+    background: var(--white);
+    border-radius: 24px;
+    padding: 25px;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+    border: 1px solid var(--border);
+    margin-bottom: 25px;
+}
 
-.form-row { display: grid; grid-template-columns: 1fr 120px; gap: 15px; margin-bottom: 15px; }
+.section-title {
+    font-size: 18px;
+    font-weight: 700;
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
 
-.input-group label { display: block; font-size: 13px; font-weight: 600; color: var(--secondary); margin-bottom: 8px; }
+.form-row {
+    display: grid;
+    grid-template-columns: 1fr 120px;
+    gap: 15px;
+    margin-bottom: 15px;
+}
 
-.input-group input, .input-group select {
-    width: 100%; height: 48px; background: #F8FAFC; border: 1px solid #E2E8F0;
-    border-radius: 12px; padding: 0 16px; outline: none; font-size: 14px;
+.input-group label {
+    display: block;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--secondary);
+    margin-bottom: 8px;
+}
+
+.input-group input,
+.input-group select {
+    width: 100%;
+    height: 48px;
+    background: #F8FAFC;
+    border: 1px solid #E2E8F0;
+    border-radius: 12px;
+    padding: 0 16px;
+    outline: none;
+    font-size: 14px;
 }
 
 .btn-primary {
-    background: var(--primary); color: white; border: none; padding: 12px;
-    border-radius: 12px; font-weight: 700; cursor: pointer;
+    background: var(--primary);
+    color: white;
+    border: none;
+    padding: 12px;
+    border-radius: 12px;
+    font-weight: 700;
+    cursor: pointer;
 }
 
 /* Quantity Control Buttons in Table */
 .qty-control {
-    display: flex; align-items: center; justify-content: center; gap: 10px;
-    background: #F1F5F9; border-radius: 8px; padding: 5px; width: fit-content; margin: 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    background: #F1F5F9;
+    border-radius: 8px;
+    padding: 5px;
+    width: fit-content;
+    margin: 0 auto;
 }
 
 .qty-btn {
-    width: 26px; height: 26px; border-radius: 6px; border: none;
-    background: white; color: var(--dark); font-weight: 800;
-    cursor: pointer; display: flex; align-items: center; justify-content: center;
-    transition: 0.2s; box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+    width: 26px;
+    height: 26px;
+    border-radius: 6px;
+    border: none;
+    background: white;
+    color: var(--dark);
+    font-weight: 800;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: 0.2s;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
 }
 
-.qty-btn:hover { background: var(--primary); color: white; }
+.qty-btn:hover {
+    background: var(--primary);
+    color: white;
+}
 
-.qty-val { font-weight: 700; font-size: 14px; min-width: 20px; text-align: center; }
+.qty-val {
+    font-weight: 700;
+    font-size: 14px;
+    min-width: 20px;
+    text-align: center;
+}
 
 .btn-remove {
-    background: #FEE2E2; color: #EF4444; border: none;
-    width: 32px; height: 32px; border-radius: 8px; cursor: pointer;
+    background: #FEE2E2;
+    color: #EF4444;
+    border: none;
+    width: 32px;
+    height: 32px;
+    border-radius: 8px;
+    cursor: pointer;
 }
 
-.btn-remove:hover { background: #EF4444; color: white; }
-
-/* Increased vertical spacing for Summary Box */
-.summary-box { 
-    background: var(--dark); 
-    color: white; 
-    padding: 35px 25px; /* Increased top/bottom padding */
-    border-radius: 24px; 
-    margin-bottom: 20px; 
+.btn-remove:hover {
+    background: #EF4444;
+    color: white;
 }
 
-.summary-total { display: flex; justify-content: space-between; font-size: 20px; font-weight: 800; }
 
-/* PAYMENT CARD ADJUSTMENTS: Increased height and internal spacing */
-.payment-card { 
-    padding: 40px 30px; /* Increased overall card padding */
+.summary-box {
+    background: var(--dark);
+    color: white;
+    padding: 35px 25px;
+    border-radius: 24px;
+    margin-bottom: 20px;
+}
+
+.summary-total {
+    display: flex;
+    justify-content: space-between;
+    font-size: 20px;
+    font-weight: 800;
+}
+
+.payment-card {
+    padding: 40px 30px;
     display: flex;
     flex-direction: column;
-    gap: 25px; /* Adds consistent space between Tendered, Balance, and Button */
+    gap: 25px;
+
 }
 
-/* Reset margin for payment card groups to let the gap control spacing */
 .payment-card .input-group {
-    margin-bottom: 0; 
+    margin-bottom: 0;
 }
 
 .complete-btn {
-    width: 100%; background: var(--success); color: white; border: none;
-    padding: 22px; /* Increased button height */
-    border-radius: 16px; font-weight: 800; cursor: pointer;
+    width: 100%;
+    background: var(--success);
+    color: white;
+    border: none;
+    padding: 22px;
+    border-radius: 16px;
+    font-weight: 800;
+    cursor: pointer;
     text-transform: uppercase;
     letter-spacing: 0.5px;
 }
 
-.complete-btn:hover { filter: brightness(1.1); transform: translateY(-2px); }
+.complete-btn:hover {
+    filter: brightness(1.1);
+    transform: translateY(-2px);
+}
 
-.cart-table { width: 100%; border-collapse: collapse; }
-.cart-table th { text-align: left; padding: 12px; background: #F8FAFC; color: var(--secondary); font-size: 11px; text-transform: uppercase; }
-.cart-table td { padding: 14px 12px; border-bottom: 1px solid #F1F5F9; font-size: 14px; }
+.cart-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.cart-table th {
+    text-align: left;
+    padding: 12px;
+    background: #F8FAFC;
+    color: var(--secondary);
+    font-size: 11px;
+    text-transform: uppercase;
+}
+
+.cart-table td {
+    padding: 14px 12px;
+    border-bottom: 1px solid #F1F5F9;
+    font-size: 14px;
+}

@@ -1,77 +1,105 @@
 <?php
-/**
- * Sales Order Management Page
- * Handles product selection and cart summary
- */
+
 session_start();
-include("../../../backend/config/db_connection.php");
 
-// Security check - Access restricted to cashiers only
-if (!isset($_SESSION['auth']) || $_SESSION['role'] != 'cashier') {
-    header("Location: ../../index.php");
-    exit();
-}
+    include("../../../backend/config/db_connection.php");
 
-$user_id = $_SESSION['user_id'];
-$safe_user_id = mysqli_real_escape_string($conn, $user_id);
+    // Security check - Access restricted to cashiers only
+    if (!isset($_SESSION['auth']) || $_SESSION['role'] != 'cashier') {
 
-// Retrieve User and Branch information
-$query = "SELECT u.full_name, u.branch_id, b.branch_name FROM users u 
-          JOIN branch b ON u.branch_id = b.branch_id 
-          WHERE u.user_id = '$safe_user_id' LIMIT 1";
+        header("Location: ../../index.php");
 
-$result = mysqli_query($conn, $query);
-$user_data = mysqli_fetch_assoc($result);
+        exit();
+    }
 
-$display_name = $user_data['full_name'] ?? 'Cashier';
-$display_branch = $user_data['branch_name'] ?? 'Main Branch';
-$branch_id = $user_data['branch_id'] ?? 0;
+    $user_id = $_SESSION['user_id'];
 
-// Fetch products available in the current branch
-$product_query = "SELECT p.product_id, p.product_name, p.price, i.quantity 
-                  FROM product p 
-                  INNER JOIN inventory i ON p.product_id = i.product_id 
-                  WHERE i.quantity > 0 AND i.branch_id = '$branch_id'";
-$product_result = mysqli_query($conn, $product_query);
+    $safe_user_id = mysqli_real_escape_string($conn, $user_id);
 
-// Fetch the 10 most recent sales for this branch
-$history_query = "SELECT s.*, p.product_name FROM sales_order s 
-                  JOIN product p ON s.product_id = p.product_id 
-                  WHERE s.branch_id = '$branch_id' 
-                  ORDER BY s.sale_date_time DESC LIMIT 10";
-$history_result = mysqli_query($conn, $history_query);
+    // Retrieve User and Branch information
+    $query = "SELECT u.full_name, u.branch_id, b.branch_name FROM users u 
+            JOIN branch b ON u.branch_id = b.branch_id 
+            WHERE u.user_id = '$safe_user_id' LIMIT 1";
+
+    $result = mysqli_query($conn, $query);
+
+    $user_data = mysqli_fetch_assoc($result);
+
+    $display_name = $user_data['full_name'] ?? 'Cashier';
+
+    $display_branch = $user_data['branch_name'] ?? 'Main Branch';
+
+    $branch_id = $user_data['branch_id'] ?? 0;
+
+    // Fetch products available in the current branch
+    $product_query = "SELECT p.product_id, p.product_name, p.price, i.quantity 
+                    FROM product p 
+                    INNER JOIN inventory i ON p.product_id = i.product_id 
+                    WHERE i.quantity > 0 AND i.branch_id = '$branch_id'";
+    $product_result = mysqli_query($conn, $product_query);
+
+    // Fetch the 10 most recent sales for this branch
+    $history_query = "SELECT s.*, p.product_name FROM sales_order s 
+                    JOIN product p ON s.product_id = p.product_id 
+                    WHERE s.branch_id = '$branch_id' 
+                    ORDER BY s.sale_date_time DESC LIMIT 10";
+    $history_result = mysqli_query($conn, $history_query);
 ?>
 
 <!DOCTYPE html>
+
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
+
     <title>Sales Order - SmartPOS</title>
+
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+
     <link rel="stylesheet" href="../../assets/css/cashier_sales_order.css">
+
     <link rel="stylesheet" href="../../assets/css/cashier_sidebar.css">
+
 </head>
+
 <body>
     <?php include("../../includes/cashier_sidebar.php"); ?>
 
     <div class="main">
+
         <div class="page-header">
+
             <div class="header-info">
+
                 <h1>Sales Order - <?php echo htmlspecialchars($display_branch); ?></h1>
+
                 <p>Cashier: <?php echo htmlspecialchars($display_name); ?></p>
+
             </div>
+
         </div>
 
         <div class="sales-grid">
+
             <div class="left-col">
+
                 <div class="card">
+
                     <div class="section-title"><i class="fa-solid fa-cart-plus"></i> Product Selection</div>
+
                     <div class="form-row">
+
                         <div class="input-group">
+
                             <label>Select Product</label>
+
                             <select id="product-select">
+
                                 <option value="">Choose item...</option>
+
                                 <?php while ($product = mysqli_fetch_assoc($product_result)) : ?>
+
                                     <option value="<?php echo $product['product_id']; ?>"
                                             data-name="<?php echo htmlspecialchars($product['product_name']); ?>"
                                             data-price="<?php echo $product['price']; ?>"
@@ -79,18 +107,29 @@ $history_result = mysqli_query($conn, $history_query);
                                         <?php echo $product['product_id'] . " - " . htmlspecialchars($product['product_name']); ?> 
                                         (Stock: <?php echo $product['quantity']; ?>)
                                     </option>
+
                                 <?php endwhile; ?>
+
                             </select>
+
                         </div>
+
                         <div class="input-group">
+
                             <label>Quantity</label>
+
                             <input type="number" id="product-qty" value="1" min="1">
+
                         </div>
+
                     </div>
+
                     <button class="btn btn-primary" onclick="addToCart()" style="width:100%;">Add to Order</button>
 
                     <table class="cart-table" style="margin-top:20px;">
+
                         <thead>
+
                             <tr>
                                 <th>Product</th>
                                 <th>Price</th>
@@ -98,18 +137,29 @@ $history_result = mysqli_query($conn, $history_query);
                                 <th>Total</th>
                                 <th>Action</th>
                             </tr>
+
                         </thead>
+
                         <tbody id="cart-body"></tbody>
+
                     </table>
+
                 </div>
 
                 <div class="card">
+
                     <div class="section-title"><i class="fa-solid fa-history"></i> Recent Branch Sales</div>
+
                     <table class="cart-table">
+
                         <thead>
+
                             <tr><th>Sale ID</th><th>Product</th><th>Qty</th><th>Total</th><th>Date</th></tr>
+
                         </thead>
+
                         <tbody>
+
                             <?php while($row = mysqli_fetch_assoc($history_result)): ?>
                             <tr>
                                 <td><small><?php echo $row['sale_id']; ?></small></td>
@@ -119,34 +169,56 @@ $history_result = mysqli_query($conn, $history_query);
                                 <td><small><?php echo $row['sale_date_time']; ?></small></td>
                             </tr>
                             <?php endwhile; ?>
+
                         </tbody>
+
                     </table>
+
                 </div>
+
             </div>
 
             <div class="right-col">
+
                 <div class="summary-box">
+
                     <div class="summary-total">
+
                         <span>Grand Total</span>
                         <span id="grand-total">Rs. 0.00</span>
+
                     </div>
                 </div>
+
                 <div class="card payment-card">
+
                     <div class="input-group">
+
                         <label>Amount Tendered</label>
+
                         <input type="number" id="amount-paid" placeholder="0.00" oninput="calcBalance()">
                     </div>
+
                     <div class="input-group">
+
                         <label>Change Balance</label>
+
                         <input type="text" id="balance" readonly placeholder="Rs. 0.00">
+
                     </div>
                     <button class="complete-btn" onclick="completeOrder()">COMPLETE TRANSACTION</button>
+
                 </div>
+
             </div>
+
         </div>
     </div>
 
     <input type="hidden" id="branch-id-val" value="<?php echo $branch_id; ?>">
+
     <script src="../../assets/js/cashier_sales_order.js"></script>
+    
 </body>
+
 </html>

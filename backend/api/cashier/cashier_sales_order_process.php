@@ -1,33 +1,48 @@
 <?php
 session_start();
+
 include("../../config/db_connection.php");
+
 header("Content-Type: application/json");
 
 if (!isset($_SESSION['auth'])) {
+
     echo json_encode(["status" => "error", "message" => "Unauthorized"]);
+
     exit();
 }
 
 $user_id = $_SESSION['user_id'];
+
 $data = json_decode(file_get_contents("php://input"), true);
+
 $cart = $data['cart'] ?? [];
+
 $branch_id = mysqli_real_escape_string($conn, $data['branch_id']);
 
 if (empty($cart)) {
+
     echo json_encode(["status" => "error", "message" => "Empty Cart"]);
+
     exit();
 }
 
 mysqli_begin_transaction($conn);
 
 try {
+
     $order_timestamp = date("His");
+
     $main_sale_id = "SALE-" . date("md") . "-" . $order_timestamp;
 
     foreach ($cart as $index => $item) {
+
         $pid = mysqli_real_escape_string($conn, $item['product_id']);
+
         $qty = (int)$item['qty'];
+
         $price = (float)$item['total'];
+
         $row_id = $main_sale_id . "-" . $index;
 
         // 1. Insert Sales Record
@@ -49,10 +64,13 @@ try {
     }
 
     mysqli_commit($conn);
+
     echo json_encode(["status" => "success", "sale_id" => $main_sale_id]);
 
 } catch (Exception $e) {
+
     mysqli_rollback($conn);
+    
     echo json_encode(["status" => "error", "message" => $e->getMessage()]);
 }
 ?>
