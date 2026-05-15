@@ -1,19 +1,6 @@
 <?php
 // --- DATABASE CONNECTION ---
-// Include your database connection file here.
-// Example: require_once 'db_connect.php';
-// For standalone demo, a sample $conn is set up below.
-// Replace this block with your actual connection include.
-$host     = '127.0.0.1';
-$port     = '3306';
-$db       = 'retail_system';      // <-- Change this
-$user     = 'root';               // <-- Change this
-$pass     = '';                   // <-- Change this
-$conn = mysqli_connect($host, $user, $pass, $db, $port);
-
-if (!$conn) {
-    die('<div class="db-error">Database Connection Failed: ' . mysqli_connect_error() . '</div>');
-}
+require_once __DIR__ . '/../../../backend/config/db_connection.php';
 
 // --- FETCH INVENTORY DATA (JOIN query) ---
 $sql = "

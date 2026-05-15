@@ -1,15 +1,6 @@
 <?php
 // --- DATABASE CONNECTION ---
-$host = '127.0.0.1';
-$port = '3306';
-$db   = 'retail_system'; // <-- Change this
-$user = 'root';               // <-- Change this
-$pass = '';                   // <-- Change this
-$conn = mysqli_connect($host, $user, $pass, $db, $port);
-
-if (!$conn) {
-    die('Connection failed: ' . mysqli_connect_error());
-}
+require_once __DIR__ . '/../../../backend/config/db_connection.php';
 
 $success_msg = '';
 $error_msg   = '';
@@ -19,15 +10,27 @@ $error_msg   = '';
 // ─────────────────────────────────────────
 if (isset($_GET['delete_id']) && is_numeric($_GET['delete_id'])) {
     $delete_id = (int) $_GET['delete_id'];
-    $del_sql   = "DELETE FROM supplier WHERE supplier_id = ?";
-    $del_stmt  = mysqli_prepare($conn, $del_sql);
-    mysqli_stmt_bind_param($del_stmt, 'i', $delete_id);
-    if (mysqli_stmt_execute($del_stmt)) {
-        $success_msg = "Supplier #$delete_id deleted successfully.";
-    } else {
-        $error_msg = "Delete failed: " . mysqli_error($conn);
+
+    mysqli_begin_transaction($conn);
+    try {
+        // Delete related purchase orders first (child rows)
+        $del_orders_stmt = mysqli_prepare($conn, "DELETE FROM purchase_orders WHERE supplier_id = ?");
+        mysqli_stmt_bind_param($del_orders_stmt, 'i', $delete_id);
+        mysqli_stmt_execute($del_orders_stmt);
+        mysqli_stmt_close($del_orders_stmt);
+
+        // Now delete the supplier (parent row)
+        $del_stmt = mysqli_prepare($conn, "DELETE FROM supplier WHERE supplier_id = ?");
+        mysqli_stmt_bind_param($del_stmt, 'i', $delete_id);
+        mysqli_stmt_execute($del_stmt);
+        mysqli_stmt_close($del_stmt);
+
+        mysqli_commit($conn);
+        $success_msg = "Supplier #$delete_id and their purchase orders deleted successfully.";
+    } catch (Exception $e) {
+        mysqli_rollback($conn);
+        $error_msg = "Delete failed: " . $e->getMessage();
     }
-    mysqli_stmt_close($del_stmt);
 }
 
 // ─────────────────────────────────────────
