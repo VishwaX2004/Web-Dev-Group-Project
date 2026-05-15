@@ -107,7 +107,7 @@ $inventory_data = getInventoryData($branch_id, $search);
                 <div class="legend-item"><div class="legend-color medium"></div> Medium (6‑20 units)</div>
                 <div class="legend-item"><div class="legend-color low"></div> Low Stock (≤5 units)</div>
             </div>
-            <div class="footer">Built with Magic Patterns</div>
+            <div class="footer"></div>
         </div>
     </div>
 </body>
