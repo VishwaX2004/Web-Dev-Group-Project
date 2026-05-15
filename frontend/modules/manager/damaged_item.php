@@ -1,7 +1,7 @@
 <?php
 session_start();
 
-include("db_connection.php");
+include("../../backend/config/db_connection.php");
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
@@ -68,7 +68,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 </head>
 <body>
   <div class="layout-wrapper">
-  <?php include ('BM_sidebar.php'); ?>
+  <?php include ('../assets/css/BM_sidebar.php'); ?>
     <div class="main">
   <header class="topbar">
     <div class="breadcrumb">
@@ -254,7 +254,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <input type="hidden" name="delete_id" id="deleteId">
 </form>
 
-<script src="damaged_item.js"></script>
+<script src="../../assets/js/damaged_item.js"></script>
 
 
 </body>
