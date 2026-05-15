@@ -1,7 +1,7 @@
 <?php
 // --- DATABASE CONNECTION ---
 $host = '127.0.0.1';
-$port = '3308';
+$port = '3307';
 $db   = 'retail_system'; // <-- Change this
 $user = 'root';               // <-- Change this
 $pass = '';                   // <-- Change this
