@@ -105,11 +105,6 @@ $suppliers_result = mysqli_query($conn, "SELECT * FROM supplier ORDER BY supplie
 <div class="page-wrap">
 
     <!-- Flash messages -->
-    <?php if ($success_msg): ?>
-        <div class="flash-alert flash-success" role="alert">
-            <i class="bi bi-check-circle-fill"></i> <?= htmlspecialchars($success_msg) ?>
-        </div>
-    <?php endif; ?>
     <?php if ($error_msg): ?>
         <div class="flash-alert flash-error" role="alert">
             <i class="bi bi-exclamation-circle-fill"></i> <?= htmlspecialchars($error_msg) ?>
