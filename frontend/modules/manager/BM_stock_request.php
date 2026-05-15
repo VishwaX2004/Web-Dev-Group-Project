@@ -1,15 +1,9 @@
 <?php
-// 1. Database Connection
-$host = "localhost";
-$user = "root";
-$pass = "";
-$db_name = "retail_system"; 
 
-$conn = mysqli_connect($host, $user, $pass, $db_name);
 
-if (!$conn) {
-    die("Connection failed: " . mysqli_connect_error());
-}
+include("../../../backend/config/db_connection.php");
+
+
 
 // 2. Insert Data (Form Submit karaddi)
 if (isset($_POST['btn_submit'])) {

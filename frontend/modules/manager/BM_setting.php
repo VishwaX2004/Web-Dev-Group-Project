@@ -1,18 +1,7 @@
 <?php
 session_start();
 
-$host = "localhost";
-$user = "root";
-$pass = "";
-$db_name = "retail_system"; 
-
-$conn = mysqli_connect($host, $user, $pass, $db_name);
-
-if (!$conn) {
-    die("Connection failed: " . mysqli_connect_error());
-}
-
-
+include("../../../backend/config/db_connection.php");
 // Login wela inna user ID eka session eken ganna
 // Mehema hithamu oya login weddi $_SESSION['user_id'] = 'USR-001' wage ekak set karanawa kiyala
 $current_user_id = $_SESSION['user_id'] ?? 'USR-003'; 

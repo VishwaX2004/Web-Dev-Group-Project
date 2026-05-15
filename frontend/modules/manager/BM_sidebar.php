@@ -4,13 +4,8 @@ if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
 
-// 2. Database Connection
-$host = "localhost";
-$user = "root";
-$pass = "";
-$db_name = "retail_system"; 
-$conn = mysqli_connect($host, $user, $pass, $db_name);
 
+include("../../../backend/config/db_connection.php");
 
 
 $current_user_id = $_SESSION['user_id'] ?? 'USR-003'; 
@@ -62,7 +57,7 @@ $current_page = basename($_SERVER['PHP_SELF']);
         <div class="menu-section">
             <p class="menu-title">MAIN MENU</p>
             <nav>
-                <a href="BM_Dashbord.php" class="nav-link <?php echo ($current_page=='BM_Dashbord.php')? 'active' :'';?>">
+                <a href="BM_Dashboard.php" class="nav-link <?php echo ($current_page=='BM_Dashboard.php')? 'active' :'';?>">
                     <i class="fa-solid fa-chart-simple"></i> Dashboard
                 </a>
                 <a href="#" class="nav-link"><i class="fa-solid fa-box-archive"></i> Inventory Management</a>

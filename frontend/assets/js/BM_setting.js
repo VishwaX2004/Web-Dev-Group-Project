@@ -12,8 +12,10 @@ function doLogout() {
     showToast('Logging out...', 'info');
     // Session destroy karana logout.php file ekakata redirect karanna
     setTimeout(() => { 
-        window.location.href = '../../logout.php'; 
+       window.location.href = "http://localhost/Web-Dev-Group-Project/backend/api/logout.php";
     }, 1000);
+
+   
 }
 
 // Toast notification function

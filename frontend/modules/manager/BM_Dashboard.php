@@ -1,14 +1,6 @@
 <?php
-$host = "localhost";
-$user = "root";
-$pass = "";
-$db_name = "retail_system"; 
 
-$conn = mysqli_connect($host, $user, $pass, $db_name);
-
-if (!$conn) {
-    die("Connection failed: " . mysqli_connect_error());
-}
+include("../../../backend/config/db_connection.php");
 
 
 $branch_id = 'BR-001';

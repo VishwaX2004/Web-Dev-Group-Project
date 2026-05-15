@@ -4,7 +4,7 @@ $host = "127.0.0.1";
 $user = "root";
 $pass = "";
 $dbname = "retail_system";
-$port = 3307;
+$port = 3306;
 
 // Create connection
 $conn = mysqli_connect($host, $user, $pass, $dbname, $port);

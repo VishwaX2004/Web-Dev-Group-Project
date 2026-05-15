@@ -51,7 +51,7 @@ if (isset($_POST['login_btn'])) {
 
             } elseif ($user_data['role'] == "manager") {
 
-                header("Location: ../../frontend/modules/manager/dashboard.php");
+                header("Location: ../../frontend/modules/manager/BM_Dashboard.php");
             }
             exit();
 
