@@ -22,7 +22,8 @@ $result = mysqli_query($conn, "SELECT * FROM product");
 </head>
 <body>
     <div>
-            <?php include 'admin_sidebar.php'; ?>
+            <?php require_once __DIR__ . '/../../includes/admin_sidebar.php'; ?>
+
     </div>
 
     <div class="main-content">

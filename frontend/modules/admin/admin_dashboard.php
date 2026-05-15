@@ -12,7 +12,8 @@
 
 <div>
 
-<?php include 'admin_sidebar.php'; ?>
+<?php require_once __DIR__ . '/../../includes/admin_sidebar.php'; ?>
+
 
 </div>
 
