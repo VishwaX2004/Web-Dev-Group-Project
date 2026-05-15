@@ -1,5 +1,5 @@
 <?php
-// 1. Session start කිරීම
+
 if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
@@ -11,16 +11,15 @@ $pass = "";
 $db_name = "retail_system"; 
 $conn = mysqli_connect($host, $user, $pass, $db_name);
 
-// 3. දැනට ලොග් වී සිටින Manager ගේ ID එක ගැනීම
-// Login process එකේදී session එකට වැටෙන ID එක මෙතනට එනවා.
-// පරීක්ෂා කරලා බලන්න පහසුවට USR-003 (Thisaru Thiwanka) default එකට දැම්මා.
+
+
 $current_user_id = $_SESSION['user_id'] ?? 'USR-003'; 
 
-// 4. Database එකෙන් නම සහ Role එක විතරක් Fetch කිරීම
+
 $sql = "SELECT full_name, role FROM users WHERE user_id = '$current_user_id' LIMIT 1";
 $result = mysqli_query($conn, $sql);
 
-// Default අගයන් (කිසිම හේතුවකින් DB connection අවුල් වුනොත් පෙන්වන්න)
+
 $display_name = "Branch Manager";
 $display_role = "Manager";
 $initials = "BM";
@@ -30,7 +29,7 @@ if ($result && mysqli_num_rows($result) > 0) {
     $display_name = $row['full_name'];
     $display_role = $row['role'];
 
-    // නමේ මුල් අකුරු (Initials) හදන logic එක
+    
     $parts = explode(" ", $display_name);
     if (count($parts) >= 2) {
         $initials = strtoupper(substr($parts[0], 0, 1) . substr($parts[1], 0, 1));
