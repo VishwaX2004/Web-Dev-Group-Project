@@ -7,12 +7,11 @@ if (session_status() === PHP_SESSION_NONE) {
 function getInventoryData($branch_id, $search = '') {
     global $conn;
     $like = "%$search%";
-    $query = "SELECT p.Product_id, p.product_name, c.category_name, i.quantity
+    $query = "SELECT p.Product_id, p.product_name, p.category_name, i.quantity
               FROM inventory i
               JOIN product p ON i.product_id = p.Product_id
-              LEFT JOIN category c ON p.Category_id = c.Category_id
               WHERE i.branch_id = ? 
-                AND (p.Product_id LIKE ? OR p.product_name LIKE ? OR c.category_name LIKE ?)
+                AND (p.Product_id LIKE ? OR p.product_name LIKE ? OR p.category_name LIKE ?)
               ORDER BY p.product_name";
     $stmt = mysqli_prepare($conn, $query);
     mysqli_stmt_bind_param($stmt, "ssss", $branch_id, $like, $like, $like);
