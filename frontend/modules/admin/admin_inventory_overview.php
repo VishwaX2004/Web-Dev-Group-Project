@@ -5,7 +5,7 @@
 // For standalone demo, a sample $conn is set up below.
 // Replace this block with your actual connection include.
 $host     = '127.0.0.1';
-$port     = '3308';
+$port     = '3306';
 $db       = 'retail_system';      // <-- Change this
 $user     = 'root';               // <-- Change this
 $pass     = '';                   // <-- Change this
@@ -50,22 +50,15 @@ $result = mysqli_query($conn, $sql);
 
     <!-- Page Stylesheet -->
     <link rel="stylesheet" href="../../assets/css/admin_inventory_overview.css" />
+    <link rel="stylesheet" href="../../assets/css/admin_sidebar.css" />
 </head>
 <body>
 
-<!-- ══════════════════════════════════════════════════
-     TOP NAVIGATION BAR
-══════════════════════════════════════════════════ -->
-<nav class="top-navbar">
-    <a href="#" class="navbar-brand-custom">
-        <div class="brand-icon"><i class="bi bi-boxes"></i></div>
-        <div class="brand-text">Retail <span>IMS</span></div>
-    </a>
-    <div class="navbar-role-badge">
-        <i class="bi bi-shield-lock-fill"></i>
-        Head Office &mdash; Admin View
-    </div>
-</nav>
+<!-- Sidebar -->
+<?php require_once __DIR__ . '/../../includes/admin_sidebar.php'; ?>
+
+<!-- Main content pushed right of the fixed sidebar -->
+<div style="margin-left: 260px;">
 
 <!-- ══════════════════════════════════════════════════
      PAGE HEADER
@@ -248,6 +241,8 @@ if ($result && mysqli_num_rows($result) > 0) {
 
     </div><!-- /inventory-card -->
 </div><!-- /main-content -->
+
+</div><!-- /main content wrapper -->
 
 <!-- Page Script -->
 <script src="../../assets/js/admin_inventory_overview.js"></script>

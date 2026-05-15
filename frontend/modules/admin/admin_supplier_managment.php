@@ -1,7 +1,7 @@
 <?php
 // --- DATABASE CONNECTION ---
 $host = '127.0.0.1';
-$port = '3307';
+$port = '3306';
 $db   = 'retail_system'; // <-- Change this
 $user = 'root';               // <-- Change this
 $pass = '';                   // <-- Change this
@@ -70,19 +70,15 @@ $suppliers_result = mysqli_query($conn, "SELECT * FROM supplier ORDER BY supplie
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" />
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
     <link rel="stylesheet" href="../../assets/css/admin_supplier_managment.css" />
+    <link rel="stylesheet" href="../../assets/css/admin_sidebar.css" />
 </head>
 <body>
 
-<!-- ══════════════════════════════
-     NAVBAR
-══════════════════════════════ -->
-<nav class="top-navbar">
-    <a href="#" class="brand-wrap">
-        <div class="brand-icon"><i class="bi bi-boxes"></i></div>
-        <div class="brand-text">Retail <span>IMS</span></div>
-    </a>
-    <div class="role-badge"><i class="bi bi-person-gear-fill"></i> Supplier Manager</div>
-</nav>
+<!-- Sidebar -->
+<?php require_once __DIR__ . '/../../includes/admin_sidebar.php'; ?>
+
+<!-- Main content pushed right of the fixed sidebar -->
+<div style="margin-left: 260px;">
 
 <!-- ══════════════════════════════
      PAGE HEADER
@@ -250,6 +246,8 @@ $suppliers_result = mysqli_query($conn, "SELECT * FROM supplier ORDER BY supplie
     </div>
 
 </div><!-- /page-wrap -->
+
+</div><!-- /main content wrapper -->
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 <script src="../../assets/js/admin_supplier_managment.js"></script>
