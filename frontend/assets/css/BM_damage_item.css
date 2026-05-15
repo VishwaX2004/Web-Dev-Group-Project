@@ -13,9 +13,9 @@
     --text-3:       #94a3b8;
     --border:       #e2e8f0;
     --border-2:     #cbd5e1;
-    --danger:       #dc2626;
-    --danger-bg:    #fef2f2;
-    --danger-mid:   #fecaca;
+    --danger:       lab(72.01% -54.22 24.83);
+    --danger-bg:    lab(95.65% -15.97 10.33);
+    --danger-mid:   hsl(144, 96%, 89%);
     --warning:      #d97706;
     --warning-bg:   #fffbeb;
     --warning-mid:  #fde68a;
@@ -205,3 +205,23 @@
   .toast.show { transform: translateY(0); opacity: 1; }
   .toast svg { width: 16px; height: 16px; color: #4ade80; flex-shrink: 0; }
   .empty-state { padding: 48px 24px; text-align: center; color: var(--text-3); }
+
+.icon-btn.delete-btn:hover {
+    background: hsl(0, 72%, 85%);
+    border-color: #ef4141;
+    color: red;
+}
+
+.icon-btn.delete-btn {
+    color: red;
+}
+
+.icon-btn.edit-btn:hover {
+    background: #98beef;
+    border-color: hwb(238 10% 0%);
+    color: hsl(217, 100%, 50%);
+}
+
+.icon-btn.edit-btn {
+    color: hsl(204, 100%, 50%);
+}
