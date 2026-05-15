@@ -29,13 +29,13 @@
             <div class="card" id="users">
                 <h3>User Management</h3>
                 <p>Register new users and assign roles (Admin, Manager, Cashier)</p>
-                <a href="v.html" class="btn">Manage Users →</a>
+                <a href="../admin/user_management_frontend.php" class="btn">Manage Users →</a>
             </div>
 
             <div class="card" id="branches">
                 <h3> Branch Management</h3>
                 <p>Add and manage branch locations and contact details</p>
-                <a href="#" class="btn">Manage Branches →</a>
+                <a href="../admin/branch_management_frontend.php" class="btn">Manage Branches →</a>
             </div>
 
             <div class="card" id="products">
