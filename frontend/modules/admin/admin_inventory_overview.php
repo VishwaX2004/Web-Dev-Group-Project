@@ -47,19 +47,6 @@ $result = mysqli_query($conn, $sql);
 <!-- Main content pushed right of the fixed sidebar -->
 <div style="margin-left: 260px;">
 
-<!-- ══════════════════════════════════════════════════
-     PAGE HEADER
-══════════════════════════════════════════════════ -->
-<div class="page-header">
-    <div class="breadcrumb-custom">
-        <i class="bi bi-house-door"></i>
-        Dashboard
-        <span class="bc-separator">/</span>
-        <span class="bc-active">Inventory Overview</span>
-    </div>
-    <h1 class="page-title"><i class="bi bi-clipboard2-data title-icon"></i>Admin Inventory Overview</h1>
-    <p class="page-subtitle">Read-only consolidated view of inventory levels across all branches.</p>
-</div>
 
 <?php
 // ── COMPUTE STATS ──
@@ -115,9 +102,8 @@ if ($result && mysqli_num_rows($result) > 0) {
     </div>
 </div>
 
-<!-- ══════════════════════════════════════════════════
+
      MAIN TABLE CARD
-══════════════════════════════════════════════════ -->
 <div class="main-content">
     <div class="inventory-card">
 
