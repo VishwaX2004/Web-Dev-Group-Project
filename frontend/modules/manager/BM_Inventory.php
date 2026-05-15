@@ -214,6 +214,6 @@ while ($cat_row = mysqli_fetch_assoc($cat_result)) {
     <script>
         const inventoryData = <?php echo json_encode($inventory_list); ?>;
     </script>
-    <script src="../../assets/js/inventory.js"></script>
+    <script src="../../assets/js/inventory.js defer"></script>
 </body>
 </html>
