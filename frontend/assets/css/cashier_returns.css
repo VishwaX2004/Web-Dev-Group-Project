@@ -22,8 +22,8 @@ body {
 
 .returns-card {
     background: var(--primary-white);
-    border-radius: 28px;
-    box-shadow: 0 8px 20px rgba(0,0,0,0.03);
+    border-radius: 24px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.05);
     padding: 28px 32px;
     border: 1px solid #E9EEF3;
 }
@@ -35,13 +35,13 @@ h1 {
     margin-bottom: 8px;
 }
 
-.subtitle {
-    font-size: 14px;
-    color: #5B6E8C;
-    margin-bottom: 28px;
+h2 {
+    font-size: 20px;
+    font-weight: 600;
+    color: #0A2540;
+    margin: 28px 0 20px 0;
 }
 
-/* Stats cards */
 .stats {
     display: flex;
     gap: 20px;
@@ -72,14 +72,6 @@ h1 {
     font-weight: 500;
 }
 
-h2 {
-    font-size: 20px;
-    font-weight: 600;
-    color: #0A2540;
-    margin: 28px 0 20px 0;
-}
-
-/* Form container */
 .form-row {
     display: flex;
     flex-wrap: wrap;
@@ -129,13 +121,13 @@ button.delete:hover {
     background: #DC2626;
 }
 
-/* Search bar */
 .search-bar {
     margin: 20px 0 24px;
 }
 
 .search-bar input {
-    width: 400px;
+    width: 100%;
+    max-width: 400px;
     padding: 12px 20px;
     background: #F7F9FC;
     border: 1px solid #E2E8F0;
@@ -149,11 +141,9 @@ button.delete:hover {
     box-shadow: 0 0 0 3px rgba(65,105,225,0.1);
 }
 
-/* Table */
 .returns-table {
     width: 100%;
-    border-collapse: separate;
-    border-spacing: 0;
+    border-collapse: collapse;
     margin-top: 20px;
 }
 
@@ -204,19 +194,26 @@ button.delete:hover {
     color: #D32F2F;
 }
 
-.footer {
-    text-align: center;
-    font-size: 12px;
-    color: #9AA8B9;
-    margin-top: 32px;
-}
-
-/* Responsive */
 @media (max-width: 768px) {
-    .container { padding: 0 16px; }
-    .returns-card { padding: 20px; }
-    .form-row { flex-direction: column; align-items: stretch; }
-    .stats { flex-direction: column; }
-    .search-bar input { width: 100%; }
-    .returns-table th, .returns-table td { padding: 10px 8px; font-size: 12px; }
+    .container {
+        padding: 0 16px;
+    }
+    .returns-card {
+        padding: 20px;
+    }
+    .form-row {
+        flex-direction: column;
+        align-items: stretch;
+    }
+    .stats {
+        flex-direction: column;
+    }
+    .search-bar input {
+        max-width: 100%;
+    }
+    .returns-table th,
+    .returns-table td {
+        padding: 10px 8px;
+        font-size: 12px;
+    }
 }
