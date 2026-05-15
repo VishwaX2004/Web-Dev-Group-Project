@@ -11,9 +11,11 @@ function updateInventory($conn, $product_id, $branch_id, $delta) {
     mysqli_stmt_close($stmt);
 }
 
-function createReturn($sale_id, $product_id, $quantity, $reason, $status, $branch_id, $user_id) {
+// Create a new return (no processed_by)
+function createReturn($sale_id, $product_id, $quantity, $reason, $status, $branch_id) {
     global $conn;
     $errors = [];
+    // Validate sale & product
     $stmt = mysqli_prepare($conn, "SELECT quantity FROM sales_order WHERE sale_id = ? AND product_id = ?");
     mysqli_stmt_bind_param($stmt, "ss", $sale_id, $product_id);
     mysqli_stmt_execute($stmt);
@@ -24,6 +26,7 @@ function createReturn($sale_id, $product_id, $quantity, $reason, $status, $branc
     } elseif ($quantity > $saleItem['quantity']) {
         $errors[] = "Quantity exceeds original purchase.";
     }
+    // Duplicate check
     $stmt = mysqli_prepare($conn, "SELECT return_id FROM returns WHERE sale_id = ? AND product_id = ?");
     mysqli_stmt_bind_param($stmt, "ss", $sale_id, $product_id);
     mysqli_stmt_execute($stmt);
@@ -34,8 +37,8 @@ function createReturn($sale_id, $product_id, $quantity, $reason, $status, $branc
     if (empty($errors)) {
         $return_id = 'RET-' . str_pad(rand(1, 9999), 4, '0', STR_PAD_LEFT);
         $return_date = date('Y-m-d H:i:s');
-        $stmt = mysqli_prepare($conn, "INSERT INTO returns (return_id, sale_id, product_id, branch_id, quantity, reason, status, return_date, processed_by) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)");
-        mysqli_stmt_bind_param($stmt, "ssssissss", $return_id, $sale_id, $product_id, $branch_id, $quantity, $reason, $status, $return_date, $user_id);
+        $stmt = mysqli_prepare($conn, "INSERT INTO returns (return_id, sale_id, product_id, branch_id, quantity, reason, status, return_date) VALUES (?, ?, ?, ?, ?, ?, ?, ?)");
+        mysqli_stmt_bind_param($stmt, "ssssisss", $return_id, $sale_id, $product_id, $branch_id, $quantity, $reason, $status, $return_date);
         if (mysqli_stmt_execute($stmt)) {
             if ($status === 'Approved') updateInventory($conn, $product_id, $branch_id, $quantity);
             mysqli_stmt_close($stmt);
