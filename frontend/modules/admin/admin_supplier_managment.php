@@ -13,20 +13,26 @@ if (isset($_GET['delete_id']) && is_numeric($_GET['delete_id'])) {
 
     mysqli_begin_transaction($conn);
     try {
-        // Delete related purchase orders first (child rows)
-        $del_orders_stmt = mysqli_prepare($conn, "DELETE FROM purchase_orders WHERE supplier_id = ?");
-        mysqli_stmt_bind_param($del_orders_stmt, 'i', $delete_id);
-        mysqli_stmt_execute($del_orders_stmt);
-        mysqli_stmt_close($del_orders_stmt);
+        // Delete related stock_requests first
+        $del_stock = mysqli_prepare($conn, "DELETE FROM stock_requests WHERE supplier_id = ?");
+        mysqli_stmt_bind_param($del_stock, 'i', $delete_id);
+        mysqli_stmt_execute($del_stock);
+        mysqli_stmt_close($del_stock);
 
-        // Now delete the supplier (parent row)
+        // Delete related purchase orders
+        $del_orders = mysqli_prepare($conn, "DELETE FROM purchase_orders WHERE supplier_id = ?");
+        mysqli_stmt_bind_param($del_orders, 'i', $delete_id);
+        mysqli_stmt_execute($del_orders);
+        mysqli_stmt_close($del_orders);
+
+        // Now delete the supplier
         $del_stmt = mysqli_prepare($conn, "DELETE FROM supplier WHERE supplier_id = ?");
         mysqli_stmt_bind_param($del_stmt, 'i', $delete_id);
         mysqli_stmt_execute($del_stmt);
         mysqli_stmt_close($del_stmt);
 
         mysqli_commit($conn);
-        $success_msg = "Supplier #$delete_id and their purchase orders deleted successfully.";
+        $success_msg = "Supplier #$delete_id deleted successfully.";
     } catch (Exception $e) {
         mysqli_rollback($conn);
         $error_msg = "Delete failed: " . $e->getMessage();
