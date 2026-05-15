@@ -93,7 +93,6 @@ h1 {
     background-color: #F9FBFD;
 }
 
-/* Status badges (rounded pills) */
 .status-badge {
     display: inline-block;
     padding: 5px 14px;
@@ -117,7 +116,6 @@ h1 {
     color: #2E7D32;
 }
 
-/* Legend – exactly as screenshot: colored circles + text inline */
 .legend {
     margin-top: 32px;
     padding-top: 24px;
@@ -161,7 +159,6 @@ h1 {
     margin-top: 32px;
 }
 
-/* Responsive */
 @media (max-width: 768px) {
     .container {
         padding: 0 16px;
