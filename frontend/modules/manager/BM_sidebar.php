@@ -49,8 +49,8 @@ $current_page = basename($_SERVER['PHP_SELF']);
         <div class="brand">
             <div class="logo-box">BM</div>
             <div class="brand-info">
-                <span class="brand-name">BranchPro</span>
-                <span class="version">System Module v2.4</span>
+                <span class="brand-name">Smart POS</span>
+                <span class="version">Multi Branch Retail System</span>
             </div>
         </div>
 

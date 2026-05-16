@@ -2,41 +2,54 @@
 // --- DATABASE CONNECTION ---
 require_once __DIR__ . '/../../../backend/config/db_connection.php';
 
-$success_msg = '';
-$error_msg   = '';
+// Start session to persist success/error messages across page redirects
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
+
+$success_msg = isset($_SESSION['success_msg']) ? $_SESSION['success_msg'] : '';
+$error_msg   = isset($_SESSION['error_msg']) ? $_SESSION['error_msg'] : '';
+
+// Clear session messages so they don't display continuously on subsequent refreshes
+unset($_SESSION['success_msg']);
+unset($_SESSION['error_msg']);
 
 // ─────────────────────────────────────────
 // DELETE SUPPLIER (GET request)
 // ─────────────────────────────────────────
-if (isset($_GET['delete_id']) && is_numeric($_GET['delete_id'])) {
-    $delete_id = (int) $_GET['delete_id'];
+if (isset($_GET['delete_id']) && trim($_GET['delete_id']) !== '') {
+    $delete_id = trim($_GET['delete_id']); 
 
     mysqli_begin_transaction($conn);
     try {
         // Delete related stock_requests first
         $del_stock = mysqli_prepare($conn, "DELETE FROM stock_requests WHERE supplier_id = ?");
-        mysqli_stmt_bind_param($del_stock, 'i', $delete_id);
+        mysqli_stmt_bind_param($del_stock, 's', $delete_id); 
         mysqli_stmt_execute($del_stock);
         mysqli_stmt_close($del_stock);
 
         // Delete related purchase orders
         $del_orders = mysqli_prepare($conn, "DELETE FROM purchase_orders WHERE supplier_id = ?");
-        mysqli_stmt_bind_param($del_orders, 'i', $delete_id);
+        mysqli_stmt_bind_param($del_orders, 's', $delete_id); 
         mysqli_stmt_execute($del_orders);
         mysqli_stmt_close($del_orders);
 
         // Now delete the supplier
         $del_stmt = mysqli_prepare($conn, "DELETE FROM supplier WHERE supplier_id = ?");
-        mysqli_stmt_bind_param($del_stmt, 'i', $delete_id);
+        mysqli_stmt_bind_param($del_stmt, 's', $delete_id); 
         mysqli_stmt_execute($del_stmt);
         mysqli_stmt_close($del_stmt);
 
         mysqli_commit($conn);
-        $success_msg = "Supplier #$delete_id deleted successfully.";
+        $_SESSION['success_msg'] = "Supplier #$delete_id deleted successfully.";
     } catch (Exception $e) {
         mysqli_rollback($conn);
-        $error_msg = "Delete failed: " . $e->getMessage();
+        $_SESSION['error_msg'] = "Delete failed: " . $e->getMessage();
     }
+
+    // Redirect to the same clean URL to prevent form/query resubmission on refresh
+    header("Location: admin_supplier_managment.php");
+    exit();
 }
 
 // ─────────────────────────────────────────
@@ -49,18 +62,38 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['add_supplier'])) {
     $address     = trim($_POST['address']);
 
     if ($supplier_id === '' || $name === '' || $contact === '' || $address === '') {
-        $error_msg = "All fields are required. Please fill in every input.";
+        $_SESSION['error_msg'] = "All fields are required. Please fill in every input.";
     } else {
-        $ins_sql  = "INSERT INTO supplier (supplier_id, name, contact, address) VALUES (?, ?, ?, ?)";
-        $ins_stmt = mysqli_prepare($conn, $ins_sql);
-        mysqli_stmt_bind_param($ins_stmt, 'isss', $supplier_id, $name, $contact, $address);
-        if (mysqli_stmt_execute($ins_stmt)) {
-            $success_msg = "Supplier \"$name\" added successfully.";
+        // Check if Supplier ID already exists before inserting
+        $check_sql = "SELECT supplier_id FROM supplier WHERE supplier_id = ?";
+        $check_stmt = mysqli_prepare($conn, $check_sql);
+        mysqli_stmt_bind_param($check_stmt, 's', $supplier_id);
+        mysqli_stmt_execute($check_stmt);
+        mysqli_stmt_store_result($check_stmt);
+
+        if (mysqli_stmt_num_rows($check_stmt) > 0) {
+            $_SESSION['error_msg'] = "Error: Supplier ID '$supplier_id' already exists. Please use a unique ID.";
+            mysqli_stmt_close($check_stmt);
         } else {
-            $error_msg = "Insert failed: " . mysqli_error($conn);
+            mysqli_stmt_close($check_stmt);
+
+            // Insert new supplier record
+            $ins_sql  = "INSERT INTO supplier (supplier_id, name, contact, address) VALUES (?, ?, ?, ?)";
+            $ins_stmt = mysqli_prepare($conn, $ins_sql);
+            mysqli_stmt_bind_param($ins_stmt, 'ssss', $supplier_id, $name, $contact, $address);
+            
+            if (mysqli_stmt_execute($ins_stmt)) {
+                $_SESSION['success_msg'] = "Supplier \"$name\" added successfully.";
+            } else {
+                $_SESSION['error_msg'] = "Insert failed: " . mysqli_error($conn);
+            }
+            mysqli_stmt_close($ins_stmt);
         }
-        mysqli_stmt_close($ins_stmt);
     }
+
+    // Redirect to the same clean URL to prevent form/query resubmission on refresh
+    header("Location: admin_supplier_managment.php");
+    exit();
 }
 
 // ─────────────────────────────────────────
@@ -110,10 +143,15 @@ $suppliers_result = mysqli_query($conn, "SELECT * FROM supplier ORDER BY supplie
             <i class="bi bi-exclamation-circle-fill"></i> <?= htmlspecialchars($error_msg) ?>
         </div>
     <?php endif; ?>
+    <?php if ($success_msg): ?>
+        <div class="flash-alert flash-success" style="background-color: #d1e7dd; color: #0f5132; padding: 1rem; border-radius: 6px; margin-bottom: 1.5rem;" role="alert">
+            <i class="bi bi-check-circle-fill"></i> <?= htmlspecialchars($success_msg) ?>
+        </div>
+    <?php endif; ?>
 
     <!-- ══════════════════════════════
          SECTION 1 – ADD SUPPLIER FORM
-    ══════════════════════════════ -->
+     ══════════════════════════════ -->
     <div class="panel">
         <div class="panel-header">
             <h2><i class="bi bi-person-plus-fill"></i> Add New Supplier</h2>
@@ -124,12 +162,11 @@ $suppliers_result = mysqli_query($conn, "SELECT * FROM supplier ORDER BY supplie
                     <div class="col-12 col-md-3">
                         <label for="supplier_id" class="form-label">Supplier ID <span style="color:#dc2626">*</span></label>
                         <input
-                            type="number"
+                            type="text"
                             id="supplier_id"
                             name="supplier_id"
                             class="form-control"
-                            placeholder="e.g. 101"
-                            min="1"
+                            placeholder="e.g. S001"
                             required
                         />
                     </div>
@@ -178,7 +215,7 @@ $suppliers_result = mysqli_query($conn, "SELECT * FROM supplier ORDER BY supplie
 
     <!-- ══════════════════════════════
          SECTION 2 – SUPPLIER TABLE
-    ══════════════════════════════ -->
+     ══════════════════════════════ -->
     <div class="panel">
         <div class="panel-header" style="justify-content:space-between; flex-wrap:wrap;">
             <h2><i class="bi bi-table"></i> All Suppliers</h2>
@@ -220,8 +257,8 @@ $suppliers_result = mysqli_query($conn, "SELECT * FROM supplier ORDER BY supplie
                         <td>
                             <button
                                 class="btn-delete"
-                                onclick="confirmDelete(<?= (int)$s['supplier_id'] ?>, '<?= htmlspecialchars(addslashes($s['name'])) ?>')"
-                                id="delete-btn-<?= (int)$s['supplier_id'] ?>"
+                                onclick="confirmDelete('<?= htmlspecialchars(addslashes($s['supplier_id'])) ?>', '<?= htmlspecialchars(addslashes($s['name'])) ?>')"
+                                id="delete-btn-<?= htmlspecialchars($s['supplier_id']) ?>"
                                 aria-label="Delete supplier <?= htmlspecialchars($s['name']) ?>">
                                 <i class="bi bi-trash3-fill"></i> Delete
                             </button>
