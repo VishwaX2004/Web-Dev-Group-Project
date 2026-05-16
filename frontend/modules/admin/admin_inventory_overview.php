@@ -42,7 +42,7 @@ $result = mysqli_query($conn, $sql);
 <body>
 
 <!-- Sidebar -->
-<?php require_once __DIR__ . '/../../includes/admin_sidebar.php'; ?>
+      <?php include("../../includes/admin_sidebar.php"); ?>
 
 <!-- Main content pushed right of the fixed sidebar -->
 <div style="margin-left: 260px;">

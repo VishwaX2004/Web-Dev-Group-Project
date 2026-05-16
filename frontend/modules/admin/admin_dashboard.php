@@ -7,11 +7,12 @@
     
     <title>Admin Dashboard</title>
     <link rel="stylesheet" href="../../assets/css/admin_dash.css">
+    
 </head>
 <body>
 
 <div>
-    <?php include 'admin_sidebar.php'; ?>
+        <?php include("../../includes/admin_sidebar.php"); ?>
 
 </div>
 

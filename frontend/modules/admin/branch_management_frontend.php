@@ -13,7 +13,7 @@ require_once __DIR__ . '/../../../backend/api/admin/branch_management_backend.ph
     <link rel="stylesheet" href="../../../frontend/assets/css/branch_management.css">
 </head>
 <body>
-    <?php include __DIR__ . '/../../../frontend/includes/admin_sidebar.php'; ?>
+        <?php include("../../includes/admin_sidebar.php"); ?>
 
     <div class="main-content">
         <div class="page-header">

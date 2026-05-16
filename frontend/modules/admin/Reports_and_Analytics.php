@@ -16,7 +16,7 @@ include("../../../backend/config/db_connection.php");
 </head>
 <body>
 
-    <?php include 'admin_sidebar.php'; ?> 
+    <?php include '../../includes/admin_sidebar.php'; ?> 
 
     <div class="main-content">
         
@@ -43,7 +43,7 @@ include("../../../backend/config/db_connection.php");
                         This report compiles total sales quantities, generated revenue, current inventory levels, and damaged item records.
                     </p>
                     
-                    <form action="export_analytics.php" method="POST">
+                    <form action="../../../backend/api/admin/export_analytics.php" method="POST">
                         <button type="submit" name="export_excel" class="analytics-btn-green">
                             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
                             Generate & Download Excel Report

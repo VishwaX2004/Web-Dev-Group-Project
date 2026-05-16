@@ -1,3 +1,17 @@
+    *, *::before, *::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: var(--bg);
+    margin: 0;
+    padding: 0;
+    overflow-x: hidden; 
+}
+
 :root {
     --success-green: #16a34a;
     --success-hover: #15803d;
