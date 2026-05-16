@@ -12,8 +12,12 @@
 
 <div>
 
+HEAD
 <?php require_once __DIR__ . '/../../includes/admin_sidebar.php'; ?>
 
+
+ <?php include("../../includes/admin_sidebar.php"); ?>
+  ba6fe33850a47a7e4f37e1ae1aee2d2e57e8a35b
 
 </div>
 
