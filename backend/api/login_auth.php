@@ -44,7 +44,7 @@ if (isset($_POST['login_btn'])) {
             if ($user_data['role'] == "admin") {
 <<<<<<< HEAD
 
-                header("Location: ../../frontend/modules/admin/dashboard.php");
+                header("Location: ../../frontend/modules/admin/admin_dashboard.php");
 
 =======
                 header("Location: ../../frontend/modules/admin/admin_dashboard.php");
