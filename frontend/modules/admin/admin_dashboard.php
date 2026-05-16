@@ -7,12 +7,12 @@
     
     <title>Admin Dashboard</title>
     <link rel="stylesheet" href="../../assets/css/admin_dash.css">
+    
 </head>
 <body>
 
 <div>
-
- <?php include("../../includes/admin_sidebar.php"); ?>
+        <?php include("../../includes/admin_sidebar.php"); ?>
 
 </div>
 
@@ -47,19 +47,19 @@
             <div class="card" id="inventory">
                 <h3> Inventory Overview</h3>
                 <p>View of stock levels across all branches</p>
-                <a href="#" class="btn">View Global Stock →</a>
+                <a href="../admin/admin_inventory_overview.php" class="btn">View Global Stock →</a>
             </div>
 
             <div class="card" id="suppliers">
                 <h3>Supplier Management</h3>
                 <p>Manage and add the supliers and informations</p>
-                <a href="#" class="btn">Manage Suppliers →</a>
+                <a href="../admin/admin_supplier_managment.php" class="btn">Manage Suppliers →</a>
             </div>
 
             <div class="card" id="reports">
                 <h3> Reports & Analytics</h3>
                 <p>Monitor revenue, stock levels, and business losses</p>
-                <a href="" class="btn">View Reports →</a>
+                <a href="../admin/Reports_and_Analytics.php" class="btn">View Reports →</a>
             </div>
         </div>
     </div>
