@@ -4,9 +4,9 @@
     --primary: #2563eb;
     --primary-dark: #1d4ed8;
     --bg-dark: #020617;
-    --bg-gradient: radial-gradient(at 0% 0%, #020617 0, transparent 50%), 
-                   radial-gradient(at 100% 0%, #1e3a8a 0, transparent 50%), 
-                   radial-gradient(at 50% 100%, #000000 0, transparent 50%);
+    --bg-gradient: radial-gradient(at 0% 0%, #020617 0, transparent 50%),
+        radial-gradient(at 100% 0%, #1e3a8a 0, transparent 50%),
+        radial-gradient(at 50% 100%, #000000 0, transparent 50%);
 }
 
 * {
@@ -16,7 +16,8 @@
     font-family: 'Plus Jakarta Sans', sans-serif;
 }
 
-html, body {
+html,
+body {
     height: 100%;
     width: 100%;
     overflow: hidden;
@@ -40,7 +41,7 @@ body {
     border-radius: 28px;
     overflow: hidden;
     box-shadow: 0 40px 100px -20px rgba(0, 0, 0, 0.7);
-    min-height: 600px; 
+    min-height: 600px;
     max-height: 90vh;
     transition: all 0.3s ease;
 }
@@ -51,24 +52,24 @@ body {
     display: flex;
     flex-direction: column;
     justify-content: center;
-    align-items: center; 
+    align-items: center;
 }
 
 .brand-icon {
-    width: 50px;
-    height: 50px;
+    width: 60px;
+    height: 60px;
     background: #eff6ff;
     border-radius: 14px;
     display: flex;
     align-items: center;
     justify-content: center;
-    margin-bottom: 24px;
+    margin-bottom: 20px;
     color: var(--primary);
     border: 1px solid #dbeafe;
 }
 
 .header-content {
-    text-align: center; 
+    text-align: center;
 }
 
 .header-content h1 {
@@ -92,7 +93,7 @@ body {
 .input-group {
     margin-bottom: 20px;
     position: relative;
-    text-align: left; 
+    text-align: left;
 }
 
 .input-group label {
@@ -105,7 +106,7 @@ body {
 
 .input-group input {
     width: 100%;
-    padding: 14px 45px 14px 18px; 
+    padding: 14px 45px 14px 18px;
     border: 1.5px solid #e2e8f0;
     border-radius: 14px;
     font-size: 15px;
@@ -123,7 +124,7 @@ body {
 .toggle-password {
     position: absolute;
     right: 18px;
-    top: 42px; 
+    top: 42px;
     cursor: pointer;
     color: #64748b;
     display: flex;
@@ -252,11 +253,14 @@ body {
 }
 
 @media (max-width: 850px) {
-    html, body {
+
+    html,
+    body {
         height: auto;
         min-height: 100%;
         overflow: auto;
     }
+
     .main-wrapper {
         flex-direction: column;
         max-width: 480px;
@@ -264,11 +268,68 @@ body {
         min-height: auto;
         max-height: none;
     }
+
     .info-side {
         padding: 40px 30px;
-        order: -1; 
+        order: -1;
     }
+
     .form-side {
         padding: 40px 30px;
     }
+}
+
+.password-wrapper {
+
+    position: relative;
+    display: flex;
+    align-items: center;
+    width: 100%;
+
+}
+
+#password-field {
+
+    width: 100%;
+    padding-right: 45px;
+
+}
+
+#togglePassword {
+
+    position: absolute;
+    right: 15px;
+    cursor: pointer;
+    color: #666;
+    z-index: 10;
+}
+
+#togglePassword:hover {
+    color: #333;
+}
+
+
+.password-wrapper {
+    position: relative;
+    display: flex;
+    align-items: center;
+    width: 100%;
+}
+
+#password-field {
+    width: 100%;
+    padding-right: 45px;
+
+}
+
+#togglePassword {
+    position: absolute;
+    right: 15px;
+    cursor: pointer;
+    color: #666;
+    z-index: 10;
+}
+
+#togglePassword:hover {
+    color: #333;
 }
