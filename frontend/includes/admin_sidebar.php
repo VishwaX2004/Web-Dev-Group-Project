@@ -14,12 +14,11 @@
         </a>
     </h2>
         <ul>
-            <li><a href="/Web-Dev-Group-Project/frontend/modules/admin/admin_dashboard.php">Dashboard</a></li>
             <li><a href="/Web-Dev-Group-Project/frontend/modules/admin/user_management_frontend.php">User Management</a></li>
             <li><a href="/Web-Dev-Group-Project/frontend/modules/admin/branch_management_frontend.php">Branch Management</a></li>
-            <li> <a href="#products">  Product Management</a> </li>
-            <li> <a href="#inventory">  Inventory Overview</a> </li>
-            <li> <a href="#suppliers">  Supplier Management</a> </li>
+            <li> <a href="/Web-Dev-Group-Project/frontend/modules/admin/product_management.php">  Product Management</a> </li>
+            <li> <a href="/Web-Dev-Group-Project/frontend/modules/admin/admin_inventory_overview.php">  Inventory Overview</a> </li>
+            <li> <a href="/Web-Dev-Group-Project/frontend/modules/admin/admin_supplier_managment.php">  Supplier Management</a> </li>
             <li> <a href="#reports">  Reports & Analytics</a> </li>
         </ul>
     </div>
