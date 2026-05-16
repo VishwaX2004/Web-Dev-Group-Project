@@ -42,13 +42,8 @@ if (isset($_POST['login_btn'])) {
 
             // redirect based on role
             if ($user_data['role'] == "admin") {
-<<<<<<< HEAD
-
                 header("Location: ../../frontend/modules/admin/admin_dashboard.php");
-
-=======
-                header("Location: ../../frontend/modules/admin/admin_dashboard.php");
->>>>>>> 1c479c557690d4065fb12f4ac4444a705df3ed9c
+                
             } elseif ($user_data['role'] == "cashier") {
 
                 header("Location: ../../frontend/modules/cashier/cashier_dashboard.php");
