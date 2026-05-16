@@ -1,11 +1,12 @@
+/**
+ * Inventory Management (Vanilla JS)
+ */
 
-// Sample data based on db_full.sql
-// Sample data fallback (only if not already provided by PHP)
+// Sample data fallback
 if (typeof inventoryData === 'undefined') {
     window.inventoryData = [
         { id: 'INV-701', productId: 'PROD-001', productName: 'Hydrating Face Serum', category: 'Skincare', quantity: 45, status: 'In Stock' },
-        { id: 'INV-702', productId: 'PROD-002', productName: 'Matte Lipstick - Ruby', category: 'Makeup', quantity: 5, status: 'Low Stock' },
-        { id: 'INV-703', productId: 'PROD-003', productName: 'Argon Oil Shampoo', category: 'Haircare', quantity: 0, status: 'Out of Stock' }
+        { id: 'INV-702', productId: 'PROD-002', productName: 'Matte Lipstick - Ruby', category: 'Makeup', quantity: 5, status: 'Low Stock' }
     ];
 }
 
@@ -16,47 +17,39 @@ function renderInventory(data = inventoryData) {
     tbody.innerHTML = '';
     data.forEach(item => {
         const tr = document.createElement('tr');
-        tr.className = 'hover:bg-secondary/30 transition-colors group';
 
-        let statusClass = 'bg-success-light text-success-text border-success/20';
-        let statusDotClass = 'bg-success';
-        if (item.status === 'Low Stock') {
-            statusClass = 'bg-warning-light text-warning-text border-warning/20';
-            statusDotClass = 'bg-warning';
+        let statusClass = 'badge-success';
+        if (item.status === 'Low Stock' || item.status === 'Critical') {
+            statusClass = 'badge-warning';
         } else if (item.status === 'Out of Stock') {
-            statusClass = 'bg-muted text-muted-foreground border-border';
-            statusDotClass = 'bg-muted-foreground';
-        } else if (item.status === 'Critical') {
-            statusClass = 'bg-destructive/10 text-destructive border-destructive/20';
-            statusDotClass = 'bg-destructive';
+            statusClass = ''; // Default/muted
         }
 
         tr.innerHTML = `
-            <td class="px-6 py-4 whitespace-nowrap">
+            <td>
                 <div class="flex flex-col">
-                    <span class="font-medium text-foreground">${item.productName}</span>
-                    <span class="text-xs text-muted-foreground">${item.productId}</span>
+                    <span class="font-medium">${item.productName}</span>
+                    <span class="text-sm text-muted">${item.productId}</span>
                 </div>
             </td>
-            <td class="px-6 py-4 whitespace-nowrap text-sm text-foreground">
+            <td>
                 ${item.category}
             </td>
-            <td class="px-6 py-4 whitespace-nowrap">
-                <span class="font-headings font-semibold text-foreground">${item.quantity}</span>
+            <td>
+                <span class="font-bold">${item.quantity}</span>
             </td>
-            <td class="px-6 py-4 whitespace-nowrap">
-                <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium border ${statusClass}">
-                    <span class="w-1.5 h-1.5 rounded-full ${statusDotClass} mr-1.5"></span>
+            <td>
+                <span class="badge ${statusClass}">
                     ${item.status}
                 </span>
             </td>
-            <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+            <td style="text-align: right;">
                 <div class="flex items-center justify-end gap-2">
-                    <button class="p-1.5 text-muted-foreground hover:text-primary hover:bg-primary/10 rounded-md transition-colors" title="Adjust Stock" onclick="adjustStock('${item.id}')">
-                        <iconify-icon icon="lucide:edit-2" class="block size-[16px]" style="font-size: 16px"></iconify-icon>
+                    <button class="btn btn-outline" style="border: none; padding: 0.25rem;" title="Adjust Stock" onclick="adjustStock('${item.id}')">
+                        <iconify-icon icon="lucide:edit-2" style="font-size: 16px"></iconify-icon>
                     </button>
-                    <button class="p-1.5 text-muted-foreground hover:text-destructive hover:bg-destructive/10 rounded-md transition-colors" title="Delete Record" onclick="deleteItem('${item.id}')">
-                        <iconify-icon icon="lucide:trash-2" class="block size-[16px]" style="font-size: 16px"></iconify-icon>
+                    <button class="btn btn-outline" style="border: none; padding: 0.25rem; color: var(--destructive);" title="Delete Record" onclick="deleteItem('${item.id}')">
+                        <iconify-icon icon="lucide:trash-2" style="font-size: 16px"></iconify-icon>
                     </button>
                 </div>
             </td>
@@ -64,7 +57,6 @@ function renderInventory(data = inventoryData) {
         tbody.appendChild(tr);
     });
 
-    // Update stats
     updateStats();
 }
 
@@ -73,9 +65,13 @@ function updateStats() {
     const lowStockCount = inventoryData.filter(item => item.status === 'Low Stock' || item.status === 'Critical').length;
     const categoriesCount = new Set(inventoryData.map(item => item.category)).size;
 
-    document.getElementById('stat-total-items').textContent = totalItems.toLocaleString();
-    document.getElementById('stat-low-stock').textContent = lowStockCount;
-    document.getElementById('stat-categories').textContent = categoriesCount;
+    const elTotal = document.getElementById('stat-total-items');
+    const elLow = document.getElementById('stat-low-stock');
+    const elCat = document.getElementById('stat-categories');
+
+    if (elTotal) elTotal.textContent = totalItems.toLocaleString();
+    if (elLow) elLow.textContent = lowStockCount;
+    if (elCat) elCat.textContent = categoriesCount;
 }
 
 function adjustStock(id) {
@@ -85,9 +81,6 @@ function adjustStock(id) {
     const newQty = prompt(`Adjust quantity for ${item.productName}:`, item.quantity);
     if (newQty !== null) {
         item.quantity = parseInt(newQty);
-        if (item.quantity <= 0) item.status = 'Out of Stock';
-        else if (item.quantity < 10) item.status = 'Low Stock';
-        else item.status = 'In Stock';
         renderInventory();
     }
 }
@@ -101,25 +94,19 @@ function deleteItem(id) {
             method: 'POST',
             body: formData
         })
-        .then(response => response.json())
+        .then(res => res.json())
         .then(data => {
             if (data.success) {
                 alert(data.message);
-                location.reload(); // Refresh to show updated database data
+                location.reload();
             } else {
                 alert('Error: ' + data.message);
             }
-        })
-        .catch(error => {
-            console.error('Error:', error);
-            alert('An error occurred while deleting the record.');
         });
     }
 }
 
-// Search functionality
 document.addEventListener('DOMContentLoaded', () => {
-    console.log('Inventory JS Loaded');
     const searchInput = document.getElementById('inventory-search');
     if (searchInput) {
         searchInput.addEventListener('input', (e) => {
@@ -133,26 +120,8 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    const addStockBtn = document.getElementById('add-stock-btn');
-    const modal = document.getElementById('add-stock-modal');
-    const closeBtn = document.getElementById('close-modal-btn');
-    const cancelBtn = document.getElementById('cancel-modal-btn');
     const form = document.getElementById('add-stock-form');
-
-    if (addStockBtn && modal) {
-        addStockBtn.addEventListener('click', () => {
-            console.log('Add Stock Button Clicked');
-            modal.classList.remove('hidden');
-        });
-
-        const hideModal = () => {
-            modal.classList.add('hidden');
-            form.reset();
-        };
-
-        closeBtn.addEventListener('click', hideModal);
-        cancelBtn.addEventListener('click', hideModal);
-
+    if (form) {
         form.addEventListener('submit', (e) => {
             e.preventDefault();
             const formData = new FormData(form);
@@ -161,19 +130,14 @@ document.addEventListener('DOMContentLoaded', () => {
                 method: 'POST',
                 body: formData
             })
-            .then(response => response.json())
+            .then(res => res.json())
             .then(data => {
                 if (data.success) {
                     alert(data.message);
-                    hideModal();
-                    location.reload(); // Refresh to show new data from DB
+                    location.reload();
                 } else {
                     alert('Error: ' + data.message);
                 }
-            })
-            .catch(error => {
-                console.error('Error:', error);
-                alert('An error occurred while adding stock.');
             });
         });
     }

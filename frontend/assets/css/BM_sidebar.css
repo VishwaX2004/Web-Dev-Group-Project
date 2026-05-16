@@ -155,14 +155,13 @@ body {
 .main {
     position: fixed;
     top: 0;
-    left: 280px;
+    left: 280px; 
     right: 0;
     bottom: 0;
     overflow-y: auto;
-    overflow-x: hidden;
     background: #f8fafc;
+    padding: 0; 
 }
-
 
 
 

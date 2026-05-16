@@ -60,12 +60,16 @@ $current_page = basename($_SERVER['PHP_SELF']);
                 <a href="BM_Dashboard.php" class="nav-link <?php echo ($current_page=='BM_Dashboard.php')? 'active' :'';?>">
                     <i class="fa-solid fa-chart-simple"></i> Dashboard
                 </a>
-                <a href="#" class="nav-link"><i class="fa-solid fa-box-archive"></i> Inventory Management</a>
+                <a href="BM_Inventory.php" class="nav-link <?php echo ($current_page=="BM_Inventory.php")? 'active' :'' ?>"><i class="fa-solid fa-box-archive"></i> Inventory Management</a>
+
                 <a href="BM_stock_request.php" class="nav-link <?php echo ($current_page=='BM_stock_request.php')? 'active' :''?>">
                     <i class="fa-solid fa-cart-shopping"></i> Stock Requests 
                 </a>
 
-                <a href="#" class="nav-link"><i class="fa-solid fa-arrow-right-arrow-left"></i> Inter-Branch Transfer</a>
+                
+
+                <a href="BM_Inter_Branch_Transfer.php"class="nav-link <?php echo ($current_page=="BM_Inter_Branch_Transfer.php")? 'active' :'' ?>"><i class="fa-solid fa-arrow-right-arrow-left"></i> Inter-Branch Transfer</a>
+
 
 
                 <a href=" BM_damaged_item.php" class="nav-link <?php echo ($current_page=="BM_damaged_item.php")? 'active' :'' ?>"><i class="fa-solid fa-circle-exclamation"></i> Damaged Items</a>
