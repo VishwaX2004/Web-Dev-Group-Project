@@ -1,8 +1,8 @@
 <?php
-// --- DATABASE CONNECTION ---
+//DATABASE CONNECTION 
 require_once __DIR__ . '/../../../backend/config/db_connection.php';
 
-// --- FETCH INVENTORY DATA (JOIN query) ---
+// FETCH INVENTORY DATA (JOIN query) 
 $sql = "
     SELECT
         i.inventory_id,
@@ -30,7 +30,7 @@ $result = mysqli_query($conn, $sql);
     <title>Admin Inventory Overview | Retail IMS</title>
     <meta name="description" content="Head Office read-only view of inventory across all branches. Retail Inventory Management System." />
 
-    <!-- Bootstrap Icons CDN (icons only, no Bootstrap CSS/JS) -->
+    <!-- Icons -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" />
     <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
@@ -49,12 +49,12 @@ $result = mysqli_query($conn, $sql);
 
 
 <?php
-// ── COMPUTE STATS ──
+// COMPUTE STATS 
 $total_records    = 0;
 $total_quantity   = 0;
 $low_stock_count  = 0;
 $out_stock_count  = 0;
-$rows_cache       = []; // cache rows so we don't re-query
+$rows_cache       = []; 
 
 if ($result && mysqli_num_rows($result) > 0) {
     while ($row = mysqli_fetch_assoc($result)) {
@@ -68,9 +68,7 @@ if ($result && mysqli_num_rows($result) > 0) {
 }
 ?>
 
-<!-- ══════════════════════════════════════════════════
-     STATS STRIP
-══════════════════════════════════════════════════ -->
+<!-- STATS STRIP-->
 <div class="stats-strip">
     <div class="stat-card">
         <div class="stat-icon"><i class="bi bi-list-ul"></i></div>
@@ -103,11 +101,6 @@ if ($result && mysqli_num_rows($result) > 0) {
 </div>
 
 
-     MAIN TABLE CARD
-<div class="main-content">
-    <div class="inventory-card">
-
-        <!-- Card Header -->
         <div class="card-header-custom">
             <h2 class="card-title-text">
                 <i class="bi bi-table"></i>

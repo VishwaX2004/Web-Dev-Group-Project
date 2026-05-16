@@ -1,13 +1,12 @@
 <?php
-// --- DATABASE CONNECTION ---
+// DATABASE CONNECTION 
 require_once __DIR__ . '/../../../backend/config/db_connection.php';
 
 $success_msg = '';
 $error_msg   = '';
 
-// ─────────────────────────────────────────
+
 // DELETE SUPPLIER (GET request)
-// ─────────────────────────────────────────
 if (isset($_GET['delete_id']) && is_numeric($_GET['delete_id'])) {
     $delete_id = (int) $_GET['delete_id'];
 
@@ -37,11 +36,8 @@ if (isset($_GET['delete_id']) && is_numeric($_GET['delete_id'])) {
         mysqli_rollback($conn);
         $error_msg = "Delete failed: " . $e->getMessage();
     }
-}
 
-// ─────────────────────────────────────────
 // ADD SUPPLIER (POST request)
-// ─────────────────────────────────────────
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['add_supplier'])) {
     $supplier_id = trim($_POST['supplier_id']);
     $name        = trim($_POST['name']);
@@ -63,9 +59,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['add_supplier'])) {
     }
 }
 
-// ─────────────────────────────────────────
+
 // FETCH ALL SUPPLIERS
-// ─────────────────────────────────────────
+
 $suppliers_result = mysqli_query($conn, "SELECT * FROM supplier ORDER BY supplier_id ASC");
 ?>
 <!DOCTYPE html>
@@ -89,9 +85,7 @@ $suppliers_result = mysqli_query($conn, "SELECT * FROM supplier ORDER BY supplie
 <!-- Main content pushed right of the fixed sidebar -->
 <div style="margin-left: 260px;">
 
-<!-- ══════════════════════════════
-     PAGE HEADER
-══════════════════════════════ -->
+<!-- PAGE HEADER -->
 <div class="page-header">
     <div class="breadcrumb-row">
         <i class="bi bi-house-door"></i> Dashboard
@@ -111,9 +105,7 @@ $suppliers_result = mysqli_query($conn, "SELECT * FROM supplier ORDER BY supplie
         </div>
     <?php endif; ?>
 
-    <!-- ══════════════════════════════
-         SECTION 1 – ADD SUPPLIER FORM
-    ══════════════════════════════ -->
+    <!-- SECTION 1 – ADD SUPPLIER FORM -->
     <div class="panel">
         <div class="panel-header">
             <h2><i class="bi bi-person-plus-fill"></i> Add New Supplier</h2>
@@ -176,9 +168,7 @@ $suppliers_result = mysqli_query($conn, "SELECT * FROM supplier ORDER BY supplie
         </div>
     </div>
 
-    <!-- ══════════════════════════════
-         SECTION 2 – SUPPLIER TABLE
-    ══════════════════════════════ -->
+    <!-- SECTION 2 – SUPPLIER TABLE -->
     <div class="panel">
         <div class="panel-header" style="justify-content:space-between; flex-wrap:wrap;">
             <h2><i class="bi bi-table"></i> All Suppliers</h2>
