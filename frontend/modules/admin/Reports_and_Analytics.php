@@ -10,13 +10,13 @@ include("../../../backend/config/db_connection.php");
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Reports & Analytics - Admin</title>
-    <link rel="stylesheet" href="../../assets/css/admin_dash.css">
+    <link rel="stylesheet" href="../../assets/css/admin_sidebar.css">
     <link rel="stylesheet" href="../../assets/css/Reports_and_Analytics.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
 
-    <?php include '../../includes/admin_sidebar.php'; ?> 
+    <?php include 'admin_sidebar.php'; ?> 
 
     <div class="main-content">
         
