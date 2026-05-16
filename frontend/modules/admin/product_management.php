@@ -23,7 +23,6 @@ $result = mysqli_query($conn, "SELECT * FROM product");
 </head>
 <body>
     <div>
-
         <?php include("../../includes/admin_sidebar.php"); ?>
     </div>
 
