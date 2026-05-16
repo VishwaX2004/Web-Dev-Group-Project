@@ -15,7 +15,7 @@ if (!$conn) {
 
 // Login wela inna user ID eka session eken ganna
 // Mehema hithamu oya login weddi $_SESSION['user_id'] = 'USR-001' wage ekak set karanawa kiyala
-$current_user_id = $_SESSION['user_id'] ?? 'USR-003'; 
+$current_user_id = $_SESSION['user_id'] ?? 'U003'; 
 
 // SQL Query: User ID eka saha Role eka 'manager' da kiyala check karanawa
 $sql = "SELECT full_name, username, email, branch_id, role FROM users 
@@ -49,15 +49,6 @@ if ($result && mysqli_num_rows($result) > 0) {
   <title>Settings — BranchPro</title>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet"/>
   <link rel="stylesheet" href="../../assets/css/BM_setting.css"/>
-  <style>
-      /* Edit karanna bari wenna cursor eka change kirima */
-      .readonly-input {
-          background: #f8faff !important;
-          cursor: not-allowed !important;
-          color: #64748b !important;
-          border: 1px solid #e2e8f0 !important;
-      }
-  </style>
 </head>
 <body>
 

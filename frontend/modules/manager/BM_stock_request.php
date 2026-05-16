@@ -52,7 +52,7 @@ if (isset($_POST['btn_submit'])) {
             <header class="header-bar">
                 <h2 class="title-text">Stock Requests</h2>
                 <div class="top-right-info">
-                    <div class="location-tag">📍 Colombo Branch — BR-001</div>
+                    <div class="location-tag">📍 Colombo Branch — B001</div>
                     <div class="notif-btn">🔔<span class="notif-dot"></span></div>
                 </div>
             </header>
@@ -125,7 +125,7 @@ if (isset($_POST['btn_submit'])) {
                 <div class="form-row">
                     <div class="form-group">
                         <label class="form-label">Branch ID</label>
-                        <input class="form-input" name="branchId" placeholder="e.g. BR-001" required>
+                        <input class="form-input" name="branchId" placeholder="e.g. B001" required>
                     </div>
                     <div class="form-group">
                         <label class="form-label">Supplier ID</label>

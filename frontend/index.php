@@ -38,14 +38,7 @@ session_start();
             <?php
             if (isset($_SESSION['error'])) {
                 echo '
-                <div style="
-                    background:#ffdede;
-                    color:#d10000;
-                    padding:10px;
-                    border-radius:6px;
-                    margin-bottom:15px;
-                    font-size:14px;
-                ">
+                <div class="error-alert">
                     '.$_SESSION['error'].'
                 </div>
                 ';

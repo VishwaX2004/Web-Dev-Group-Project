@@ -272,3 +272,4 @@ body {
         padding: 40px 30px;
     }
 }
+.error-alert { background: #ffdede; color: #d10000; padding: 10px; border-radius: 6px; margin-bottom: 15px; font-size: 14px; }

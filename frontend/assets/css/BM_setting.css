@@ -614,3 +614,4 @@ body {
   .form-row { grid-template-columns: 1fr; }
   .settings-wrapper { padding: 16px; }
 }
+.readonly-input { background: #f8faff !important; cursor: not-allowed !important; color: #64748b !important; border: 1px solid #e2e8f0 !important; }

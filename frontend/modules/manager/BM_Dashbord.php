@@ -11,7 +11,7 @@ if (!$conn) {
 }
 
 
-$branch_id = 'BR-001';
+$branch_id = 'B001';
 
 
 $stock_query = "SELECT SUM(quantity) AS total_stock FROM inventory WHERE branch_id = '$branch_id'";
