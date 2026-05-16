@@ -58,7 +58,7 @@
             <div class="card" id="reports">
                 <h3> Reports & Analytics</h3>
                 <p>Monitor revenue, stock levels, and business losses</p>
-                <a href="../../admin/" class="btn">View Reports →</a>
+                <a href="../admin/Reports_and_Analytics.php" class="btn">View Reports →</a>
             </div>
         </div>
     </div>
