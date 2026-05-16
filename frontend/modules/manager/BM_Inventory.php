@@ -1,26 +1,50 @@
 <?php
 session_start();
+// 1. ඩේටාබේස් කනෙක්ෂන් එක හරියටම චෙක් කරගන්නවා
 include("../../../backend/config/db_connection.php");
 
-// Fetch inventory data
-$branch_id = $_SESSION['branch_id'] ?? 'B001'; 
-$query = "SELECT i.inventory_id as id, i.product_id as productId, p.product_name as productName, c.category_name as category, i.quantity, i.status 
-          FROM inventory i 
-          JOIN product p ON i.product_id = p.Product_id 
-          JOIN category c ON p.category_name = c.Category_id
-          WHERE i.branch_id = '$branch_id'";
-$result = mysqli_query($conn, $query);
-$inventory_list = [];
-while ($row = mysqli_fetch_assoc($result)) {
-    $inventory_list[] = $row;
+if (!$conn) {
+    die("Connection failed: " . mysqli_connect_error());
 }
 
-// Fetch categories for the modal
-$cat_query = "SELECT Category_id, category_name FROM category";
+// 2. Branch ID එක සෙෂන් එකෙන් ගන්නවා
+$branch_id = $_SESSION['branch_id'] ?? 'B001'; 
+
+// 3. ඉන්වෙන්ටරි සහ ප්‍රොඩක්ට් ටේබල්ස් විතරක් JOIN කරන පිරිසිදු Query එක
+// (මෙහි කිසිදු තැනක 'category' නමින් ටේබල් එකක් සම්බන්ධ කර නොමැත)
+$query = "SELECT i.inventory_id as id, 
+                 i.product_id as productId, 
+                 p.product_name as productName, 
+                 p.category_name as category, 
+                 i.quantity, 
+                 i.status 
+          FROM inventory i 
+          INNER JOIN product p ON i.product_id = p.Product_id 
+          WHERE i.branch_id = '$branch_id'";
+
+$result = mysqli_query($conn, $query);
+$inventory_list = [];
+
+if ($result) {
+    while ($row = mysqli_fetch_assoc($result)) {
+        $inventory_list[] = $row;
+    }
+} else {
+    // ඇත්තටම වැරැද්ද තියෙන්නේ මෙතන නම්, error එක මෙතනින් බලාගන්න පුළුවන්
+    die("Inventory Query Failed: " . mysqli_error($conn));
+}
+
+// 4. Modal එක සඳහා Categories ටික කෙලින්ම product ටේබල් එකෙන් ගන්නවා
+$cat_query = "SELECT DISTINCT category_name FROM product WHERE category_name IS NOT NULL AND category_name != ''";
 $cat_result = mysqli_query($conn, $cat_query);
 $categories = [];
-while ($cat_row = mysqli_fetch_assoc($cat_result)) {
-    $categories[] = $cat_row;
+
+if ($cat_result) {
+    while ($cat_row = mysqli_fetch_assoc($cat_result)) {
+        $categories[] = $cat_row['category_name'];
+    }
+} else {
+    die("Category Query Failed: " . mysqli_error($conn));
 }
 ?>
 <!DOCTYPE html>
@@ -32,8 +56,7 @@ while ($cat_row = mysqli_fetch_assoc($cat_result)) {
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet" />
-    <!-- Vanilla CSS Assets -->
-    <link rel="stylesheet" href="../../assets/css/manager_layout.css">
+    <link class="main" rel="stylesheet" href="../../assets/css/manager_layout.css">
 </head>
 <body>
     <?php include 'BM_sidebar.php'; ?>
@@ -60,7 +83,6 @@ while ($cat_row = mysqli_fetch_assoc($cat_result)) {
 
         <main class="main-content">
             <div class="flex flex-col gap-6">
-                <!-- Page Title -->
                 <div class="section-header">
                     <div>
                         <h1 class="page-title flex items-center gap-3">
@@ -77,7 +99,6 @@ while ($cat_row = mysqli_fetch_assoc($cat_result)) {
                     </div>
                 </div>
 
-                <!-- Stats Grid -->
                 <div class="stats-grid">
                     <div class="card stat-card">
                         <div class="stat-header">
@@ -121,7 +142,6 @@ while ($cat_row = mysqli_fetch_assoc($cat_result)) {
                     </div>
                 </div>
 
-                <!-- Table Card -->
                 <div class="card">
                     <div class="card-header">
                         <h3 class="font-bold text-sm">Current Stock</h3>
@@ -145,12 +165,10 @@ while ($cat_row = mysqli_fetch_assoc($cat_result)) {
                                 </tr>
                             </thead>
                             <tbody id="inventory-table-body">
-                                <!-- Rendered by JS -->
-                            </tbody>
+                                </tbody>
                         </table>
                     </div>
 
-                    <!-- Pagination -->
                     <div class="card-header" style="background-color: var(--surface);">
                         <span class="text-sm text-muted">Showing entries</span>
                         <div class="flex gap-1">
@@ -165,7 +183,6 @@ while ($cat_row = mysqli_fetch_assoc($cat_result)) {
         </main>
     </div>
 
-    <!-- Add Stock Modal -->
     <div id="add-stock-modal" class="modal-overlay">
         <div class="modal-container">
             <div class="modal-header">
@@ -182,10 +199,10 @@ while ($cat_row = mysqli_fetch_assoc($cat_result)) {
                     </div>
                     <div class="form-group">
                         <label class="form-label">Category</label>
-                        <select name="category_id" required class="form-control">
+                        <select name="category_name" required class="form-control">
                             <option value="" disabled selected>Select Category...</option>
-                            <?php foreach ($categories as $cat): ?>
-                                <option value="<?php echo $cat['Category_id']; ?>"><?php echo $cat['category_name']; ?></option>
+                            <?php foreach ($categories as $cat_name): ?>
+                                <option value="<?php echo htmlspecialchars($cat_name); ?>"><?php echo htmlspecialchars($cat_name); ?></option>
                             <?php endforeach; ?>
                         </select>
                     </div>
@@ -204,9 +221,15 @@ while ($cat_row = mysqli_fetch_assoc($cat_result)) {
 
     <script src="https://code.iconify.design/iconify-icon/3.0.0/iconify-icon.min.js"></script>
     <script>
-        const inventoryData = <?php echo json_encode($inventory_list); ?>;
+        // ඩේටා ටික JS එකට පාස් කරද්දී quantity එක බලෙන්ම (int) කරලා යවනවා, එතකොට JS එකෙන් හරියටම එකතු කරනවා
+        const inventoryData = <?php 
+            $cleaned_list = array_map(function($item) {
+                $item['quantity'] = (int)$item['quantity'];
+                return $item;
+            }, $inventory_list);
+            echo json_encode($cleaned_list); 
+        ?>;
     </script>
-    <!-- Vanilla JS Assets -->
     <script src="../../assets/js/manager_logic.js"></script>
     <script src="../../assets/js/inventory.js"></script>
 </body>
