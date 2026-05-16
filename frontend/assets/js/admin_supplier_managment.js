@@ -1,8 +1,4 @@
-/**
- * Delete confirmation dialog.
- * Uses a native confirm() to prevent accidental deletions.
- * On confirmation, redirects to the same page with a GET parameter.
- */
+
 function confirmDelete(supplierId, supplierName) {
     const confirmed = window.confirm(
         "⚠️ Delete Supplier\n\n" +
@@ -14,13 +10,13 @@ function confirmDelete(supplierId, supplierName) {
     }
 }
 
-/**
- * Live client-side table filter for the supplier table.
- */
+
+// Live client-side table filter for the supplier table.
+
 function filterSuppliers() {
-    const filter  = document.getElementById('supplierSearch').value.toLowerCase().trim();
-    const rows    = document.querySelectorAll('#supplierBody tr');
-    let   visible = 0;
+    const filter = document.getElementById('supplierSearch').value.toLowerCase().trim();
+    const rows = document.querySelectorAll('#supplierBody tr');
+    let visible = 0;
 
     rows.forEach(row => {
         if (row.querySelector('.empty-state')) return; // skip empty state row
@@ -33,10 +29,9 @@ function filterSuppliers() {
     if (el) el.textContent = visible;
 }
 
-/**
- * Client-side form validation before submission.
- */
-document.getElementById('addSupplierForm').addEventListener('submit', function(e) {
+//Client-side form validation before submission.
+
+document.getElementById('addSupplierForm').addEventListener('submit', function (e) {
     const fields = ['supplier_id', 'name', 'contact', 'address'];
     let valid = true;
 

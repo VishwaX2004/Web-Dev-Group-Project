@@ -36,6 +36,7 @@ if (isset($_GET['delete_id']) && is_numeric($_GET['delete_id'])) {
         mysqli_rollback($conn);
         $error_msg = "Delete failed: " . $e->getMessage();
     }
+} // end if delete_id
 
 // ADD SUPPLIER (POST request)
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['add_supplier'])) {
