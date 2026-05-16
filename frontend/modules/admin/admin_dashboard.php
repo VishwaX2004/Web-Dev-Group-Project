@@ -12,7 +12,7 @@
 
 <div>
 
-<?php include 'admin_sidebar.php'; ?>
+ <?php include("../../includes/admin_sidebar.php"); ?>
 
 </div>
 
