@@ -11,13 +11,7 @@
 <body>
 
 <div>
-
-HEAD
-<?php require_once __DIR__ . '/../../includes/admin_sidebar.php'; ?>
-
-
- <?php include("../../includes/admin_sidebar.php"); ?>
-  ba6fe33850a47a7e4f37e1ae1aee2d2e57e8a35b
+    <?php include 'admin_sidebar.php'; ?>
 
 </div>
 
@@ -64,7 +58,7 @@ HEAD
             <div class="card" id="reports">
                 <h3> Reports & Analytics</h3>
                 <p>Monitor revenue, stock levels, and business losses</p>
-                <a href="" class="btn">View Reports →</a>
+                <a href="../../admin/" class="btn">View Reports →</a>
             </div>
         </div>
     </div>
