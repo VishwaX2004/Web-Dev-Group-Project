@@ -19,10 +19,11 @@ $result = mysqli_query($conn, "SELECT * FROM product");
     <meta charset="UTF-8">
     <title>Product Management</title>
     <link rel="stylesheet" href="../../assets/css/admin_product.css">
+    <link rel="stylesheet" href="../../assets/css/admin_sidebar.css">
 </head>
 <body>
     <div>
-            <?php include 'admin_sidebar.php'; ?>
+        <?php include("../../includes/admin_sidebar.php"); ?>
     </div>
 
     <div class="main-content">
