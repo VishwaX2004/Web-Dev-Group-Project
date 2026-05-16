@@ -9,7 +9,10 @@
 
  <div class="sidebar">
     <div class="top-section">
-        <h2>  Admin Panel</h2>
+        <h2><a href="/Web-Dev-Group-Project/frontend/modules/admin/admin_dashboard.php">
+            Admin Panel
+        </a>
+    </h2>
         <ul>
             <li><a href="/Web-Dev-Group-Project/frontend/modules/admin/user_management_frontend.php">User Management</a></li>
             <li><a href="/Web-Dev-Group-Project/frontend/modules/admin/branch_management_frontend.php">Branch Management</a></li>
