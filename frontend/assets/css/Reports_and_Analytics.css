@@ -1,0 +1,196 @@
+:root {
+    --success-green: #16a34a;
+    --success-hover: #15803d;
+    --border-color: #e2e8f0;
+    --text-dark: #0f172a;
+    --text-muted: #475569;
+    --surface: #ffffff;
+    --bg: #f8fafc;
+    --text-3: #94a3b8;
+    --border-2: #cbd5e1;
+}
+
+.main-content {
+    padding: 0 !important;
+    display: flex;
+    flex-direction: column;
+}
+
+.topbar {
+    background: var(--surface);
+    border-bottom: 1px solid var(--border-color);
+    padding: 0 28px;
+    height: 56px;
+    display: flex; 
+    align-items: center; 
+    justify-content: space-between;
+    position: sticky; 
+    top: 0; 
+    z-index: 50;
+    width: 100%;
+}
+
+.breadcrumb {
+    display: flex; 
+    align-items: center; 
+    gap: 6px;
+    font-size: 13px; 
+    color: var(--text-3);
+}
+
+.breadcrumb span.active { 
+    color: var(--text-dark); 
+    font-weight: 500; 
+}
+
+.breadcrumb-sep { 
+    color: var(--border-2); 
+}
+
+.page-body {
+    padding: 30px 40px;
+    width: 100%;
+}
+
+.page-header-section {
+    margin-bottom: 24px;
+}
+
+.page-header-section h1 {
+    color: var(--text-dark);
+    font-size: 26px;
+    font-weight: 600;
+}
+
+.page-header-section p {
+    color: var(--text-muted);
+    margin-top: 5px;
+    font-size: 14px;
+}
+
+/* Compact Excel Card Design */
+.analytics-report-card {
+    background: #ffffff;
+    border: 1px solid var(--border-color);
+    border-radius: 16px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+    padding: 20px 25px;
+    text-align: center;
+    margin-bottom: 30px;
+    width: 100%;
+}
+
+.analytics-card-content {
+    max-width: 650px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.analytics-icon {
+    font-size: 38px;
+    color: var(--success-green);
+    margin-bottom: 10px;
+}
+
+.analytics-title {
+    font-size: 18px;
+    font-weight: 600;
+    color: var(--text-dark);
+    margin-bottom: 6px;
+}
+
+.analytics-description {
+    color: var(--text-muted);
+    font-size: 13px;
+    margin-bottom: 16px;
+    line-height: 1.5;
+}
+
+
+.analytics-btn-green {
+    background-color: var(--success-green);
+    color: #ffffff;
+    padding: 10px 22px;
+    font-size: 14px;
+    font-weight: 500;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    transition: all 0.2s ease;
+}
+
+.analytics-btn-green:hover {
+    background-color: var(--success-hover);
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(22, 163, 74, 0.15);
+}
+
+.analytics-btn-green svg {
+    width: 16px;
+    height: 16px;
+}
+
+
+.analytics-table-container {
+    background: #ffffff;
+    border: 1px solid var(--border-color);
+    border-radius: 16px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+    overflow: hidden;
+    margin-top: 20px;
+    width: 100%;
+}
+
+.analytics-custom-table {
+    width: 100%;
+    border-collapse: collapse;
+    text-align: left;
+}
+
+.analytics-custom-table thead th {
+    background: #f8fafc;
+    padding: 14px 18px;
+    font-size: 12px;
+    font-weight: 600;
+    color: #94a3b8;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.analytics-custom-table tbody tr {
+    border-bottom: 1px solid var(--border-color);
+    transition: background-color 0.2s ease;
+}
+
+.analytics-custom-table tbody tr:last-child {
+    border-bottom: none;
+}
+
+.analytics-custom-table tbody tr:hover {
+    background-color: #f1f5f9;
+}
+
+.analytics-custom-table tbody td {
+    padding: 14px 18px;
+    font-size: 14px;
+    color: var(--text-dark);
+    vertical-align: middle;
+}
+
+.analytics-badge-id {
+    display: inline-flex;
+    padding: 4px 10px;
+    background: #eff6ff;
+    color: #2563eb;
+    border: 1px solid #bfdbfe;
+    border-radius: 99px;
+    font-size: 12px;
+    font-weight: 600;
+}
