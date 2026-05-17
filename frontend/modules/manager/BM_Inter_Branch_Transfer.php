@@ -58,13 +58,6 @@ while ($p_row = mysqli_fetch_assoc($product_result)) {
             </div>
           </div>
           <div class="flex items-center gap-4">
-            <div style="position: relative;">
-              <iconify-icon icon="lucide:bell" class="text-muted" style="font-size: 20px"></iconify-icon>
-              <span style="position: absolute; top: -4px; right: -4px; display: flex; height: 16px; width: 16px; align-items: center; justify-content: center; border-radius: 50%; background-color: var(--destructive); color: white; font-size: 10px; font-weight: 700;">3</span>
-            </div>
-            <div style="height: 32px; width: 32px; border-radius: 50%; background-color: var(--secondary); display: flex; align-items: center; justify-content: center; overflow: hidden; border: 1px solid var(--border);">
-              <iconify-icon icon="lucide:user" class="text-muted" style="font-size: 16px"></iconify-icon>
-            </div>
           </div>
         </header>
 
@@ -76,14 +69,7 @@ while ($p_row = mysqli_fetch_assoc($product_result)) {
                 <p class="page-subtitle">Create and monitor stock movements between branch locations.</p>
               </div>
               <div class="flex items-center gap-3">
-                <button class="btn btn-outline">
-                  <iconify-icon icon="lucide:download"></iconify-icon>
-                  Export History
-                </button>
-                <button class="btn btn-primary">
-                  <iconify-icon icon="lucide:plus"></iconify-icon>
-                  New Transfer
-                </button>
+
               </div>
             </div>
 

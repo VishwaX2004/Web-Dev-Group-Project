@@ -8,7 +8,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $product_name = $_POST['product_name'] ?? '';
     $category_id = $_POST['category_id'] ?? '';
     $quantity = intval($_POST['quantity'] ?? 0);
-    $branch_id = $_SESSION['branch_id'] ?? 'BR-001';
+    $branch_id = $_SESSION['branch_id'] ?? 'B001';
 
     if (empty($product_name) || empty($category_id) || $quantity < 0) {
         echo json_encode(['success' => false, 'message' => 'Invalid input data.']);
