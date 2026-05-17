@@ -132,10 +132,6 @@ while ($p_row = mysqli_fetch_assoc($product_result)) {
                       <iconify-icon icon="lucide:search" style="position: absolute; left: 0.75rem; top: 50%; transform: translateY(-50%); color: var(--muted-foreground); font-size: 14px;"></iconify-icon>
                       <input id="transfer-search" type="text" placeholder="Search ID..." class="form-control" style="padding-left: 2.25rem; font-size: 0.75rem; width: 12rem; height: 2.25rem;" />
                     </div>
-                    <button class="btn btn-outline" style="padding: 0.375rem 0.75rem;">
-                      <iconify-icon icon="lucide:filter" style="font-size: 14px"></iconify-icon>
-                      Filter
-                    </button>
                   </div>
                 </div>
                 
