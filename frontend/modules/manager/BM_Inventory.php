@@ -18,9 +18,9 @@ $query = "SELECT i.inventory_id as id,
                  p.category_name as category, 
                  i.quantity, 
                  i.status 
-          FROM inventory i 
-          INNER JOIN product p ON i.product_id = p.Product_id 
-          WHERE i.branch_id = '$branch_id'";
+           FROM inventory i 
+           INNER JOIN product p ON i.product_id = p.Product_id 
+           WHERE i.branch_id = '$branch_id'";
 
 $result = mysqli_query($conn, $query);
 $inventory_list = [];
@@ -46,6 +46,21 @@ if ($cat_result) {
 } else {
     die("Category Query Failed: " . mysqli_error($conn));
 }
+
+// 5. Calculate statistics directly on the server
+$total_items = 0;
+$low_stock_count = 0;
+$categories_set = [];
+foreach ($inventory_list as $item) {
+    $total_items += intval($item['quantity']);
+    if ($item['status'] === 'Low Stock' || $item['status'] === 'Critical') {
+        $low_stock_count++;
+    }
+    if (!empty($item['category'])) {
+        $categories_set[$item['category']] = true;
+    }
+}
+$total_categories = count($categories_set);
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -107,7 +122,7 @@ if ($cat_result) {
                                 <iconify-icon icon="lucide:package" style="font-size: 18px"></iconify-icon>
                             </div>
                         </div>
-                        <div id="stat-total-items" class="stat-value">0</div>
+                        <div id="stat-total-items" class="stat-value"><?php echo number_format($total_items); ?></div>
                         <div class="stat-trend trend-up">
                             <iconify-icon icon="lucide:trending-up"></iconify-icon>
                             <span>+12% from last month</span>
@@ -121,7 +136,7 @@ if ($cat_result) {
                                 <iconify-icon icon="lucide:alert-triangle" style="font-size: 18px"></iconify-icon>
                             </div>
                         </div>
-                        <div id="stat-low-stock" class="stat-value">0</div>
+                        <div id="stat-low-stock" class="stat-value"><?php echo htmlspecialchars($low_stock_count); ?></div>
                         <div class="stat-trend trend-down" style="color: var(--warning-text);">
                             <iconify-icon icon="lucide:alert-triangle"></iconify-icon>
                             <span>5 items critical</span>
@@ -135,7 +150,7 @@ if ($cat_result) {
                                 <iconify-icon icon="lucide:layers" style="font-size: 18px"></iconify-icon>
                             </div>
                         </div>
-                        <div id="stat-categories" class="stat-value">0</div>
+                        <div id="stat-categories" class="stat-value"><?php echo htmlspecialchars($total_categories); ?></div>
                         <div class="stat-trend text-muted">
                             <span>No change</span>
                         </div>
@@ -165,7 +180,53 @@ if ($cat_result) {
                                 </tr>
                             </thead>
                             <tbody id="inventory-table-body">
-                                </tbody>
+                                <?php foreach ($inventory_list as $item): 
+                                    $statusClass = 'badge-success';
+                                    if ($item['status'] === 'Low Stock' || $item['status'] === 'Critical') {
+                                        $statusClass = 'badge-warning';
+                                    } else if ($item['status'] === 'Out of Stock') {
+                                        $statusClass = ''; // Default/muted
+                                    }
+                                ?>
+                                    <tr class="inventory-row">
+                                        <td>
+                                            <div class="flex flex-col">
+                                                <span class="font-medium item-name"><?php echo htmlspecialchars($item['productName']); ?></span>
+                                                <span class="text-sm text-muted item-id"><?php echo htmlspecialchars($item['productId']); ?></span>
+                                            </div>
+                                        </td>
+                                        <td class="item-category">
+                                            <?php echo htmlspecialchars($item['category']); ?>
+                                        </td>
+                                        <td>
+                                            <span class="font-bold"><?php echo htmlspecialchars($item['quantity']); ?></span>
+                                        </td>
+                                        <td>
+                                            <span class="badge <?php echo $statusClass; ?>">
+                                                <?php echo htmlspecialchars($item['status']); ?>
+                                            </span>
+                                        </td>
+                                        <td style="text-align: right;">
+                                            <div class="flex items-center justify-end gap-2">
+                                                <button class="btn btn-outline edit-stock-btn" 
+                                                        style="border: none; padding: 0.25rem; cursor: pointer;" 
+                                                        title="Adjust Stock"
+                                                        data-id="<?php echo htmlspecialchars($item['id']); ?>"
+                                                        data-name="<?php echo htmlspecialchars($item['productName']); ?>"
+                                                        data-quantity="<?php echo htmlspecialchars($item['quantity']); ?>">
+                                                    <iconify-icon icon="lucide:edit-2" style="font-size: 16px"></iconify-icon>
+                                                </button>
+                                                <form action="BM_delete_inventory_action.php" method="POST" onsubmit="return confirm('Are you sure you want to delete this item?');" style="display:inline;">
+                                                    <input type="hidden" name="inventory_id" value="<?php echo htmlspecialchars($item['id']); ?>">
+                                                    <button type="submit" class="btn btn-outline" style="border: none; padding: 0.25rem; color: var(--destructive); cursor: pointer;" title="Delete Record">
+                                                        <iconify-icon icon="lucide:trash-2" style="font-size: 16px"></iconify-icon>
+                                                    </button>
+                                                </form>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                <?php endforeach; ?>
+                            </tbody>
                         </table>
                     </div>
 
@@ -191,7 +252,7 @@ if ($cat_result) {
                     <iconify-icon icon="lucide:x" style="font-size: 20px"></iconify-icon>
                 </button>
             </div>
-            <form id="add-stock-form">
+            <form id="add-stock-form" action="BM_add_inventory_action.php" method="POST">
                 <div class="modal-body">
                     <div class="form-group">
                         <label class="form-label">Item Name</label>
@@ -221,14 +282,13 @@ if ($cat_result) {
 
     <script src="https://code.iconify.design/iconify-icon/3.0.0/iconify-icon.min.js"></script>
     <script>
-        // ඩේටා ටික JS එකට පාස් කරද්දී quantity එක බලෙන්ම (int) කරලා යවනවා, එතකොට JS එකෙන් හරියටම එකතු කරනවා
-        const inventoryData = <?php 
-            $cleaned_list = array_map(function($item) {
-                $item['quantity'] = (int)$item['quantity'];
-                return $item;
-            }, $inventory_list);
-            echo json_encode($cleaned_list); 
-        ?>;
+        // Simple PHP alerts for success/failure redirects
+        <?php if (isset($_GET['msg'])): ?>
+            alert("<?php echo htmlspecialchars($_GET['msg']); ?>");
+        <?php endif; ?>
+        <?php if (isset($_GET['err'])): ?>
+            alert("Error: <?php echo htmlspecialchars($_GET['err']); ?>");
+        <?php endif; ?>
     </script>
     <script src="../../assets/js/manager_logic.js"></script>
     <script src="../../assets/js/inventory.js"></script>

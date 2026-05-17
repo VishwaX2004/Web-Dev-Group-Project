@@ -64,7 +64,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Damage Item Management</title>
 
-      <link rel="stylesheet" href="../../assets/css/BM_damage_item.css">
+      <link rel="stylesheet" href="../../assets/css/manager_layout.css">
 </head>
 <body>
   <div class="layout-wrapper">

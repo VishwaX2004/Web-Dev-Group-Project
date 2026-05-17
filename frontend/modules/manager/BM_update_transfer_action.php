@@ -2,8 +2,6 @@
 session_start();
 include("../../../backend/config/db_connection.php");
 
-header('Content-Type: application/json');
-
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $transfer_id = $_POST['transfer_id'] ?? '';
     $source_branch_id = $_POST['source_branch_id'] ?? '';
@@ -13,7 +11,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $status = $_POST['status'] ?? 'Pending';
 
     if (empty($transfer_id) || empty($source_branch_id) || empty($dest_branch_id) || empty($product_id) || $quantity <= 0) {
-        echo json_encode(['success' => false, 'message' => 'All fields are required and quantity must be positive.']);
+        header("Location: BM_Inter_Branch_Transfer.php?err=" . urlencode("All fields are required and quantity must be positive."));
         exit;
     }
 
@@ -26,11 +24,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
               WHERE transfer_id = '$transfer_id'";
     
     if (mysqli_query($conn, $query)) {
-        echo json_encode(['success' => true, 'message' => 'Transfer updated successfully.']);
+        header("Location: BM_Inter_Branch_Transfer.php?msg=" . urlencode("Transfer updated successfully."));
+        exit;
     } else {
-        echo json_encode(['success' => false, 'message' => 'Failed to update transfer: ' . mysqli_error($conn)]);
+        header("Location: BM_Inter_Branch_Transfer.php?err=" . urlencode("Failed to update transfer: " . mysqli_error($conn)));
+        exit;
     }
 } else {
-    echo json_encode(['success' => false, 'message' => 'Method not allowed.']);
+    header("Location: BM_Inter_Branch_Transfer.php?err=" . urlencode("Method not allowed."));
+    exit;
 }
 ?>
