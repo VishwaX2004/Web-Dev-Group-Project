@@ -6,7 +6,7 @@ header('Content-Type: application/json');
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $product_name = $_POST['product_name'] ?? '';
-    $category_id = $_POST['category_id'] ?? '';
+    $category_id = $_POST['category_id'] ?? $_POST['category_name'] ?? '';
     $quantity = intval($_POST['quantity'] ?? 0);
     $branch_id = $_SESSION['branch_id'] ?? 'B001';
 
