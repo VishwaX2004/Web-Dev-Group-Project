@@ -1,9 +1,3 @@
-/**
- * admin_inventory_overview.js
- * Live client-side table filter for the Admin Inventory Overview page.
- * Searches across all visible columns and updates the visible record count.
- */
-
 function filterTable() {
     const input  = document.getElementById('inventorySearch');
     const filter = input.value.toLowerCase().trim();
