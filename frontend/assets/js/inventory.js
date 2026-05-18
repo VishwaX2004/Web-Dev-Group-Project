@@ -34,15 +34,27 @@ document.addEventListener('DOMContentLoaded', () => {
 
     if (addStockBtn && addStockModal) {
         addStockBtn.addEventListener('click', () => {
-            const productNameInput = addStockModal.querySelector('input[name="product_name"]');
+            const productNameSelect = document.getElementById('product-name-select');
+            const productNameInput = document.getElementById('product-name-input');
             const categorySelect = addStockModal.querySelector('select[name="category_name"]');
             const quantityInput = addStockModal.querySelector('input[name="quantity"]');
             const modalTitle = addStockModal.querySelector('.modal-header h3');
             const submitBtn = addStockModal.querySelector('.modal-footer .btn-primary');
 
-            // Reset modal to creation state
-            productNameInput.value = '';
-            productNameInput.readOnly = false;
+            // Reset modal to creation state: show dropdown select, hide/disable input
+            if (productNameSelect) {
+                productNameSelect.value = '';
+                productNameSelect.style.display = '';
+                productNameSelect.disabled = false;
+                productNameSelect.required = true;
+            }
+            if (productNameInput) {
+                productNameInput.value = '';
+                productNameInput.style.display = 'none';
+                productNameInput.disabled = true;
+                productNameInput.required = false;
+            }
+
             categorySelect.value = '';
             quantityInput.value = '';
             quantityInput.placeholder = '0';
@@ -50,6 +62,20 @@ document.addEventListener('DOMContentLoaded', () => {
             submitBtn.textContent = 'Add to Inventory';
             
             addStockModal.style.display = 'flex';
+        });
+    }
+
+    // Auto-select Category when Product is selected from dropdown
+    const productNameSelect = document.getElementById('product-name-select');
+    const categorySelect = addStockModal ? addStockModal.querySelector('select[name="category_name"]') : null;
+
+    if (productNameSelect && categorySelect) {
+        productNameSelect.addEventListener('change', () => {
+            const selectedOption = productNameSelect.options[productNameSelect.selectedIndex];
+            const category = selectedOption.getAttribute('data-category');
+            if (category) {
+                categorySelect.value = category;
+            }
         });
     }
 
@@ -77,15 +103,25 @@ document.addEventListener('DOMContentLoaded', () => {
             const name = btn.getAttribute('data-name');
             const category = btn.closest('tr').querySelector('.item-category').textContent.trim();
             
-            const productNameInput = addStockModal.querySelector('input[name="product_name"]');
+            const productNameSelect = document.getElementById('product-name-select');
+            const productNameInput = document.getElementById('product-name-input');
             const categorySelect = addStockModal.querySelector('select[name="category_name"]');
             const quantityInput = addStockModal.querySelector('input[name="quantity"]');
             const modalTitle = addStockModal.querySelector('.modal-header h3');
             const submitBtn = addStockModal.querySelector('.modal-footer .btn-primary');
 
-            // Open modal in Adjust state
-            productNameInput.value = name;
-            productNameInput.readOnly = true; // Protect name edit
+            // Open modal in Adjust state: hide/disable select dropdown, show/enable readonly input
+            if (productNameSelect) {
+                productNameSelect.style.display = 'none';
+                productNameSelect.disabled = true;
+                productNameSelect.required = false;
+            }
+            if (productNameInput) {
+                productNameInput.value = name;
+                productNameInput.style.display = '';
+                productNameInput.disabled = false;
+                productNameInput.required = true;
+            }
             
             // Auto-select category
             for (let option of categorySelect.options) {

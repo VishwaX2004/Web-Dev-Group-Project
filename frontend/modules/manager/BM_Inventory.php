@@ -1,6 +1,6 @@
 <?php
 session_start();
-// 1. ඩේටාබේස් කනෙක්ෂන් එක හරියටම චෙක් කරගන්නවා
+
 include("../../../backend/config/db_connection.php");
 
 if (!$conn) {
@@ -10,8 +10,7 @@ if (!$conn) {
 // 2. Branch ID එක සෙෂන් එකෙන් ගන්නවා
 $branch_id = $_SESSION['branch_id'] ?? 'B001'; 
 
-// 3. ඉන්වෙන්ටරි සහ ප්‍රොඩක්ට් ටේබල්ස් විතරක් JOIN කරන පිරිසිදු Query එක
-// (මෙහි කිසිදු තැනක 'category' නමින් ටේබල් එකක් සම්බන්ධ කර නොමැත)
+
 $query = "SELECT i.inventory_id as id, 
                  i.product_id as productId, 
                  p.product_name as productName, 
@@ -30,11 +29,11 @@ if ($result) {
         $inventory_list[] = $row;
     }
 } else {
-    // ඇත්තටම වැරැද්ද තියෙන්නේ මෙතන නම්, error එක මෙතනින් බලාගන්න පුළුවන්
+   
     die("Inventory Query Failed: " . mysqli_error($conn));
 }
 
-// 4. Modal එක සඳහා Categories ටික කෙලින්ම product ටේබල් එකෙන් ගන්නවා
+
 $cat_query = "SELECT DISTINCT category_name FROM product WHERE category_name IS NOT NULL AND category_name != ''";
 $cat_result = mysqli_query($conn, $cat_query);
 $categories = [];
@@ -45,6 +44,18 @@ if ($cat_result) {
     }
 } else {
     die("Category Query Failed: " . mysqli_error($conn));
+}
+
+// Fetch all products for the Add Stock dropdown
+$prod_query = "SELECT DISTINCT product_name, category_name FROM product WHERE product_name IS NOT NULL AND product_name != '' ORDER BY product_name ASC";
+$prod_result = mysqli_query($conn, $prod_query);
+$all_products = [];
+if ($prod_result) {
+    while ($prod_row = mysqli_fetch_assoc($prod_result)) {
+        $all_products[] = $prod_row;
+    }
+} else {
+    die("Product Query Failed: " . mysqli_error($conn));
 }
 
 // 5. Calculate statistics directly on the server
@@ -256,7 +267,17 @@ $total_categories = count($categories_set);
                 <div class="modal-body">
                     <div class="form-group">
                         <label class="form-label">Item Name</label>
-                        <input type="text" name="product_name" required placeholder="e.g. Organic Coffee Beans" class="form-control" />
+                        <!-- Dropdown select for Add New Stock -->
+                        <select name="product_name" id="product-name-select" class="form-control" required>
+                            <option value="" disabled selected>Select Product...</option>
+                            <?php foreach ($all_products as $prod): ?>
+                                <option value="<?php echo htmlspecialchars($prod['product_name']); ?>" data-category="<?php echo htmlspecialchars($prod['category_name']); ?>">
+                                    <?php echo htmlspecialchars($prod['product_name']); ?>
+                                </option>
+                            <?php endforeach; ?>
+                        </select>
+                        <!-- Readonly textbox for Adjust Stock -->
+                        <input type="text" name="product_name" id="product-name-input" class="form-control" readonly style="display: none;" disabled />
                     </div>
                     <div class="form-group">
                         <label class="form-label">Category</label>
@@ -289,6 +310,14 @@ $total_categories = count($categories_set);
         <?php if (isset($_GET['err'])): ?>
             alert("Error: <?php echo htmlspecialchars($_GET['err']); ?>");
         <?php endif; ?>
+
+        // Clear query parameters from URL to prevent showing alerts again on page refresh
+        if (window.history.replaceState) {
+            const url = new URL(window.location.href);
+            url.searchParams.delete('msg');
+            url.searchParams.delete('err');
+            window.history.replaceState({ path: url.href }, '', url.href);
+        }
     </script>
     <script src="../../assets/js/manager_logic.js"></script>
     <script src="../../assets/js/inventory.js"></script>
