@@ -1,40 +1,56 @@
 <?php
+
+// Start the session to manage session variables like success messages
 session_start();
 
+// Include the database connection file from the backend directory
 include("../../backend/config/db_connection.php");
 
+// Check if the form is submitted using the POST method
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
-    
-    if (isset($_POST['action_type']) && $_POST['action_type'] == 'add') {
-        $damage_id = mysqli_real_escape_string($conn, $_POST['damage_id']);
-        $branch_id = mysqli_real_escape_string($conn, $_POST['branch_id']);
-        $product_id = mysqli_real_escape_string($conn, $_POST['product_id']);
-        $quantity = mysqli_real_escape_string($conn, $_POST['quantity']);
-        $reason = mysqli_real_escape_string($conn, $_POST['reason']);
-        $reported_date = mysqli_real_escape_string($conn, $_POST['reported_date']);
+   // --- ADD NEW DAMAGE RECORD ---
+    // Check if the action_type is set to 'add' 
 
+    if (isset($_POST['action_type']) && $_POST['action_type'] == 'add') {
+
+    // Retrieve form data and assign them to variables
+        $damage_id = $_POST['damage_id'];
+        $branch_id = $_POST['branch_id'];
+        $product_id =$_POST['product_id'];
+        $quantity = $_POST['quantity'];
+        $reason = $_POST['reason'];
+        $reported_date = $_POST['reported_date'];
+
+        // SQL query to insert the new damage record into the database
         $query = "INSERT INTO damaged_item (damage_id, branch_id, product_id, quantity, reason, reported_date) 
                   VALUES ('$damage_id', '$branch_id', '$product_id', '$quantity', '$reason', '$reported_date')";
 
+        // Execute the query and check if it was successful
         if (mysqli_query($conn, $query)) {
+
+        // Set a success message in the session and redirect to the same page to prevent resubmission
             $_SESSION['success_msg'] = "Damage record saved successfully!";
             header("Location: damaged_item.php");
-            exit();
+            exit(); // Stop script execution after redirect
         }
     }
 
   
+    // --- EDIT EXISTING DAMAGE RECORD ---
+    // Check if the action_type is set to 'edit'
     if (isset($_POST['action_type']) && $_POST['action_type'] == 'edit') {
-        $damage_id = mysqli_real_escape_string($conn, $_POST['damage_id']);
-        $branch_id = mysqli_real_escape_string($conn, $_POST['branch_id']);
-        $product_id = mysqli_real_escape_string($conn, $_POST['product_id']);
-        $quantity = mysqli_real_escape_string($conn, $_POST['quantity']);
-        $reason = mysqli_real_escape_string($conn, $_POST['reason']);
-        $reported_date = mysqli_real_escape_string($conn, $_POST['reported_date']);
+        $damage_id = $_POST['damage_id'];
+        $branch_id = $_POST['branch_id'];
+        $product_id =$_POST['product_id'];
+        $quantity = $_POST['quantity'];
+        $reason = $_POST['reason'];
+        $reported_date = $_POST['reported_date'];
 
+        // SQL query to update the existing record based on the damage_id
         $query = "UPDATE damaged_item SET branch_id='$branch_id', product_id='$product_id', quantity='$quantity', reason='$reason', reported_date='$reported_date' WHERE damage_id='$damage_id'";
 
+        // Execute the query and check for success
         if (mysqli_query($conn, $query)) {
             $_SESSION['success_msg'] = "Damage record updated successfully!";
             header("Location: damaged_item.php");
@@ -42,11 +58,15 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         }
     }
 
+    // --- DELETE DAMAGE RECORD ---
+    // Check if the action_type is set to 'delete'
     if (isset($_POST['action_type']) && $_POST['action_type'] == 'delete') {
-        $delete_id = mysqli_real_escape_string($conn, $_POST['delete_id']);
+        $delete_id = $_POST['delete_id'];
 
+        // SQL query to delete the record from the database
         $query = "DELETE FROM damaged_item WHERE damage_id='$delete_id'";
 
+        // Execute the query and check for success
         if (mysqli_query($conn, $query)) {
             $_SESSION['success_msg'] = "Damage record deleted successfully!";
             header("Location: damaged_item.php");
@@ -125,11 +145,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
   $result = mysqli_query($conn, $select_query);
 
   if (mysqli_num_rows($result) > 0) {
+    
+      // Loop through each row of data
       while($row = mysqli_fetch_assoc($result)) {
           
-          
+          // Clean the 'reason' text so it doesn't break JavaScript (removes new lines and quotes)
           $safe_reason = htmlspecialchars(str_replace(array("\r", "\n"), array("\\r", "\\n"), $row['reason']), ENT_QUOTES);
 
+          // Start a new table row
           echo "<tr>";
           echo "<td><span class='badge badge-critical'>" . $row['damage_id'] . "</span></td>";
           echo "<td>" . $row['branch_id'] . "</td>";
@@ -138,6 +161,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
           echo "<td>" . htmlspecialchars($row['reason']) . "</td>";
           echo "<td>" . $row['reported_date'] . "</td>";
           
+          // Add action buttons for Edit and Delete
           echo "<td>
                   <div class='action-btns'>
                     <button class='icon-btn edit-btn' onclick='editItem(\"".$row['damage_id']."\", \"".$row['branch_id']."\", \"".$row['product_id']."\", \"".$row['quantity']."\", \"".$safe_reason."\", \"".$row['reported_date']."\")'>
@@ -148,9 +172,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     </button>
                   </div>
                 </td>";
+                // Close the table row
           echo "</tr>";
       }
   } else {
+    // Show a "Not found" message if the database is empty
       echo "<tr><td colspan='7'><div class='empty-state'>No damaged items found</div></td></tr>";
   }
   ?>
@@ -163,84 +189,128 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     </div>
   </div>
 </div>
-
+<!-- The dark background overlay for the first modal (Form Modal) -->
 <div class="modal-overlay" id="formModal">
+  <!-- The main white container box for the modal -->
   <div class="modal">
+    
+    <!-- The form that sends data to 'damaged_item.php' using the POST method -->
     <form method="POST" action="damaged_item.php">
       
+      <!-- The top section of the modal (Header) -->
       <div class="modal-header">
+        <!-- The title of the modal -->
         <span class="modal-title" id="modalTitle">Report Damaged Item</span>
+        <!-- The close button. Clicking it triggers the 'closeModal' JavaScript function -->
         <button type="button" class="icon-btn" onclick="closeModal('formModal')" style="border:none;">
+          <!-- SVG icon for the "X" (close) mark -->
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
         </button>
       </div>
 
+      <!-- The main content area of the modal where inputs are placed (Body) -->
       <div class="modal-body">
         
+        <!-- A hidden input field. This tells the server if the action is to "add" a new record or update an existing one -->
         <input type="hidden" name="action_type" id="actionType" value="add">
         
+        <!-- A row container to place multiple form fields side-by-side -->
         <div class="form-row">
+          
+          <!-- Input group for the Damage ID -->
           <div class="form-group">
             <label class="form-label">Damage ID *</label>
+            <!-- A required text input for the Damage ID -->
             <input class="form-input" name="damage_id" id="fItemId" type="text" placeholder="e.g. DMG-0042" required>
           </div>
+          
+          <!-- Input group for the Branch ID -->
           <div class="form-group">
             <label class="form-label">Branch ID *</label>
             <input class="form-input" name="branch_id" id="fbrancId" type="text" placeholder="e.g. BR-001" required>
           </div>
+          
+          <!-- Input group for the Product ID -->
           <div class="form-group">
             <label class="form-label">Product ID *</label>
             <input class="form-input" name="product_id" id="fProductId" type="text" placeholder="e.g. PR0D-1234" required>
           </div>
+          
+          <!-- Input group for the Quantity -->
           <div class="form-group">
             <label class="form-label">Quantity *</label>
+            <!-- A required number input for the quantity (only accepts numbers) -->
             <input class="form-input" name="quantity" id="fQuantity" type="number" placeholder="e.g. 5" required>
           </div>
         </div>
+        
+        <!-- Input group for the Reason for Damage -->
         <div class="form-group">
           <label class="form-label">Reason for Damage *</label>
+          <!-- A textarea for writing a longer description of the damage -->
           <textarea class="form-textarea" name="reason" id="fDescription" placeholder="Describe the damage in detail…" required></textarea>
         </div>
+        
+        <!-- Input group for the Date Reported -->
         <div class="form-group">
           <label class="form-label">Date Reported *</label>
+          <!-- A date picker input -->
           <input class="form-input" name="reported_date" id="fDate" type="date" required>
         </div>
       </div>
+      
+      <!-- The bottom section of the modal containing the action buttons (Footer) -->
       <div class="modal-footer"> 
+        <!-- Button to cancel and close the modal without saving -->
         <button type="button" class="btn btn-ghost" onclick="closeModal('formModal')">Cancel</button>
+        <!-- The main submit button to save the form data to the database -->
         <button type="submit" name="save_damage" class="btn btn-primary">Save Record</button>
       </div>
     </form>
   </div>
 </div>
 
+<!-- A second modal used only for viewing item details (Read-only) -->
 <div class="modal-overlay" id="viewModal">
   <div class="modal">
+    
+    <!-- Header of the View Modal -->
     <div class="modal-header">
       <span class="modal-title">Item Details</span>
       <button class="icon-btn" onclick="closeModal('viewModal')" style="border:none;">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
       </button>
     </div>
+    
+    <!-- An empty body. JavaScript will dynamically insert the item details here when a user clicks "View" -->
     <div class="modal-body" id="viewBody"></div>
+    
+    <!-- Footer of the View Modal with a close button -->
     <div class="modal-footer">
       <button class="btn btn-ghost" onclick="closeModal('viewModal')">Close</button>
     </div>
   </div>
 </div>
 
+<!-- A small pop-up notification box (Toast) that appears temporarily to show success/error messages -->
 <div class="toast" id="toast">
+  <!-- SVG icon for a checkmark (tick) -->
   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+  <!-- The span where the notification text will be injected by JavaScript -->
   <span id="toastMsg"></span>
 </div>
 
+<!-- A hidden form specifically used for deleting records (display is set to none so users can't see it) -->
 <form id="deleteForm" method="POST" action="damaged_item.php" style="display:none;">
+    <!-- Tells the server that the requested action is to "delete" -->
     <input type="hidden" name="action_type" value="delete">
+    <!-- The ID of the item to be deleted will be placed here by JavaScript before submitting -->
     <input type="hidden" name="delete_id" id="deleteId">
 </form>
 
+<!-- Links the external JavaScript file that contains all the interactive functions for this page -->
 <script src="../../assets/js/damaged_item.js"></script>
 
-
+<!-- End of the HTML body and document -->
 </body>
 </html>
