@@ -1,6 +1,8 @@
 <?php
+// Start a new session or resume the existing one (used to keep track of logged-in user data)
 session_start();
 
+// Include the database connection file to allow this page to communicate with the database
 include("../../../backend/config/db_connection.php"); 
 ?>
 
@@ -10,6 +12,7 @@ include("../../../backend/config/db_connection.php");
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Reports & Analytics - Admin</title>
+    
     <link rel="stylesheet" href="../../assets/css/admin_sidebar.css">
     <link rel="stylesheet" href="../../assets/css/Reports_and_Analytics.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -67,6 +70,8 @@ include("../../../backend/config/db_connection.php");
                     </thead>
                     <tbody>
                         <?php
+                        // The SQL query to fetch data from the database.
+                        // It uses the 'product' table as the base and uses subqueries to calculate the total (SUM) of sales, revenue, inventory, and damages for each product.
                         $query = "
                             SELECT 
                                 p.Product_id, 
@@ -80,27 +85,39 @@ include("../../../backend/config/db_connection.php");
                             ORDER BY p.Product_id ASC
                         ";
                         
+                        // Execute the SQL query against the database connection
                         $result = mysqli_query($conn, $query);
                         
+                        // Check if the query returned more than 0 rows (meaning data exists)
                         if (mysqli_num_rows($result) > 0) {
+                            // Loop through the result set row by row as an associative array
                             while ($row = mysqli_fetch_assoc($result)) {
                                 echo "<tr>";
+                                // Output the Product ID wrapped in a styling badge
                                 echo "<td><span class='analytics-badge-id'>" . $row['Product_id'] . "</span></td>";
+                                // Output the Product Name (htmlspecialchars prevents XSS security vulnerabilities)
                                 echo "<td><strong>" . htmlspecialchars($row['product_name']) . "</strong></td>";
+                                // Output the Category Name
                                 echo "<td>" . htmlspecialchars($row['category_name']) . "</td>";
+                                // Output the Total Sold Quantity
                                 echo "<td>" . $row['total_sales_qty'] . "</td>";
+                                // Output the Total Revenue formatted to 2 decimal places and styled in green
                                 echo "<td style='color: #16a34a; font-weight:600;'>" . number_format($row['total_revenue'], 2) . "</td>";
+                                // Output the Current Inventory level
                                 echo "<td>" . $row['current_inventory'] . "</td>";
+                                // Output the Total Damaged amount styled in red
                                 echo "<td style='color: #dc2626; font-weight:600;'>" . $row['total_damaged'] . "</td>";
                                 echo "</tr>";
                             }
                         } else {
+                            // If no records are found in the database, display this empty state message
                             echo "<tr><td colspan='7' style='text-align:center; padding: 30px;'>No records found</td></tr>";
                         }
                         ?>
                     </tbody>
                 </table>
             </div>
-        </div> </div>
+        </div> 
+    </div>
 </body>
 </html>
