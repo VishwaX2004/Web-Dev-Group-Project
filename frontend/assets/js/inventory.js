@@ -2,12 +2,8 @@
  * Inventory Management (Vanilla JS)
  */
 
-// Sample data fallback
 if (typeof inventoryData === 'undefined') {
-    window.inventoryData = [
-        { id: 'INV-701', productId: 'PROD-001', productName: 'Hydrating Face Serum', category: 'Skincare', quantity: 45, status: 'In Stock' },
-        { id: 'INV-702', productId: 'PROD-002', productName: 'Matte Lipstick - Ruby', category: 'Makeup', quantity: 5, status: 'Low Stock' }
-    ];
+    window.inventoryData = [];
 }
 
 function renderInventory(data = inventoryData) {
@@ -22,7 +18,7 @@ function renderInventory(data = inventoryData) {
         if (item.status === 'Low Stock' || item.status === 'Critical') {
             statusClass = 'badge-warning';
         } else if (item.status === 'Out of Stock') {
-            statusClass = ''; // Default/muted
+            statusClass = '';
         }
 
         tr.innerHTML = `
@@ -32,22 +28,11 @@ function renderInventory(data = inventoryData) {
                     <span class="text-sm text-muted">${item.productId}</span>
                 </div>
             </td>
-            <td>
-                ${item.category}
-            </td>
-            <td>
-                <span class="font-bold">${item.quantity}</span>
-            </td>
-            <td>
-                <span class="badge ${statusClass}">
-                    ${item.status}
-                </span>
-            </td>
+            <td>${item.category}</td>
+            <td><span class="font-bold">${item.quantity}</span></td>
+            <td><span class="badge ${statusClass}">${item.status}</span></td>
             <td style="text-align: right;">
                 <div class="flex items-center justify-end gap-2">
-                    <button class="btn btn-outline" style="border: none; padding: 0.25rem;" title="Adjust Stock" onclick="adjustStock('${item.id}')">
-                        <iconify-icon icon="lucide:edit-2" style="font-size: 16px"></iconify-icon>
-                    </button>
                     <button class="btn btn-outline" style="border: none; padding: 0.25rem; color: var(--destructive);" title="Delete Record" onclick="deleteItem('${item.id}')">
                         <iconify-icon icon="lucide:trash-2" style="font-size: 16px"></iconify-icon>
                     </button>
@@ -74,39 +59,29 @@ function updateStats() {
     if (elCat) elCat.textContent = categoriesCount;
 }
 
-function adjustStock(id) {
-    const item = inventoryData.find(i => i.id === id);
-    if (!item) return;
+document.addEventListener('DOMContentLoaded', () => {
+    // 1. Auto-select category when product changes
+    const productSelect = document.getElementById('product-name-select');
+    const categorySelect = document.getElementById('category-select');
 
-    const newQty = prompt(`Adjust quantity for ${item.productName}:`, item.quantity);
-    if (newQty !== null) {
-        item.quantity = parseInt(newQty);
-        renderInventory();
-    }
-}
-
-function deleteItem(id) {
-    if (confirm('Are you sure you want to delete this item?')) {
-        const formData = new FormData();
-        formData.append('inventory_id', id);
-
-        fetch('BM_delete_inventory_action.php', {
-            method: 'POST',
-            body: formData
-        })
-        .then(res => res.json())
-        .then(data => {
-            if (data.success) {
-                alert(data.message);
-                location.reload();
-            } else {
-                alert('Error: ' + data.message);
+    if (productSelect && categorySelect) {
+        productSelect.addEventListener('change', function() {
+            const selectedOption = this.options[this.selectedIndex];
+            const category = selectedOption.getAttribute('data-category');
+            
+            if (category) {
+                // Find and select the matching category
+                for (let i = 0; i < categorySelect.options.length; i++) {
+                    if (categorySelect.options[i].value === category) {
+                        categorySelect.selectedIndex = i;
+                        break;
+                    }
+                }
             }
         });
     }
-}
 
-document.addEventListener('DOMContentLoaded', () => {
+    // 2. Search filtering
     const searchInput = document.getElementById('inventory-search');
     if (searchInput) {
         searchInput.addEventListener('input', (e) => {
@@ -120,24 +95,37 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
+    // 3. Form Submission Handling
     const form = document.getElementById('add-stock-form');
     if (form) {
         form.addEventListener('submit', (e) => {
             e.preventDefault();
+            
             const formData = new FormData(form);
+            
+            // Temporary fix for disabled dropdown not sending value
+            if(categorySelect.disabled || categorySelect.hasAttribute('readonly')) {
+                formData.append('category_name', categorySelect.value);
+            }
+
+            const params = new URLSearchParams(formData);
 
             fetch('BM_add_inventory_action.php', {
                 method: 'POST',
-                body: formData
+                body: params
             })
             .then(res => res.json())
             .then(data => {
                 if (data.success) {
-                    alert(data.message);
-                    location.reload();
+                    alert(data.message || "Stock added successfully!");
+                    location.reload(); // Refresh the page to see new data
                 } else {
                     alert('Error: ' + data.message);
                 }
+            })
+            .catch(err => {
+                console.error("Submission Error: ", err);
+                alert("Server error occurred. Please check console.");
             });
         });
     }

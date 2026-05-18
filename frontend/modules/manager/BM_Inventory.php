@@ -7,10 +7,10 @@ if (!$conn) {
     die("Connection failed: " . mysqli_connect_error());
 }
 
-// 2. Branch ID එක සෙෂන් එකෙන් ගන්නවා
+// Branch ID එක සෙෂන් එකෙන් ගන්නවා
 $branch_id = $_SESSION['branch_id'] ?? 'B001'; 
 
-
+// --- GET INVENTORY DATA (මේ බ්‍රාන්ච් එකට විතරයි) ---
 $query = "SELECT i.inventory_id as id, 
                  i.product_id as productId, 
                  p.product_name as productName, 
@@ -29,11 +29,10 @@ if ($result) {
         $inventory_list[] = $row;
     }
 } else {
-   
     die("Inventory Query Failed: " . mysqli_error($conn));
 }
 
-
+// --- GET CATEGORIES ---
 $cat_query = "SELECT DISTINCT category_name FROM product WHERE category_name IS NOT NULL AND category_name != ''";
 $cat_result = mysqli_query($conn, $cat_query);
 $categories = [];
@@ -42,8 +41,17 @@ if ($cat_result) {
     while ($cat_row = mysqli_fetch_assoc($cat_result)) {
         $categories[] = $cat_row['category_name'];
     }
-} else {
-    die("Category Query Failed: " . mysqli_error($conn));
+}
+
+// --- GET ALL PRODUCTS FOR DROPDOWN ---
+$prod_query = "SELECT Product_id, product_name, category_name FROM product";
+$prod_result = mysqli_query($conn, $prod_query);
+$all_products = [];
+
+if ($prod_result) {
+    while ($prod_row = mysqli_fetch_assoc($prod_result)) {
+        $all_products[] = $prod_row;
+    }
 }
 ?>
 <!DOCTYPE html>
@@ -69,15 +77,6 @@ if ($cat_result) {
                 <span class="font-medium">Inventory</span>
               </div>
             </div>
-            <div class="flex items-center gap-4">
-              <div style="position: relative;">
-                <iconify-icon icon="lucide:bell" class="text-muted" style="font-size: 20px"></iconify-icon>
-                <span style="position: absolute; top: -4px; right: -4px; display: flex; height: 16px; width: 16px; align-items: center; justify-content: center; border-radius: 50%; background-color: var(--destructive); color: white; font-size: 10px; font-weight: 700;">3</span>
-              </div>
-              <div style="height: 32px; width: 32px; border-radius: 50%; background-color: var(--secondary); display: flex; align-items: center; justify-content: center; overflow: hidden; border: 1px solid var(--border);">
-                <iconify-icon icon="lucide:user" class="text-muted" style="font-size: 16px"></iconify-icon>
-              </div>
-            </div>
         </header>
 
         <main class="main-content">
@@ -86,7 +85,7 @@ if ($cat_result) {
                     <div>
                         <h1 class="page-title flex items-center gap-3">
                             Inventory Management
-                            <span class="badge" style="background-color: var(--secondary); border: 1px solid var(--border); font-weight: 400;">Branch: Colombo-01</span>
+                            <span class="badge" style="background-color: var(--secondary); border: 1px solid var(--border); font-weight: 400;">Branch: <?php echo htmlspecialchars($branch_id); ?></span>
                         </h1>
                         <p class="page-subtitle">Manage and monitor stock levels for your assigned branch.</p>
                     </div>
@@ -102,42 +101,20 @@ if ($cat_result) {
                     <div class="card stat-card">
                         <div class="stat-header">
                             <span class="text-sm font-medium text-muted">Total Items in Stock</span>
-                            <div style="padding: 0.5rem; border-radius: 0.375rem; background-color: var(--secondary); color: var(--primary);">
-                                <iconify-icon icon="lucide:package" style="font-size: 18px"></iconify-icon>
-                            </div>
                         </div>
                         <div id="stat-total-items" class="stat-value">0</div>
-                        <div class="stat-trend trend-up">
-                            <iconify-icon icon="lucide:trending-up"></iconify-icon>
-                            <span>+12% from last month</span>
-                        </div>
                     </div>
-
                     <div class="card stat-card" style="border-color: rgba(245, 158, 11, 0.5);">
                         <div class="stat-header">
                             <span class="text-sm font-medium text-muted">Low Stock Alerts</span>
-                            <div style="padding: 0.5rem; border-radius: 0.375rem; background-color: var(--warning-light); color: var(--warning-text);">
-                                <iconify-icon icon="lucide:alert-triangle" style="font-size: 18px"></iconify-icon>
-                            </div>
                         </div>
                         <div id="stat-low-stock" class="stat-value">0</div>
-                        <div class="stat-trend trend-down" style="color: var(--warning-text);">
-                            <iconify-icon icon="lucide:alert-triangle"></iconify-icon>
-                            <span>5 items critical</span>
-                        </div>
                     </div>
-
                     <div class="card stat-card">
                         <div class="stat-header">
                             <span class="text-sm font-medium text-muted">Total Categories</span>
-                            <div style="padding: 0.5rem; border-radius: 0.375rem; background-color: var(--secondary); color: var(--primary);">
-                                <iconify-icon icon="lucide:layers" style="font-size: 18px"></iconify-icon>
-                            </div>
                         </div>
                         <div id="stat-categories" class="stat-value">0</div>
-                        <div class="stat-trend text-muted">
-                            <span>No change</span>
-                        </div>
                     </div>
                 </div>
 
@@ -151,7 +128,6 @@ if ($cat_result) {
                             </div>
                         </div>
                     </div>
-                    
                     <div class="table-container">
                         <table class="data-table">
                             <thead>
@@ -164,18 +140,8 @@ if ($cat_result) {
                                 </tr>
                             </thead>
                             <tbody id="inventory-table-body">
-                                </tbody>
+                            </tbody>
                         </table>
-                    </div>
-
-                    <div class="card-header" style="background-color: var(--surface);">
-                        <span class="text-sm text-muted">Showing entries</span>
-                        <div class="flex gap-1">
-                            <button class="btn btn-outline" style="padding: 0.25rem 0.75rem;" disabled>Prev</button>
-                            <button class="btn btn-primary" style="padding: 0.25rem 0.75rem;">1</button>
-                            <button class="btn btn-outline" style="padding: 0.25rem 0.75rem;">2</button>
-                            <button class="btn btn-outline" style="padding: 0.25rem 0.75rem;">Next</button>
-                        </div>
                     </div>
                 </div>
             </div>
@@ -194,27 +160,24 @@ if ($cat_result) {
                 <div class="modal-body">
                     <div class="form-group">
                         <label class="form-label">Item Name</label>
-                        <!-- Dropdown select for Add New Stock -->
-                        <select name="product_name" id="product-name-select" class="form-control" required>
+                        <select name="product_id" id="product-name-select" class="form-control" required>
                             <option value="" disabled selected>Select Product...</option>
                             <?php foreach ($all_products as $prod): ?>
-                                <option value="<?php echo htmlspecialchars($prod['product_name']); ?>" data-category="<?php echo htmlspecialchars($prod['category_name']); ?>">
+                                <option value="<?php echo htmlspecialchars($prod['Product_id']); ?>" data-category="<?php echo htmlspecialchars($prod['category_name']); ?>">
                                     <?php echo htmlspecialchars($prod['product_name']); ?>
                                 </option>
                             <?php endforeach; ?>
                         </select>
-                        <!-- Readonly textbox for Adjust Stock -->
-                        <input type="text" name="product_name" id="product-name-input" class="form-control" readonly style="display: none;" disabled />
                     </div>
                     <div class="form-group">
                         <label class="form-label">Category</label>
-                        <select name="category_name" required class="form-control">
+                        <select name="category_name" id="category-select" required class="form-control" readonly style="pointer-events: none; background-color: #f3f4f6;">
                             <option value="" disabled selected>Select Category...</option>
                             <?php foreach ($categories as $cat_name): ?>
                                 <option value="<?php echo htmlspecialchars($cat_name); ?>"><?php echo htmlspecialchars($cat_name); ?></option>
                             <?php endforeach; ?>
                         </select>
-                    </div>
+                        </div>
                     <div class="form-group">
                         <label class="form-label">Quantity</label>
                         <input type="number" name="quantity" required min="1" placeholder="0" class="form-control" />
@@ -230,7 +193,6 @@ if ($cat_result) {
 
     <script src="https://code.iconify.design/iconify-icon/3.0.0/iconify-icon.min.js"></script>
     <script>
-        // ඩේටා ටික JS එකට පාස් කරද්දී quantity එක බලෙන්ම (int) කරලා යවනවා, එතකොට JS එකෙන් හරියටම එකතු කරනවා
         const inventoryData = <?php 
             $cleaned_list = array_map(function($item) {
                 $item['quantity'] = (int)$item['quantity'];
