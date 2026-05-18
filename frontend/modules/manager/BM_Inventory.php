@@ -267,15 +267,13 @@ $total_categories = count($categories_set);
                 <div class="modal-body">
                     <div class="form-group">
                         <label class="form-label">Item Name</label>
-                        <!-- Dropdown select for Add New Stock -->
-                        <select name="product_name" id="product-name-select" class="form-control" required>
-                            <option value="" disabled selected>Select Product...</option>
+                        <!-- Searchable Datalist Input for Add New Stock -->
+                        <input type="text" name="product_name" id="product-name-select" list="products-datalist" placeholder="Type or select product..." class="form-control" required />
+                        <datalist id="products-datalist">
                             <?php foreach ($all_products as $prod): ?>
                                 <option value="<?php echo htmlspecialchars($prod['product_name']); ?>" data-category="<?php echo htmlspecialchars($prod['category_name']); ?>">
-                                    <?php echo htmlspecialchars($prod['product_name']); ?>
-                                </option>
                             <?php endforeach; ?>
-                        </select>
+                        </datalist>
                         <!-- Readonly textbox for Adjust Stock -->
                         <input type="text" name="product_name" id="product-name-input" class="form-control" readonly style="display: none;" disabled />
                     </div>

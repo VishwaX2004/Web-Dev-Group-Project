@@ -65,16 +65,22 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // Auto-select Category when Product is selected from dropdown
+    // Auto-select Category when Product is typed/selected in searchable list
     const productNameSelect = document.getElementById('product-name-select');
     const categorySelect = addStockModal ? addStockModal.querySelector('select[name="category_name"]') : null;
 
     if (productNameSelect && categorySelect) {
-        productNameSelect.addEventListener('change', () => {
-            const selectedOption = productNameSelect.options[productNameSelect.selectedIndex];
-            const category = selectedOption.getAttribute('data-category');
-            if (category) {
-                categorySelect.value = category;
+        productNameSelect.addEventListener('input', () => {
+            const val = productNameSelect.value;
+            const datalist = document.getElementById('products-datalist');
+            if (datalist) {
+                const option = Array.from(datalist.options).find(opt => opt.value === val);
+                if (option) {
+                    const category = option.getAttribute('data-category');
+                    if (category) {
+                        categorySelect.value = category;
+                    }
+                }
             }
         });
     }
