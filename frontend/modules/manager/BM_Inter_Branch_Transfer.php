@@ -10,8 +10,7 @@ $query = "SELECT t.transfer_id as id, sb.branch_name as source, db.branch_name a
           JOIN branch sb ON t.source_branch_id = sb.branch_id
           JOIN branch db ON t.dest_branch_id = db.branch_id
           JOIN product p ON t.product_id = p.Product_id
-          WHERE t.source_branch_id = '$branch_id' OR t.dest_branch_id = '$branch_id'
-          ORDER BY LENGTH(t.transfer_id) DESC, t.transfer_id DESC";
+          WHERE t.source_branch_id = '$branch_id' OR t.dest_branch_id = '$branch_id'";
 $result = mysqli_query($conn, $query);
 $transfer_list = [];
 while ($row = mysqli_fetch_assoc($result)) {
@@ -83,7 +82,7 @@ while ($p_row = mysqli_fetch_assoc($product_result)) {
                     <p class="text-sm text-muted">Initiate a new stock movement</p>
                   </div>
                 </div>
-                <form id="create-transfer-form" action="BM_create_transfer_action.php" method="POST" style="padding: 1.5rem; display: flex; flex-direction: column; gap: 1rem;">
+                <form id="create-transfer-form" style="padding: 1.5rem; display: flex; flex-direction: column; gap: 1rem;">
                     <div class="form-group">
                       <label class="form-label">Source Branch</label>
                       <select name="source_branch_id" required class="form-control">
@@ -133,6 +132,10 @@ while ($p_row = mysqli_fetch_assoc($product_result)) {
                       <iconify-icon icon="lucide:search" style="position: absolute; left: 0.75rem; top: 50%; transform: translateY(-50%); color: var(--muted-foreground); font-size: 14px;"></iconify-icon>
                       <input id="transfer-search" type="text" placeholder="Search ID..." class="form-control" style="padding-left: 2.25rem; font-size: 0.75rem; width: 12rem; height: 2.25rem;" />
                     </div>
+                    <button class="btn btn-outline" style="padding: 0.375rem 0.75rem;">
+                      <iconify-icon icon="lucide:filter" style="font-size: 14px"></iconify-icon>
+                      Filter
+                    </button>
                   </div>
                 </div>
                 
@@ -148,54 +151,7 @@ while ($p_row = mysqli_fetch_assoc($product_result)) {
                       </tr>
                     </thead>
                     <tbody id="transfer-table-body">
-                      <?php foreach ($transfer_list as $item): 
-                          $statusClass = 'badge-warning';
-                          if ($item['status'] === 'Completed') {
-                              $statusClass = 'badge-success';
-                          } else if ($item['status'] === 'Cancelled' || $item['status'] === 'Rejected') {
-                              $statusClass = ''; // Default
-                          }
-                      ?>
-                        <tr class="transfer-row">
-                          <td>
-                              <div class="flex flex-col">
-                                  <span class="font-medium transfer-id"><?php echo htmlspecialchars($item['id']); ?></span>
-                                  <span class="text-sm text-muted"><?php echo htmlspecialchars($item['date']); ?></span>
-                              </div>
-                          </td>
-                          <td>
-                              <div class="flex items-center gap-2 text-sm">
-                                  <span class="transfer-source"><?php echo htmlspecialchars($item['source']); ?></span>
-                                  <iconify-icon icon="lucide:arrow-right" class="text-muted" style="font-size: 14px"></iconify-icon>
-                                  <span class="font-medium transfer-destination"><?php echo htmlspecialchars($item['destination']); ?></span>
-                              </div>
-                          </td>
-                          <td>
-                              <div class="flex flex-col">
-                                  <span class="font-medium transfer-product"><?php echo htmlspecialchars($item['product']); ?></span>
-                                  <span class="text-sm text-muted"><?php echo htmlspecialchars($item['quantity']); ?> Units</span>
-                              </div>
-                          </td>
-                          <td>
-                              <span class="badge <?php echo $statusClass; ?>">
-                                  <?php echo htmlspecialchars($item['status']); ?>
-                              </span>
-                          </td>
-                          <td style="text-align: right;">
-                              <button class="btn btn-outline edit-btn" 
-                                      style="border: none; padding: 0.375rem; cursor: pointer;" 
-                                      title="Edit Transfer" 
-                                      data-id="<?php echo htmlspecialchars($item['id']); ?>"
-                                      data-source-id="<?php echo htmlspecialchars($item['source_branch_id']); ?>"
-                                      data-dest-id="<?php echo htmlspecialchars($item['dest_branch_id']); ?>"
-                                      data-product-id="<?php echo htmlspecialchars($item['product_id']); ?>"
-                                      data-quantity="<?php echo htmlspecialchars($item['quantity']); ?>"
-                                      data-status="<?php echo htmlspecialchars($item['status']); ?>">
-                                  <iconify-icon icon="lucide:edit-2" style="font-size: 16px"></iconify-icon>
-                              </button>
-                          </td>
-                        </tr>
-                      <?php endforeach; ?>
+                      <!-- Rendered by JS -->
                     </tbody>
                   </table>
                 </div>
@@ -220,7 +176,7 @@ while ($p_row = mysqli_fetch_assoc($product_result)) {
               <iconify-icon icon="lucide:x" style="font-size: 20px"></iconify-icon>
             </button>
           </div>
-          <form id="update-transfer-form" action="BM_update_transfer_action.php" method="POST">
+          <form id="update-transfer-form">
             <input type="hidden" name="transfer_id" id="update-transfer-id" />
             <div class="modal-body">
               <div class="form-group">
@@ -271,13 +227,8 @@ while ($p_row = mysqli_fetch_assoc($product_result)) {
 
     <script src="https://code.iconify.design/iconify-icon/3.0.0/iconify-icon.min.js"></script>
     <script>
-        // Simple PHP alerts for success/failure redirects
-        <?php if (isset($_GET['msg'])): ?>
-            alert("<?php echo htmlspecialchars($_GET['msg']); ?>");
-        <?php endif; ?>
-        <?php if (isset($_GET['err'])): ?>
-            alert("Error: <?php echo htmlspecialchars($_GET['err']); ?>");
-        <?php endif; ?>
+        // Data from PHP
+        const transferData = <?php echo json_encode($transfer_list); ?>;
     </script>
     <!-- Vanilla JS Assets -->
     <script src="../../assets/js/manager_logic.js"></script>

@@ -1,8 +1,3 @@
-/**
- * Delete confirmation dialog.
- * Uses a native confirm() to prevent accidental deletions.
- * On confirmation, redirects to the same page with a GET parameter.
- */
 function confirmDelete(supplierId, supplierName) {
     const confirmed = window.confirm(
         "⚠️ Delete Supplier\n\n" +

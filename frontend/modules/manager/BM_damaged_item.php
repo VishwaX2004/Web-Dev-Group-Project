@@ -64,7 +64,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Damage Item Management</title>
 
-      <link rel="stylesheet" href="../../assets/css/manager_layout.css">
+      <link rel="stylesheet" href="../../assets/css/BM_damage_item.css">
 </head>
 <body>
   <div class="layout-wrapper">
@@ -189,7 +189,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
           </div>
           <div class="form-group">
             <label class="form-label">Branch ID *</label>
-            <input class="form-input" name="branch_id" id="fbrancId" type="text" placeholder="e.g. B001" required>
+            <input class="form-input" name="branch_id" id="fbrancId" type="text" placeholder="e.g. BR-001" required>
           </div>
           <div class="form-group">
             <label class="form-label">Product ID *</label>

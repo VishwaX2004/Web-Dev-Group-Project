@@ -2,14 +2,16 @@
 session_start();
 include("../../../backend/config/db_connection.php");
 
+header('Content-Type: application/json');
+
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $product_name = $_POST['product_name'] ?? '';
-    $category_id = $_POST['category_id'] ?? $_POST['category_name'] ?? '';
+    $category_id = $_POST['category_id'] ?? '';
     $quantity = intval($_POST['quantity'] ?? 0);
-    $branch_id = $_SESSION['branch_id'] ?? 'B001';
+    $branch_id = $_SESSION['branch_id'] ?? 'BR-001';
 
     if (empty($product_name) || empty($category_id) || $quantity < 0) {
-        header("Location: BM_Inventory.php?err=" . urlencode("Invalid input data."));
+        echo json_encode(['success' => false, 'message' => 'Invalid input data.']);
         exit;
     }
 
@@ -25,7 +27,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $product_id = 'PROD-' . rand(1000, 9999);
         $insert_product = "INSERT INTO product (Product_id, product_name, category_name, price) VALUES ('$product_id', '$product_name', '$category_id', 0.00)";
         if (!mysqli_query($conn, $insert_product)) {
-            header("Location: BM_Inventory.php?err=" . urlencode("Failed to create product."));
+            echo json_encode(['success' => false, 'message' => 'Failed to create product.']);
             exit;
         }
     }
@@ -42,26 +44,21 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         
         $update_inv = "UPDATE inventory SET quantity = $new_qty, status = '$status' WHERE inventory_id = '$inv_id'";
         if (mysqli_query($conn, $update_inv)) {
-            header("Location: BM_Inventory.php?msg=" . urlencode("Stock updated successfully."));
-            exit;
+            echo json_encode(['success' => true, 'message' => 'Stock updated successfully.']);
         } else {
-            header("Location: BM_Inventory.php?err=" . urlencode("Failed to update inventory."));
-            exit;
+            echo json_encode(['success' => false, 'message' => 'Failed to update inventory.']);
         }
     } else {
         $inv_id = 'INV-' . rand(1000, 9999);
         $status = ($quantity <= 0) ? 'Out of Stock' : (($quantity < 10) ? 'Low Stock' : 'In Stock');
         $insert_inv = "INSERT INTO inventory (inventory_id, branch_id, product_id, quantity, status) VALUES ('$inv_id', '$branch_id', '$product_id', $quantity, '$status')";
         if (mysqli_query($conn, $insert_inv)) {
-            header("Location: BM_Inventory.php?msg=" . urlencode("New stock record created."));
-            exit;
+            echo json_encode(['success' => true, 'message' => 'New stock record created.']);
         } else {
-            header("Location: BM_Inventory.php?err=" . urlencode("Failed to create inventory record."));
-            exit;
+            echo json_encode(['success' => false, 'message' => 'Failed to create inventory record.']);
         }
     }
 } else {
-    header("Location: BM_Inventory.php?err=" . urlencode("Method not allowed."));
-    exit;
+    echo json_encode(['success' => false, 'message' => 'Method not allowed.']);
 }
 ?>

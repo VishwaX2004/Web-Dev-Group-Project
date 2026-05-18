@@ -3,29 +3,34 @@
  * Specifically for the Inter-Branch Transfer module.
  */
 
-// Function to show modal and populate with data directly from DOM element attributes
-window.editTransfer = function(btn) {
-    if (!btn) return;
+// Function to show modal and populate with data
+window.editTransfer = function(id) {
+    console.log('Edit clicked for ID:', id);
+    
+    // transferData should be globally available from the PHP file
+    if (typeof transferData === 'undefined') {
+        console.error('transferData is not defined');
+        return;
+    }
 
-    const id = btn.getAttribute('data-id');
-    const sourceBranchId = btn.getAttribute('data-source-id') || '';
-    const destBranchId = btn.getAttribute('data-dest-id') || '';
-    const status = btn.getAttribute('data-status') || 'Pending';
-    const productId = btn.getAttribute('data-product-id') || '';
-    const quantity = btn.getAttribute('data-quantity') || 0;
+    const item = transferData.find(t => t.id == id);
+    if (!item) {
+        console.error('No data found for ID:', id);
+        return;
+    }
 
-    // Fill fields in the modal
+    // Fill fields
     const fields = {
-        'update-transfer-id': id,
-        'update-source-branch': sourceBranchId,
-        'update-dest-branch': destBranchId,
-        'update-status': status,
-        'update-product': productId,
-        'update-quantity': quantity
+        'update-transfer-id': item.id,
+        'update-source-branch': item.source_branch_id || '',
+        'update-dest-branch': item.dest_branch_id || '',
+        'update-status': item.status || 'Pending',
+        'update-product': item.product_id || '',
+        'update-quantity': item.quantity || 0
     };
 
-    for (const [fieldId, value] of Object.entries(fields)) {
-        const el = document.getElementById(fieldId);
+    for (const [id, value] of Object.entries(fields)) {
+        const el = document.getElementById(id);
         if (el) el.value = value;
     }
 

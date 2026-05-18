@@ -10,6 +10,10 @@
 }
 
 /* ── SIDEBAR CONTAINER ── */
+body {
+    overflow-x: hidden;
+}
+
 .sidebar {
     width: 280px;
     background: #ffffff;
@@ -149,28 +153,33 @@
 }
 
 .main {
-    margin-left: 280px; 
+    position: fixed;
+    top: 0;
+    left: 280px; 
+    right: 0;
+    bottom: 0;
+    overflow-y: auto;
+    background: #f8fafc;
+    padding: 0; 
 }
 
 
 
-/* අලුතෙන් ඇඩ් කරගන්න ඕනේ ටික */
 
-/* Active link එක උඩට Mouse එක ගියත් පාට වෙනස් නොවී තියාගන්න */
 .nav-link.active:hover {
     background: #4169e1; 
     color: white;
     opacity: 0.9;
 }
 
-/* සාමාන්‍ය link එකක් උඩට Mouse එක ගියහම වෙනස් වන ආකාරය */
+
 .nav-link:not(.active):hover {
     background: #f1f5f9;
     color: #4169e1;
-    transform: translateX(5px); /* දකුණට පොඩ්ඩක් මාරු වෙන effect එක */
+    transform: translateX(5px); 
 }
 
-/* Icons වලට පොඩි animation එකක් */
+
 .nav-link i {
     transition: transform 0.2s;
 }

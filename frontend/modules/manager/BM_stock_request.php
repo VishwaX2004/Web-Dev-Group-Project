@@ -10,7 +10,7 @@ include("../../../backend/config/db_connection.php");
 //Null coalescing operator 
 //thma log wela nathm user default id ekk denwa 
 //id eka null unoth db ekn data enne na
-$user_id = $_SESSION['user_id'] ?? 'U002';
+$user_id = $_SESSION['user_id'] ?? 'USR-004';
 
 
 $user_branch_query = "SELECT u.branch_id, b.branch_name 
@@ -21,7 +21,7 @@ $user_branch_query = "SELECT u.branch_id, b.branch_name
 $user_branch_result = mysqli_query($conn, $user_branch_query);
 $user_branch_row = mysqli_fetch_assoc($user_branch_result);
 
-$branch_id = $user_branch_row['branch_id'] ?? 'B001';
+$branch_id = $user_branch_row['branch_id'] ?? 'BR-001';
 $branch_name = $user_branch_row['branch_name'] ?? 'Unknown';
 
 
@@ -53,7 +53,7 @@ if (isset($_POST['btn_submit'])) {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>BranchPro – Stock Requests</title>
-    <link rel="stylesheet" href="../../assets/css/manager_layout.css">
+    <link rel="stylesheet" href="../../assets/css/BM_stock_request.css">
     //Font Awesome
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
