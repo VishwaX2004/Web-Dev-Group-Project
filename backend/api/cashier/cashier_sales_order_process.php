@@ -1,100 +1,94 @@
 <?php
-
+// Start the session to access user login data
 session_start();
 
-    include("../../config/db_connection.php");
+// Connect to the database
+include("../../config/db_connection.php");
 
-    header("Content-Type: application/json");
+// Set the response type to JSON
+header("Content-Type: application/json");
 
-    // security check - ensure user is authenticated
-    if (!isset($_SESSION['auth'])) {
-        echo json_encode(["status" => "error", "message" => "Unauthorized Access"]);
-        exit();
+// Check if the user is logged in. If not, stop and show an error.
+if (!isset($_SESSION['auth'])) {
+
+    echo json_encode(["status" => "error", "message" => "Unauthorized"]);
+
+    exit();
+}
+
+// Get the logged-in user's ID
+$user_id = $_SESSION['user_id'];
+
+// Get the raw data sent to this script and turn it into a PHP array
+$data = json_decode(file_get_contents("php://input"), true);
+
+// Get the cart items (default to an empty list if missing)
+$cart = $data['cart'] ?? [];
+
+// Clean the branch ID to prevent database security issues (SQL injection)
+$branch_id = mysqli_real_escape_string($conn, $data['branch_id']);
+
+// If the cart has no items, stop and show an error
+if (empty($cart)) {
+
+    echo json_encode(["status" => "error", "message" => "Empty Cart"]);
+
+    exit();
+}
+
+// Start a database transaction (makes sure all queries succeed or none do)
+mysqli_begin_transaction($conn);
+
+try {
+    // Create a unique base ID for the sale using the current time
+    $order_timestamp = date("His");
+
+    $main_sale_id = "SALE-" . date("md") . "-" . $order_timestamp;
+
+    // Loop through each item in the cart
+    foreach ($cart as $index => $item) {
+        // Clean the product ID and format numbers properly
+        $pid = mysqli_real_escape_string($conn, $item['product_id']);
+
+        $qty = (int)$item['qty'];
+
+        $price = (float)$item['total'];
+
+        // Create a unique ID for this specific row in the database
+        $row_id = $main_sale_id . "-" . $index;
+
+        // 1. Save the item sale details into the database
+        $sql = "INSERT INTO sales_order (sale_id, user_id, product_id, branch_id, quantity, price, sale_date_time) 
+                VALUES ('$row_id', '$user_id', '$pid', '$branch_id', $qty, $price, NOW())";
+        
+        if (!mysqli_query($conn, $sql)) throw new Exception("Insert Error");
+
+        // 2. Reduce the item quantity in the inventory for this branch
+        $update_stock = "UPDATE inventory SET quantity = quantity - $qty 
+                         WHERE product_id = '$pid' AND branch_id = '$branch_id'";
+        
+        if (!mysqli_query($conn, $update_stock)) throw new Exception("Stock Update Error");
+
+        // 3. Look up the current stock to make sure it didn't drop below zero
+        $check = mysqli_query($conn, "SELECT quantity FROM inventory WHERE product_id = '$pid' AND branch_id = '$branch_id'");
+        
+        $stock = mysqli_fetch_assoc($check);
+        
+        // If stock goes below 0, stop everything and show an error
+        if ($stock['quantity'] < 0) throw new Exception("Stock became negative for: " . $pid);
     }
 
-    $user_id = $_SESSION['user_id'];
+    // If everything worked perfectly, save all changes permanently
+    mysqli_commit($conn);
 
-    //  GET JSON DATA: Retrieve data sent from the Frontend
-    $data = json_decode(file_get_contents("php://input"), true);
-    $cart = $data['cart'] ?? [];
-    $branch_id = mysqli_real_escape_string($conn, $data['branch_id']);
+    // Send a success message back
+    echo json_encode(["status" => "success", "sale_id" => $main_sale_id]);
 
-    if (empty($cart)) {
-        echo json_encode(["status" => "error", "message" => "Cart is empty"]);
-        exit();
-    }
-
-    // START TRANSACTION: Ensure database integrity during updates
-    mysqli_begin_transaction($conn);
-
-    try {
-
-        // Generate a short timestamp (Hour and Minute like 1220)
-        $short_time = date("Hi");
-
-        // Main Order ID for the success response (ORDER-1220)
-        $main_order_display_id = "ORDER-" . $short_time;
-
-        foreach ($cart as $index => $item) {
-            $product_id = mysqli_real_escape_string($conn, $item['product_id']);
-            $qty = (int) $item['qty'];
-            $item_total = (float) $item['total'];
-
-            // Generate short sale_id (e.g., SALE-1220-0, SALE-1220-1)
-            $current_sale_id = "SALE-" . $short_time . "-" . $index;
-
-            // INSERT SALES RECORD: Save the transaction details
-            $insert_query = "
-                INSERT INTO sales_order 
-                (sale_id, user_id, product_id, branch_id, quantity, price, sale_date_time) 
-                VALUES 
-                ('$current_sale_id', '$user_id', '$product_id', '$branch_id', $qty, $item_total, NOW())
-            ";
-
-            if (!mysqli_query($conn, $insert_query)) {
-
-                throw new Exception("Sales Order Insert Failed: " . mysqli_error($conn));
-            }
-
-            // UPDATE STOCK: Deduct purchased quantity from the specific branch inventory
-            $stock_update = "
-                UPDATE inventory 
-                SET quantity = quantity - $qty 
-                WHERE product_id = '$product_id' AND branch_id = '$branch_id'
-            ";
-
-            if (!mysqli_query($conn, $stock_update)) {
-
-                throw new Exception("Inventory Update Failed: " . mysqli_error($conn));
-            }
-
-            // CHECK STOCK: Ensure quantity does not drop below zero
-            $check_stock = mysqli_query($conn, "SELECT quantity FROM inventory WHERE product_id = '$product_id' AND branch_id = '$branch_id'");
-
-            $stock_data = mysqli_fetch_assoc($check_stock);
-
-            if ($stock_data['quantity'] < 0) {
-
-                throw new Exception("Insufficient stock for product: " . $product_id);
-            }
-        }
-
-        // COMMIT: Save all changes to the database
-        mysqli_commit($conn);
-
-        echo json_encode([
-
-            "status" => "success",
-            "message" => "Transaction Completed Successfully",
-            "sale_id" => $main_order_display_id
-            
-        ]);
-
-    } catch (Exception $e) {
-
-        // ROLLBACK: Undo changes if any error occurs
-        mysqli_rollback($conn);
-        echo json_encode(["status" => "error", "message" => $e->getMessage()]);
-
-    }
+} catch (Exception $e) {
+    // If any error happened above, undo all database changes made in this loop
+    mysqli_rollback($conn);
+    
+    // Send the error message back
+    echo json_encode(["status" => "error", "message" => $e->getMessage()]);
+}
 ?>
