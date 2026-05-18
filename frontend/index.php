@@ -15,7 +15,7 @@ session_start();
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
     <!-- Custom styling for the login page -->
     <link rel="stylesheet" href="assets/css/login_page.css">
-    
+
 </head>
 
 <body>
@@ -28,9 +28,7 @@ session_start();
 
             <!-- Brand logo container -->
             <div class="brand-icon">
-                <img src="assets/images/home_image.png"
-                    alt="Home"
-                    style="width: 30px; height: 30px;">
+                <img src="assets/images/home_image.png" alt="Home" style="width: 30px; height: 30px;">
             </div>
 
             <!-- Header welcome text -->
@@ -51,48 +49,37 @@ session_start();
                     margin-bottom:15px;
                     font-size:14px;
                 ">';
-                // Use htmlspecialchars to prevent potential XSS vulnerabilities
-                echo htmlspecialchars($_SESSION['error']);
+
+                // print session error message to the user
+                echo $_SESSION['error'];
+
                 echo '
-                </div>
-                ';
+                    </div>
+                    ';
+
                 unset($_SESSION['error']);
             }
             ?>
 
             <!-- Login submission form pointing to backend logic -->
-            <form id="loginForm"
-                action="../backend/api/login_auth.php"
-                method="POST">
+            <form id="loginForm" action="../backend/api/login_auth.php" method="POST">
 
                 <!-- Username input container -->
                 <div class="input-group">
                     <label>Username</label>
-                    <input
-                        type="text"
-                        name="username"
-                        placeholder="Enter your username"
-                        required>
+                    <input type="text" name="username" placeholder="Enter your username" required>
                 </div>
 
                 <!-- Password input container with show/hide toggle functionality -->
                 <div class="input-group">
                     <label>Password</label>
                     <div class="password-wrapper">
-                        <input
-                            type="password"
-                            name="password"
-                            id="password-field"
-                            placeholder="••••••••"
-                            required>
+                        <input type="password" name="password" id="password-field" placeholder="••••••••" required>
                     </div>
                 </div>
 
                 <!-- Form submission button -->
-                <button
-                    type="submit"
-                    name="login_btn"
-                    class="btn-signin">
+                <button type="submit" name="login_btn" class="btn-signin">
                     Sign In
                 </button>
 
@@ -105,9 +92,7 @@ session_start();
 
             <!-- Decorative floating icon -->
             <div class="floating-icon">
-                <img
-                    src="assets/images/shopping_cart.png"
-                    alt="Icon"
+                <img src="assets/images/shopping_cart.png" alt="Icon"
                     style="width: 32px; filter: brightness(0) invert(1);">
             </div>
 
@@ -139,15 +124,13 @@ session_start();
                     <h4>5K+</h4>
                     <span>Total Products</span>
                 </div>
-                
+
             </div>
 
         </section>
 
     </div>
 
-    <!-- External script file for handling interactive behaviors like password visibility toggling -->
-    <script src="assets/js/login_page.js"></script>
 </body>
 
 </html>
