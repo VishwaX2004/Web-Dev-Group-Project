@@ -1,7 +1,7 @@
 <?php
 
-session_start();
 
+session_start();
 
 
 include("../../../backend/config/db_connection.php");
@@ -15,9 +15,11 @@ $sql = "SELECT u.full_name, u.username, u.email, u.branch_id, u.role, b.branch_n
         FROM users u 
         INNER JOIN branch b ON u.branch_id = b.branch_id
         WHERE u.user_id = '$current_user_id' AND u.role = 'manager' LIMIT 1";
+        // limit 1 ain koroth eka query eka serch karanwa nonstop slow wenwa ita passe
+
 
 $result = mysqli_query($conn, $sql);
-
+// database eken hariyta manger kenk hambunda kiyala balanwa
 if ($result && mysqli_num_rows($result) > 0) {
     $row = mysqli_fetch_assoc($result);
     $full_name   = $row['full_name'];
