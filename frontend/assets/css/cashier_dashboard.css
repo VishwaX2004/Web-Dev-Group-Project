@@ -1,44 +1,42 @@
-/* ============================================================
-   SMARTPOS - DASHBOARD UI (MATCHED WITH SALES ORDER)
-   ============================================================ */
-
+/* Import the Inter font style from Google Fonts */
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
 
+/* Global variables for theme colors and shadow designs */
 :root {
-    --primary: #2563EB;
-    --primary-dark: #1D4ED8;
-    --dark: #0F172A;
-    --secondary: #64748B;
-    --bg: #F1F5F9;
-    --white: #ffffff;
-    --success: #16A34A;
+    --primary: #2563EB;          /* Main brand color (Blue) */
+    --primary-dark: #1D4ED8;     /* Darker blue for button hovers */
+    --dark: #0F172A;             /* Very dark slate for headers */
+    --secondary: #64748B;        /* Muted gray for small text labels */
+    --bg: #F1F5F9;               /* Light background color for the screen */
+    --white: #ffffff;            /* Pure white background for container boxes */
+    --success: #16A34A;          /* Green color for successful messages */
 
-    --primary-light: #EFF6FF;
-    --card-bg: #FFFFFF;
-    --text-main: #1E293B;
-    --text-muted: #64748B;
+    --primary-light: #EFF6FF;    /* Ultra light blue highlight background */
+    --card-bg: #FFFFFF;          /* Base background color for inner elements */
+    --text-main: #1E293B;        /* Regular reading text color */
+    --text-muted: #64748B;       /* Secondary text color */
 
+    /* Soft card shadow properties */
     --shadow-md:
         0 10px 15px -3px rgba(0, 0, 0, 0.04),
         0 4px 6px -2px rgba(0, 0, 0, 0.02);
 
+    /* Deeper card shadow properties for hover animations */
     --shadow-lg:
         0 20px 25px -5px rgba(0, 0, 0, 0.05),
         0 10px 10px -5px rgba(0, 0, 0, 0.02);
 }
 
-/* ============================================================
-   RESET
-   ============================================================ */
-
+/* GENERAL RESET: Strip out default browser margins and set default font */
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
     font-family: 'Inter', sans-serif;
-    -webkit-font-smoothing: antialiased;
+    -webkit-font-smoothing: antialiased; /* Makes the font text look smooth */
 }
 
+/* Base structural setup for the webpage */
 body {
     background: var(--bg);
     color: var(--dark);
@@ -46,143 +44,112 @@ body {
     min-height: 100vh;
 }
 
-/* ============================================================
-   MAIN CONTENT
-   ============================================================ */
-
+/* MAIN CONTENT PANEL: Positions screen contents to sit cleanly next to the sidebar */
 .main {
-    margin-left: 280px;
-    width: calc(100% - 280px);
-    padding: 40px;
+    margin-left: 280px;            /* Pushes layout right so it doesn't overlap sidebar */
+    width: calc(100% - 280px);     /* Restricts width calculation cleanly */
+    padding: 40px;                 /* Outer inner space around page edges */
 }
 
-/* ============================================================
-   TOPBAR
-   ============================================================ */
-
+/* TOP STATUS BAR: Standard layout banner positioned at the top of the app */
 .topbar {
     background: var(--white);
-
     border-radius: 24px;
-
     padding: 24px 30px;
-
     display: flex;
-    justify-content: space-between;
+    justify-content: space-between; /* Pushes brand title left and profile options right */
     align-items: center;
-
     margin-bottom: 30px;
-
     box-shadow: var(--shadow-md);
-
     border: 1px solid rgba(226, 232, 240, 0.7);
 }
 
+/* Title text inside top banner */
 .topbar-left h1 {
     font-size: 28px;
     font-weight: 800;
     color: var(--dark);
 }
 
+/* Secondary tracking context text inside top banner */
 .topbar-left p {
     color: #94A3B8;
     font-size: 14px;
     margin-top: 5px;
 }
 
-/* ============================================================
-   TOPBAR RIGHT
-   ============================================================ */
-
+/* Container for items grouped on the right side of the top bar */
 .topbar-right {
     display: flex;
     align-items: center;
-    gap: 20px;
+    gap: 20px;                     /* Balanced gap space separating header tools */
 }
 
-/* SEARCH BOX */
-
+/* TOPBAR SEARCH FIELD CONTAINER */
 .search-box {
     width: 300px;
     height: 50px;
-
     background: #F8FAFC;
-
     border: 1px solid #E2E8F0;
     border-radius: 14px;
-
     display: flex;
     align-items: center;
     gap: 10px;
-
     padding: 0 16px;
-
-    transition: 0.3s;
+    transition: 0.3s;              /* Smooth dynamic styling change speed */
 }
 
+/* Interactive animation look when clicking inside the input container */
 .search-box:focus-within {
     border-color: var(--primary);
     background: #fff;
-
-    box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.1);
+    box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.1); /* Adds blue outer glow */
 }
 
+/* Resets native browser styles for inner field text */
 .search-box input {
     border: none;
     outline: none;
     background: transparent;
-
     width: 100%;
-
     font-size: 14px;
     color: var(--dark);
 }
 
-/* ============================================================
-   PROFILE CARD
-   ============================================================ */
-
+/* USER PROFILE CARD BLOCK */
 .profile-header-card {
     display: flex;
     align-items: center;
     gap: 14px;
-
     background: #fff;
-
     border: 1px solid #E2E8F0;
     border-radius: 16px;
-
     padding: 10px 16px;
-
     cursor: pointer;
-
     transition: 0.3s;
 }
 
+/* Floating animation lift effect when user positions mouse over profile card */
 .profile-header-card:hover {
-    transform: translateY(-2px);
-
+    transform: translateY(-2px);   /* Moves the card slightly upwards */
     border-color: var(--primary);
-
     box-shadow: 0 10px 20px rgba(37, 99, 235, 0.08);
 }
 
+/* Round avatar image thumbnail box layout */
 .profile-avatar {
     width: 44px;
     height: 44px;
-
     border-radius: 12px;
-
-    background: linear-gradient(135deg, #3B82F6, #2563EB);
-
+    background: linear-gradient(135deg, #3B82F6, #2563EB); /* Blue gradient look */
     display: flex;
     align-items: center;
     justify-content: center;
-
     color: white;
     font-weight: 700;
 }
 
+/* Organizes user text details inside profile block */
 .profile-details {
     display: flex;
     flex-direction: column;
@@ -199,47 +166,41 @@ body {
     color: #94A3B8;
 }
 
+/* Little dropdown pointer chevron styling */
 .dropdown-icon {
     color: #94A3B8;
     font-size: 11px;
 }
 
-/* ============================================================
-   SUMMARY CARDS
-   ============================================================ */
-
+/* METRIC CARDS TRACKING ROW GRID */
 .cards {
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: repeat(3, 1fr); /* Splits row evenly into three columns */
     gap: 24px;
-
     margin-bottom: 32px;
 }
 
+/* Individual metric display card module design */
 .card {
     background: var(--white);
-
     border-radius: 24px;
-
     padding: 30px;
-
     box-shadow: var(--shadow-md);
-
     border: 1px solid rgba(226, 232, 240, 0.7);
-
     transition: 0.3s;
 }
 
+/* Smooth popout animation frame layout on mouse over container */
 .card:hover {
-    transform: translateY(-5px);
-    box-shadow: var(--shadow-lg);
+    transform: translateY(-5px);   /* Upward hover animation */
+    box-shadow: var(--shadow-lg);  /* Darkens card shadow layout */
 }
 
+/* Positions internal card heading elements split on opposite sides */
 .card-top {
     display: flex;
     justify-content: space-between;
     align-items: center;
-
     margin-bottom: 18px;
 }
 
@@ -249,19 +210,18 @@ body {
     font-weight: 600;
 }
 
+/* Rounded icon tag context shape container setup inside tracking cards */
 .card-icon {
     width: 46px;
     height: 46px;
-
     border-radius: 14px;
-
     display: flex;
     align-items: center;
     justify-content: center;
-
     font-size: 18px;
 }
 
+/* Color variations for card layout indicator highlights */
 .card-blue .card-icon {
     background: #DBEAFE;
     color: #2563EB;
@@ -277,70 +237,60 @@ body {
     color: #10B981;
 }
 
+/* Giant total display figures numbers styling layout */
 .card-value {
     font-size: 28px;
     font-weight: 800;
-
     color: var(--dark);
-
     margin-bottom: 10px;
 }
 
+/* Muted inline text labels sitting inside general statistics display */
 .card-value small {
     font-size: 14px;
     font-weight: 500;
     color: var(--secondary);
 }
 
+/* Trend tracking badge labels layout settings */
 .card-status {
     display: flex;
     align-items: center;
     gap: 5px;
-
     font-size: 13px;
     font-weight: 600;
 }
 
 .status-up {
-    color: #10B981;
+    color: #10B981;               /* Green trend style */
 }
 
 .status-neutral {
-    color: #94A3B8;
+    color: #94A3B8;              /* Neutral gray trend style */
 }
 
-/* ============================================================
-   CONTENT GRID
-   ============================================================ */
-
+/* LOWER INTERFACE CONTENT AREA GRID LAYOUT */
 .grid {
     display: grid;
-    grid-template-columns: 2fr 1fr;
+    grid-template-columns: 2fr 1fr; /* Splits main grid layout into 2 wide parts and 1 narrow part */
     gap: 25px;
 }
 
+/* Shared baseline box panels wrappers configuration specifications */
 .sales-box,
 .action-box {
     background: var(--white);
-
     border-radius: 24px;
-
     padding: 30px;
-
     box-shadow: var(--shadow-md);
-
     border: 1px solid rgba(226, 232, 240, 0.7);
 }
 
-/* ============================================================
-   SECTION HEADER
-   ============================================================ */
-
+/* MAIN CONTAINER INNER SECTION ENTRY HEADER */
 .section-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
-
     margin-bottom: 24px;
 }
 
@@ -349,111 +299,85 @@ body {
     font-weight: 700;
 }
 
+/* Minimal navigation utility button template styling options */
 .view-all-btn {
     border: none;
-
     background: #EFF6FF;
     color: #2563EB;
-
     padding: 10px 18px;
-
     border-radius: 12px;
-
     font-weight: 700;
-
     cursor: pointer;
-
     transition: 0.3s;
 }
 
 .view-all-btn:hover {
-    background: #DBEAFE;
+    background: #DBEAFE;           /* Muted interactive color adjustment */
 }
 
-/* ============================================================
-   CHART PLACEHOLDER
-   ============================================================ */
-
+/* CHART CONTAINER INTERFACE PLACEHOLDER WINDOW LAYOUT */
 .placeholder-chart {
     height: 250px;
-
     background: #F8FAFC;
-
-    border: 2px dashed #E2E8F0;
+    border: 2px dashed #E2E8F0;    /* Dashed border to look like an unfinished framework */
     border-radius: 20px;
-
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
-
     color: #94A3B8;
 }
 
-/* ============================================================
-   ACTION BUTTONS
-   ============================================================ */
-
+/* DASHBOARD UTILITY ACTION SIDEBAR OPTION ROW ACTIONS BUTTONS */
 .action-btn {
     width: 100%;
-
     padding: 16px;
-
     border: none;
     border-radius: 14px;
-
     margin-bottom: 14px;
-
     font-weight: 700;
-
     display: flex;
     align-items: center;
     justify-content: center;
     gap: 10px;
-
     cursor: pointer;
-
     transition: 0.3s;
 }
 
+/* Color template configuration settings details for structural links buttons layout updates */
 .primary {
     background: var(--primary);
     color: white;
-
     box-shadow: 0 4px 14px rgba(37, 99, 235, 0.25);
 }
 
 .light {
     background: #F8FAFC;
     color: var(--dark);
-
     border: 1px solid #E2E8F0;
 }
 
+/* Light button lift bounce animation effect details execution rule */
 .action-btn:hover {
     transform: translateY(-2px);
 }
 
-/* ============================================================
-   RESPONSIVE
-   ============================================================ */
-
+/* MIDDLE SIZE TABLETS DISPLAY OVERRIDES RESPONSIVE DESIGN INTERFACE HOOKS SETUP */
 @media (max-width:1200px) {
-
     .cards {
-        grid-template-columns: repeat(2, 1fr);
+        grid-template-columns: repeat(2, 1fr); /* Collapse main card tracking blocks layout cleanly down to 2 items per row */
     }
-
 }
 
+/* MOBILE AND SMALL SCREENS LAYOUT SETTINGS OPTIMIZATION WRAPPER ADJUSTMENTS STYLE OVERRIDES */
 @media (max-width:1024px) {
-
     .main {
-        margin-left: 80px;
+        margin-left: 80px;         /* Creates a narrower sidebar safe gutter space gap setting frame context profile layout */
         width: calc(100% - 80px);
         padding: 20px;
     }
 
+    /* Force all grid modules columns elements blocks to collapse flatly into stacked singular rows */
     .grid {
         grid-template-columns: 1fr;
     }
@@ -462,6 +386,7 @@ body {
         grid-template-columns: 1fr;
     }
 
+    /* Stack header profile parameters options vertically on top of each other */
     .topbar {
         flex-direction: column;
         align-items: flex-start;
@@ -477,13 +402,9 @@ body {
     .search-box {
         width: 100%;
     }
-
 }
 
-/* ============================================================
-   RECENT TRANSACTIONS TABLE STYLING
-   ============================================================ */
-
+/* TRANSACTION LOGS RECENT HISTORICAL ACTIVITY TABLE SECTION */
 .table-container {
     background: var(--white);
     border-radius: 24px;
@@ -493,16 +414,18 @@ body {
     margin-top: 10px;
 }
 
+/* Enables simple horizontal side scrolling for tables if row elements spill wide out on screen screens */
 .table-wrapper {
     overflow-x: auto;
 }
 
 .recent-sales-table {
     width: 100%;
-    border-collapse: collapse;
+    border-collapse: collapse;    /* Merges data rows border seams cleanly together */
     margin-top: 10px;
 }
 
+/* Head row configuration header baseline specifications values configuration properties labels setup details */
 .recent-sales-table thead tr {
     background-color: #F8FAFC;
     border-radius: 12px;
@@ -514,10 +437,11 @@ body {
     font-size: 14px;
     font-weight: 700;
     color: var(--secondary);
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
+    text-transform: uppercase;     /* Transforms table headers to all capital letters */
+    letter-spacing: 0.5px;         /* Adds breathing space layout separating character letters */
 }
 
+/* Internal body cell spacing specifications boundaries dimensions details block updates */
 .recent-sales-table td {
     padding: 18px 20px;
     font-size: 14px;
@@ -525,10 +449,12 @@ body {
     border-bottom: 1px solid #F1F5F9;
 }
 
+/* Eliminates data line accent borders on the last table log tracking row data entry block element */
 .recent-sales-table tr:last-child td {
     border-bottom: none;
 }
 
+/* Row highlighting animation feature rules */
 .recent-sales-table tr:hover {
     background-color: #F8FAFC;
     transition: 0.2s ease-in-out;
@@ -539,7 +465,7 @@ body {
     color: var(--dark);
 }
 
-/* Badge Styling */
+/* STATUS CHIPS BADGES COMPONENT STYLING */
 .badge {
     padding: 6px 12px;
     border-radius: 8px;
@@ -547,17 +473,9 @@ body {
     font-weight: 600;
 }
 
+/* Success status context tag theme option variant specifications rules details */
 .badge-success {
     background: #DCFCE7;
     color: #16A34A;
 }
 
-/* Scrollbar styling for the table */
-.table-wrapper::-webkit-scrollbar {
-    height: 6px;
-}
-
-.table-wrapper::-webkit-scrollbar-thumb {
-    background: #E2E8F0;
-    border-radius: 10px;
-}

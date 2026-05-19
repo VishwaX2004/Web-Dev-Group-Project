@@ -1,0 +1,237 @@
+/* Reset basic styles for all elements so padding and borders don't mess up widths */
+*, *::before, *::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+/* Main page setup: choose the font, background color, and stop sideways scrolling */
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: var(--bg);
+    margin: 0;
+    padding: 0;
+    overflow-x: hidden; 
+}
+
+/* Save our main colors here so we can easily use them anywhere */
+:root {
+    --success-green: #16a34a;  /* Main green color */
+    --success-hover: #15803d;  /* Darker green for when we hover over buttons */
+    --border-color: #e2e8f0;   /* Light gray for borders */
+    --text-dark: #0f172a;      /* Dark color for main text */
+    --text-muted: #475569;     /* Grayish color for less important text */
+    --surface: #ffffff;        /* Pure white for cards and tables */
+    --bg: #f8fafc;             /* Very light gray for the page background */
+    --text-3: #94a3b8;         /* Lighter gray text */
+    --border-2: #cbd5e1;       /* Darker border color */
+}
+
+/* The main content area next to the sidebar */
+.main-content {
+    padding: 0 !important;
+    display: flex;
+    flex-direction: column;
+    margin-left: 260px; /* Leave 260px space on the left for the sidebar */
+    width: calc(100% - 260px); /* Take up the rest of the screen */
+}
+
+/* The top navigation bar */
+.topbar {
+    background: var(--surface);
+    border-bottom: 1px solid var(--border-color);
+    padding: 0 28px;
+    height: 56px;
+    display: flex; 
+    align-items: center; 
+    justify-content: space-between;
+    position: sticky; /* Keep it glued to the top when scrolling */
+    top: 0; 
+    z-index: 50; /* Make sure it stays on top of other things */
+    width: 100%;
+}
+
+/* The small text showing where you are (e.g., Admin > Reports) */
+.breadcrumb {
+    display: flex; 
+    align-items: center; 
+    gap: 6px;
+    font-size: 13px; 
+    color: var(--text-3);
+}
+
+/* Make the current page name in the breadcrumb a bit darker */
+.breadcrumb span.active { 
+    color: var(--text-dark); 
+    font-weight: 500; 
+}
+
+/* The little arrow between breadcrumb words */
+.breadcrumb-sep { 
+    color: var(--border-2); 
+}
+
+/* The wrapper for the stuff inside the page */
+.page-body {
+    padding: 30px 40px;
+    width: 100%;
+}
+
+/* The title and small text at the top of the page */
+.page-header-section {
+    margin-bottom: 24px;
+}
+
+/* The main page title */
+.page-header-section h1 {
+    color: var(--text-dark);
+    font-size: 26px;
+    font-weight: 600;
+}
+
+/* The small description under the title */
+.page-header-section p {
+    color: var(--text-muted);
+    margin-top: 5px;
+    font-size: 14px;
+}
+
+/* The white box that holds the excel download button */
+.analytics-report-card {
+    background: #ffffff;
+    border: 1px solid var(--border-color);
+    border-radius: 16px; /* Give it rounded corners */
+    box-shadow: 0 1px 3px rgba(0,0,0,0.05); /* Add a tiny shadow */
+    padding: 20px 25px;
+    text-align: center; /* Put the text in the middle */
+    margin-bottom: 30px;
+    width: 100%;
+}
+
+/* Keeps the content inside the card from stretching too wide */
+.analytics-card-content {
+    max-width: 650px;
+    margin: 0 auto; /* Center it inside the box */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+/* The big excel icon */
+.analytics-icon {
+    font-size: 38px;
+    color: var(--success-green);
+    margin-bottom: 10px;
+}
+
+/* The title inside the white box */
+.analytics-title {
+    font-size: 18px;
+    font-weight: 600;
+    color: var(--text-dark);
+    margin-bottom: 6px;
+}
+
+/* The text explaining what the download button does */
+.analytics-description {
+    color: var(--text-muted);
+    font-size: 13px;
+    margin-bottom: 16px;
+    line-height: 1.5; /* Add space between lines of text */
+}
+
+/* The green download button */
+.analytics-btn-green {
+    background-color: var(--success-green);
+    color: #ffffff;
+    padding: 10px 22px;
+    font-size: 14px;
+    font-weight: 500;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer; /* Change mouse to a pointing hand */
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px; /* Space between the icon and the text inside the button */
+    transition: all 0.2s ease; /* Make hover effects smooth */
+}
+
+/* What happens when you put your mouse over the button */
+.analytics-btn-green:hover {
+    background-color: var(--success-hover); /* Make it darker green */
+    transform: translateY(-1px); /* Move it up just a tiny bit */
+    box-shadow: 0 4px 12px rgba(22, 163, 74, 0.15); /* Add a glowing shadow */
+}
+
+/* The small download icon inside the button */
+.analytics-btn-green svg {
+    width: 16px;
+    height: 16px;
+}
+
+/* The white box that holds the data table */
+.analytics-table-container {
+    background: #ffffff;
+    border: 1px solid var(--border-color);
+    border-radius: 16px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+    overflow: hidden; /* Keep the table corners inside the rounded box */
+    margin-top: 20px;
+    width: 100%;
+}
+
+/* The table itself */
+.analytics-custom-table {
+    width: 100%;
+    border-collapse: collapse; /* Remove double borders between cells */
+    text-align: left;
+}
+
+/* The top row of the table (column names) */
+.analytics-custom-table thead th {
+    background: #f8fafc; /* Light gray background */
+    padding: 14px 18px;
+    font-size: 12px;
+    font-weight: 600;
+    color: #94a3b8;
+    text-transform: uppercase; /* Make letters ALL CAPS */
+    letter-spacing: 0.5px;
+    border-bottom: 1px solid var(--border-color);
+}
+
+/* The regular data rows in the table */
+.analytics-custom-table tbody tr {
+    border-bottom: 1px solid var(--border-color);
+    transition: background-color 0.2s ease; /* Smooth color change on hover */
+}
+
+/* Remove the bottom border from the very last row */
+.analytics-custom-table tbody tr:last-child {
+    border-bottom: none;
+}
+
+/* Highlight the row when you move your mouse over it */
+.analytics-custom-table tbody tr:hover {
+    background-color: #f1f5f9;
+}
+
+/* The individual boxes (cells) holding the text in the table */
+.analytics-custom-table tbody td {
+    padding: 14px 18px;
+    font-size: 14px;
+    color: var(--text-dark);
+    vertical-align: middle; /* Put text right in the vertical center */
+}
+
+/* The little blue rounded label for the Product ID */
+.analytics-badge-id {
+    display: inline-flex;
+    padding: 4px 10px;
+    background: #eff6ff; /* Light blue background */
+    color: #2563eb; /* Dark blue text */
+    border: 1px solid #bfdbfe; /* Blue border */
+    border-radius: 99px; /* Make it look like a pill */
+    font-size: 12px;
+    font-weight: 600;
+}

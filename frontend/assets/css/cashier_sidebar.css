@@ -1,109 +1,116 @@
+/* Color Palette Variables */
 :root {
-    --primary: #2563EB;
-    --primary-dark: #1D4ED8;
-    --sidebar-bg: #0F172A;
-    --white: #FFFFFF;
+    --primary: #2563EB;       /* Main brand color (Blue) */
+    --primary-dark: #1D4ED8;  /* Darker blue used for gradients or hover states */
+    --sidebar-bg: #0F172A;    /* Dark slate background color for the sidebar */
+    --white: #FFFFFF;         /* Clean white text/accent color */
 }
 
-/* SIDEBAR */
+/* SIDEBAR CONTAINER */
 .sidebar {
-    width: 280px;
-    height: 100vh;
+    width: 280px;             /* Set the sidebar width */
+    height: 100vh;            /* Make it take up the full height of the screen */
     background: var(--sidebar-bg);
-    position: fixed;
+    position: fixed;          /* Lock it to the screen so it stays when scrolling */
     left: 0;
     top: 0;
-    padding: 32px 20px;
+    padding: 32px 20px;       /* Inner spacing around the sidebar contents */
     display: flex;
-    flex-direction: column;
-    z-index: 1000;
+    flex-direction: column;   /* Stack contents vertically (Logo, Menu, User Card) */
+    z-index: 1000;            /* Make sure the sidebar sits on top of other content */
 }
 
-/* LOGO */
+/* LOGO SECTION */
 .logo {
     display: flex;
-    align-items: center;
-    gap: 14px;
-    margin-bottom: 48px;
+    align-items: center;      /* Align the icon and text nicely in a straight line */
+    gap: 14px;                /* Space between the logo icon and text */
+    margin-bottom: 48px;      /* Gap below the logo before the menu items start */
 }
 
+/* Rounded box for the logo icon */
 .logo-icon {
     width: 44px;
     height: 44px;
     border-radius: 12px;
-    background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+    background: linear-gradient(135deg, var(--primary), var(--primary-dark)); /* Smooth blue gradient */
     display: flex;
     align-items: center;
-    justify-content: center;
+    justify-content: center;  /* Center the inner icon perfectly */
     color: var(--white);
     font-size: 20px;
-    box-shadow: 0 8px 16px rgba(37, 99, 235, 0.3);
+    box-shadow: 0 8px 16px rgba(37, 99, 235, 0.3); /* Soft blue shadow below the icon */
 }
 
+/* Styling for the app brand text headings */
 .logo-text h2 {
     color: white;
     font-size: 20px;
     font-weight: 800;
 }
 
+/* Muted smaller subtitle text under the main brand title */
 .logo-text p {
     color: #94A3B8;
     font-size: 11px;
-    text-transform: uppercase;
-    letter-spacing: 1px;
+    text-transform: uppercase; /* Force all uppercase letters */
+    letter-spacing: 1px;       /* Add space between each letter */
 }
 
-/* MENU */
+/* NAVIGATION LINKS MENU */
 .menu {
     display: flex;
-    flex-direction: column;
-    gap: 10px;
-    flex-grow: 1;
+    flex-direction: column;   /* Stack navigation links vertically */
+    gap: 10px;                /* Spacing between individual menu rows */
+    flex-grow: 1;             /* Stretch to push the logout button/user card to the bottom */
 }
 
+/* Individual menu item text links styling */
 .menu a {
-    text-decoration: none;
-    color: #94A3B8;
-    padding: 14px 18px;
+    text-decoration: none;    /* Remove default underline styling from links */
+    color: #94A3B8;           /* Muted color for unselected links */
+    padding: 14px 18px;       /* Inner clickable area spacing */
     border-radius: 14px;
     display: flex;
-    align-items: center;
-    gap: 14px;
+    align-items: center;      /* Keeps the icons and text row items aligned nicely */
+    gap: 14px;                /* Distance between row icon and navigation text */
     font-size: 15px;
     font-weight: 500;
-    transition: 0.3s;
+    transition: 0.3s;         /* Smooth interaction timing speed for colors */
 }
 
+/* Changes background when hovering OR when the page is currently active */
 .menu a:hover,
 .menu .active {
-    background: var(--primary);
-    color: white;
+    background: var(--primary); /* Changes background block to bright blue */
+    color: white;               /* Turns text color to pure white */
 }
 
-/* DIVIDER */
+/* SIDEBAR HORIZONTAL LINE BREAK */
 .sidebar-divider {
     height: 1px;
-    background: rgba(255,255,255,0.08);
-    margin: 15px 0;
+    background: rgba(255, 255, 255, 0.08); /* Semi-transparent white line separator */
+    margin: 15px 0;                        /* Clear vertical spacing above and below the divider */
 }
 
-/* LOGOUT */
+/* LOGOUT BUTTON WRAPPER */
 .logout-btn {
-    margin-top: auto;
+    margin-top: auto;         /* Automatically shifts layout down to sit below navigation links */
 }
 
-/* USER CARD */
+/* CASHIER FOOTER PANEL USER CARD */
 .sidebar-user-card {
     margin-top: 20px;
-    background: rgba(255,255,255,0.04);
+    background: rgba(255, 255, 255, 0.04); /* Subtly lighter background box block */
     border-radius: 20px;
     padding: 16px;
     display: flex;
     align-items: center;
     gap: 14px;
-    border: 1px solid rgba(255,255,255,0.08);
+    border: 1px solid rgba(255, 255, 255, 0.08); /* Soft outer border outline */
 }
 
+/* Standard profile image circle avatar layout box wrapper placeholder */
 .user-avatar {
     width: 44px;
     height: 44px;
@@ -116,6 +123,7 @@
     font-weight: 700;
 }
 
+/* Organizes user name details vertically inside user badge footer card */
 .user-info {
     display: flex;
     flex-direction: column;
@@ -132,31 +140,35 @@
     font-size: 12px;
 }
 
-/* MAIN FIX */
+/* MAIN PANEL ALIGNMENT HOOKS: Ensures primary app screens match layout widths perfectly */
 .main {
-    margin-left: 280px;
-    width: calc(100% - 280px);
+    margin-left: 280px;       /* Shifts layout container right to sit directly beside sidebar panel */
+    width: calc(100% - 280px); /* Removes sidebar space from calculation grid frameworks widths */
 }
 
-/* RESPONSIVE */
+/* TABLETS AND MOBILE RESPONSIVE OVERRIDES COLLAPSE INTERFACE FRAMEWORK VIEWS */
 @media (max-width: 1024px) {
 
+    /* Shrink the sidebar width down to an icon-only strip layout view mode */
     .sidebar {
         width: 80px;
     }
 
+    /* Hide text labels entirely; showing only icons for cleaner views */
     .logo-text,
     .menu span,
     .user-info {
         display: none;
     }
 
+    /* Readjust main content layout panels to scale flush side-by-side with narrower bar views */
     .main {
         margin-left: 80px;
         width: calc(100% - 80px);
     }
 
+    /* Re-center user avatar inside smaller collapsed user box block panel */
     .sidebar-user-card {
         justify-content: center;
     }
-} 
+}

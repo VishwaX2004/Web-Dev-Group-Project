@@ -24,9 +24,9 @@ function addBranch($conn, $name, $location, $contact, $status) {
     if ($lastBranch) {
         $lastNum = intval(substr($lastBranch['branch_id'], 3));
         $newNum = str_pad($lastNum + 1, 3, '0', STR_PAD_LEFT);
-        $branchId = "BR-" . $newNum;
+        $branchId = "B" . $newNum;
     } else {
-        $branchId = "BR-001";
+        $branchId = "B001";
     }
     
     $stmt = mysqli_prepare($conn, "INSERT INTO branch (branch_id, branch_name, location, branch_contact, branch_status) VALUES (?, ?, ?, ?, ?)");

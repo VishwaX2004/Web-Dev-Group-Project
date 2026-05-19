@@ -1,8 +1,4 @@
 <?php
-// ============================================
-// LOGOUT
-// ============================================
-
 // Start session
 session_start();
 
@@ -14,5 +10,7 @@ session_destroy();
 
 // Redirect to login page
 header("Location: /Web-Dev-Group-Project/frontend/index.php");
+
 exit();
+
 ?>
