@@ -27,3 +27,6 @@ if (isset($_POST['save_product'])) {
     }
 }
 ?>
+
+/*this query insert product details in to the data base */
+/*bottum of the code check the query is scusse full or not if success fully automaticaly redirect the productmangement page */
