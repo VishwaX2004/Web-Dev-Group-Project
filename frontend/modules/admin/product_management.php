@@ -13,7 +13,9 @@ if (isset($_GET['edit'])) {
 $result = mysqli_query($conn, "SELECT * FROM product");
 ?>
 
+
 <!DOCTYPE html>
+<!--all products are fetched in to the variable result -->
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -40,6 +42,7 @@ $result = mysqli_query($conn, "SELECT * FROM product");
                         <input type="text" name="product_id" placeholder="Product ID" 
                                value="<?php echo $edit_data ? $edit_data['Product_id'] : ''; ?>" 
                                <?php echo $edit_data ? 'readonly' : ''; ?> required>
+                               <!--check edit dat is available or not if availabale  atuomaticaaly refile the form but it make read only-->
 
                         <input type="text" name="product_name" placeholder="Product Name" 
                                value="<?php echo $edit_data ? $edit_data['product_name'] : ''; ?>" required>

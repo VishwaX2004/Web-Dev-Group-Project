@@ -227,13 +227,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
           <!-- Input group for the Branch ID -->
           <div class="form-group">
             <label class="form-label">Branch ID *</label>
-            <input class="form-input" name="branch_id" id="fbrancId" type="text" placeholder="e.g. BR-001" required>
+            <input class="form-input" name="branch_id" id="fbrancId" type="text" placeholder="e.g. B001" required>
           </div>
           
           <!-- Input group for the Product ID -->
           <div class="form-group">
             <label class="form-label">Product ID *</label>
-            <input class="form-input" name="product_id" id="fProductId" type="text" placeholder="e.g. PR0D-1234" required>
+            <input class="form-input" name="product_id" id="fProductId" type="text" placeholder="e.g. P123" required>
           </div>
           
           <!-- Input group for the Quantity -->
