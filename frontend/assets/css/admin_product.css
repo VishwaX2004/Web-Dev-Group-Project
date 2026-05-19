@@ -1,0 +1,21 @@
+
+* { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', sans-serif; }
+body { display: flex; background-color: #f1f5f9; }
+
+
+.main-content { margin-left: 280px; padding: 40px; width: 100%; }
+.container { background: white; padding: 30px; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); }
+.header-title { display: flex; align-items: center; gap: 10px; font-size: 24px; color: #1e293b; margin-bottom: 25px; }
+
+.form-section { background: #f8fafc; padding: 25px; border-radius: 10px; margin-bottom: 30px; border: 1px solid #e2e8f0; }
+.form-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 15px; align-items: center; }
+
+input, select { padding: 12px; border: 1px solid #cbd5e1; border-radius: 8px; outline: none; font-size: 14px; width: 100%; }
+.btn-save { background: #2563eb; color: white; border: none; padding: 12px 25px; border-radius: 8px; cursor: pointer; font-weight: 600; }
+.btn-update { background: #f59e0b; }
+
+table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+th { text-align: left; padding: 15px; color: #64748b; border-bottom: 2px solid #f1f5f9; }
+td { padding: 15px; color: #1e293b; border-bottom: 1px solid #f1f5f9; }
+.btn-edit { color: #f59e0b; text-decoration: none; margin-right: 15px; }
+.btn-delete { color: #ef4444; text-decoration: none; }
