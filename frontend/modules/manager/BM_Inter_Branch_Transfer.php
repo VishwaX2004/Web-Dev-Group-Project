@@ -1,0 +1,287 @@
+<?php
+session_start();
+include("../../../backend/config/db_connection.php");
+
+// Fetch transfer history
+$branch_id = $_SESSION['branch_id'] ?? 'B001'; 
+$query = "SELECT t.transfer_id as id, sb.branch_name as source, db.branch_name as destination, p.product_name as product, t.quantity, t.status, 'Recently' as date,
+                 t.source_branch_id, t.dest_branch_id, t.product_id
+          FROM inter_branch_transfer t
+          JOIN branch sb ON t.source_branch_id = sb.branch_id
+          JOIN branch db ON t.dest_branch_id = db.branch_id
+          JOIN product p ON t.product_id = p.Product_id
+          WHERE t.source_branch_id = '$branch_id' OR t.dest_branch_id = '$branch_id'
+          ORDER BY LENGTH(t.transfer_id) DESC, t.transfer_id DESC";
+$result = mysqli_query($conn, $query);
+$transfer_list = [];
+while ($row = mysqli_fetch_assoc($result)) {
+    $transfer_list[] = $row;
+}
+
+// Fetch all branches for the modal
+$branch_query = "SELECT branch_id, branch_name FROM branch";
+$branch_result = mysqli_query($conn, $branch_query);
+$branches = [];
+while ($b_row = mysqli_fetch_assoc($branch_result)) {
+    $branches[] = $b_row;
+}
+
+// Fetch all products for the modal
+$product_query = "SELECT Product_id, product_name FROM product";
+$product_result = mysqli_query($conn, $product_query);
+$products = [];
+while ($p_row = mysqli_fetch_assoc($product_result)) {
+    $products[] = $p_row;
+}
+?>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Inter-Branch Transfer</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet" />
+    <!-- Vanilla CSS Assets -->
+    <link rel="stylesheet" href="../../assets/css/manager_layout.css">
+</head>
+<body>
+    <?php include 'BM_sidebar.php'; ?>
+    
+    <div class="main">
+        <header class="dashboard-header">
+          <div class="flex items-center gap-2 text-sm text-muted">
+            <a href="#" class="text-muted">Branch Management</a>
+            <div class="flex items-center gap-2">
+              <iconify-icon icon="lucide:chevron-right" style="font-size: 16px"></iconify-icon>
+              <span class="font-medium">Inter-Branch Transfer</span>
+            </div>
+          </div>
+          <div class="flex items-center gap-4">
+          </div>
+        </header>
+
+        <main class="main-content">
+          <div class="flex flex-col gap-6">
+            <div class="section-header">
+              <div>
+                <h1 class="page-title flex items-center gap-3">Inter-Branch Transfer</h1>
+                <p class="page-subtitle">Create and monitor stock movements between branch locations.</p>
+              </div>
+              <div class="flex items-center gap-3">
+
+              </div>
+            </div>
+
+            <div class="stats-grid" style="grid-template-columns: repeat(1, minmax(0, 1fr)) 2fr; display: grid; gap: 1.5rem;">
+              <!-- Create Form Card -->
+              <div class="card h-fit">
+                <div class="card-header">
+                  <div>
+                    <h3 class="font-bold">Create Transfer Order</h3>
+                    <p class="text-sm text-muted">Initiate a new stock movement</p>
+                  </div>
+                </div>
+                <form id="create-transfer-form" action="BM_create_transfer_action.php" method="POST" style="padding: 1.5rem; display: flex; flex-direction: column; gap: 1rem;">
+                    <div class="form-group">
+                      <label class="form-label">Source Branch</label>
+                      <select name="source_branch_id" required class="form-control">
+                        <option value="" disabled selected>Select Source...</option>
+                        <?php foreach ($branches as $branch): ?>
+                          <option value="<?php echo $branch['branch_id']; ?>" <?php echo ($branch['branch_id'] == $branch_id) ? 'selected' : ''; ?>>
+                            <?php echo $branch['branch_name']; ?>
+                          </option>
+                        <?php endforeach; ?>
+                      </select>
+                    </div>
+                    <div class="form-group">
+                      <label class="form-label">Destination Branch</label>
+                      <select name="dest_branch_id" required class="form-control">
+                        <option value="" disabled selected>Select Destination...</option>
+                        <?php foreach ($branches as $branch): ?>
+                          <option value="<?php echo $branch['branch_id']; ?>"><?php echo $branch['branch_name']; ?></option>
+                        <?php endforeach; ?>
+                      </select>
+                    </div>
+                    <div class="form-group">
+                      <label class="form-label">Product</label>
+                      <select name="product_id" required class="form-control">
+                        <option value="" disabled selected>Search or select product...</option>
+                        <?php foreach ($products as $product): ?>
+                          <option value="<?php echo $product['Product_id']; ?>"><?php echo $product['product_name']; ?></option>
+                        <?php endforeach; ?>
+                      </select>
+                    </div>
+                    <div class="form-group">
+                      <label class="form-label">Quantity</label>
+                      <input type="number" name="quantity" required min="1" placeholder="Enter quantity..." class="form-control" />
+                    </div>
+                    <button type="submit" class="btn btn-primary" style="justify-content: center; width: 100%; padding: 0.75rem;">
+                      <iconify-icon icon="lucide:send"></iconify-icon>
+                      <span>Submit Transfer</span>
+                    </button>
+                </form>
+              </div>
+
+              <!-- History Table Card -->
+              <div class="card">
+                <div class="card-header">
+                  <h3 class="font-bold">Transfer History</h3>
+                  <div class="flex items-center gap-3">
+                    <div style="position: relative;">
+                      <iconify-icon icon="lucide:search" style="position: absolute; left: 0.75rem; top: 50%; transform: translateY(-50%); color: var(--muted-foreground); font-size: 14px;"></iconify-icon>
+                      <input id="transfer-search" type="text" placeholder="Search ID..." class="form-control" style="padding-left: 2.25rem; font-size: 0.75rem; width: 12rem; height: 2.25rem;" />
+                    </div>
+                  </div>
+                </div>
+                
+                <div class="table-container" style="border-top: 1px solid var(--border);">
+                  <table class="data-table" style="min-width: 1100px;">
+                    <thead>
+                      <tr>
+                        <th style="width: 150px;">Transfer ID</th>
+                        <th>Route</th>
+                        <th>Product</th>
+                        <th>Status</th>
+                        <th style="text-align: right;">Actions</th>
+                      </tr>
+                    </thead>
+                    <tbody id="transfer-table-body">
+                      <?php foreach ($transfer_list as $item): 
+                          $statusClass = 'badge-warning';
+                          if ($item['status'] === 'Completed') {
+                              $statusClass = 'badge-success';
+                          } else if ($item['status'] === 'Cancelled' || $item['status'] === 'Rejected') {
+                              $statusClass = ''; // Default
+                          }
+                      ?>
+                        <tr class="transfer-row">
+                          <td>
+                              <div class="flex flex-col">
+                                  <span class="font-medium transfer-id"><?php echo htmlspecialchars($item['id']); ?></span>
+                                  <span class="text-sm text-muted"><?php echo htmlspecialchars($item['date']); ?></span>
+                              </div>
+                          </td>
+                          <td>
+                              <div class="flex items-center gap-2 text-sm">
+                                  <span class="transfer-source"><?php echo htmlspecialchars($item['source']); ?></span>
+                                  <iconify-icon icon="lucide:arrow-right" class="text-muted" style="font-size: 14px"></iconify-icon>
+                                  <span class="font-medium transfer-destination"><?php echo htmlspecialchars($item['destination']); ?></span>
+                              </div>
+                          </td>
+                          <td>
+                              <div class="flex flex-col">
+                                  <span class="font-medium transfer-product"><?php echo htmlspecialchars($item['product']); ?></span>
+                                  <span class="text-sm text-muted"><?php echo htmlspecialchars($item['quantity']); ?> Units</span>
+                              </div>
+                          </td>
+                          <td>
+                              <span class="badge <?php echo $statusClass; ?>">
+                                  <?php echo htmlspecialchars($item['status']); ?>
+                              </span>
+                          </td>
+                          <td style="text-align: right;">
+                              <button class="btn btn-outline edit-btn" 
+                                      style="border: none; padding: 0.375rem; cursor: pointer;" 
+                                      title="Edit Transfer" 
+                                      data-id="<?php echo htmlspecialchars($item['id']); ?>"
+                                      data-source-id="<?php echo htmlspecialchars($item['source_branch_id']); ?>"
+                                      data-dest-id="<?php echo htmlspecialchars($item['dest_branch_id']); ?>"
+                                      data-product-id="<?php echo htmlspecialchars($item['product_id']); ?>"
+                                      data-quantity="<?php echo htmlspecialchars($item['quantity']); ?>"
+                                      data-status="<?php echo htmlspecialchars($item['status']); ?>">
+                                  <iconify-icon icon="lucide:edit-2" style="font-size: 16px"></iconify-icon>
+                              </button>
+                          </td>
+                        </tr>
+                      <?php endforeach; ?>
+                    </tbody>
+                  </table>
+                </div>
+
+                <div class="card-header" style="background-color: var(--surface); justify-content: center;">
+                  <button class="btn" style="color: var(--primary); background: transparent; border: none;">
+                    View All Transfers
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </main>
+    </div>
+
+    <!-- Update Transfer Modal -->
+    <div id="update-transfer-modal" class="modal-overlay">
+        <div class="modal-container">
+          <div class="modal-header" style="background-color: rgba(243, 244, 246, 0.3);">
+            <h3 class="font-bold">Update Transfer Order</h3>
+            <button id="close-update-modal-btn" class="btn btn-outline" style="border: none; padding: 0.25rem;">
+              <iconify-icon icon="lucide:x" style="font-size: 20px"></iconify-icon>
+            </button>
+          </div>
+          <form id="update-transfer-form" action="BM_update_transfer_action.php" method="POST">
+            <input type="hidden" name="transfer_id" id="update-transfer-id" />
+            <div class="modal-body">
+              <div class="form-group">
+                <label class="form-label">Source Branch</label>
+                <select name="source_branch_id" id="update-source-branch" required class="form-control">
+                  <?php foreach ($branches as $branch): ?>
+                    <option value="<?php echo $branch['branch_id']; ?>"><?php echo $branch['branch_name']; ?></option>
+                  <?php endforeach; ?>
+                </select>
+              </div>
+              <div class="form-group">
+                <label class="form-label">Destination Branch</label>
+                <select name="dest_branch_id" id="update-dest-branch" required class="form-control">
+                  <?php foreach ($branches as $branch): ?>
+                    <option value="<?php echo $branch['branch_id']; ?>"><?php echo $branch['branch_name']; ?></option>
+                  <?php endforeach; ?>
+                </select>
+              </div>
+              <div class="form-group">
+                <label class="form-label">Status</label>
+                <select name="status" id="update-status" required class="form-control">
+                  <option value="Pending">Pending</option>
+                  <option value="Shipped">Shipped</option>
+                  <option value="Completed">Completed</option>
+                  <option value="Cancelled">Cancelled</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label class="form-label">Product</label>
+                <select name="product_id" id="update-product" required class="form-control">
+                  <?php foreach ($products as $product): ?>
+                    <option value="<?php echo $product['Product_id']; ?>"><?php echo $product['product_name']; ?></option>
+                  <?php endforeach; ?>
+                </select>
+              </div>
+              <div class="form-group">
+                <label class="form-label">Quantity</label>
+                <input type="number" name="quantity" id="update-quantity" required min="1" class="form-control" />
+              </div>
+            </div>
+            <div class="modal-footer">
+              <button type="button" id="cancel-update-modal-btn" class="btn btn-outline">Cancel</button>
+              <button type="submit" class="btn btn-primary">Save Changes</button>
+            </div>
+          </form>
+        </div>
+    </div>
+
+    <script src="https://code.iconify.design/iconify-icon/3.0.0/iconify-icon.min.js"></script>
+    <script>
+        // Simple PHP alerts for success/failure redirects
+        <?php if (isset($_GET['msg'])): ?>
+            alert("<?php echo htmlspecialchars($_GET['msg']); ?>");
+        <?php endif; ?>
+        <?php if (isset($_GET['err'])): ?>
+            alert("Error: <?php echo htmlspecialchars($_GET['err']); ?>");
+        <?php endif; ?>
+    </script>
+    <!-- Vanilla JS Assets -->
+    <script src="../../assets/js/manager_logic.js"></script>
+    <script src="../../assets/js/BM_transfer_helper.js"></script>
+    <script src="../../assets/js/transfer.js"></script>
+</body>
+</html>
